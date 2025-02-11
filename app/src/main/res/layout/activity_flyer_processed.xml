@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".flyerProcessed">
+    tools:context=".flyerProcessed"
+    android:background="@color/tan">
 
     <TextView
         android:id="@+id/approvalStatusTv"
@@ -24,8 +25,8 @@
 
     <EditText
         android:id="@+id/commentEt"
-        android:layout_width="226dp"
-        android:layout_height="149dp"
+        android:layout_width="225dp"
+        android:layout_height="98dp"
         android:ems="10"
         android:hint="Comments:"
         android:inputType="text"

@@ -5,31 +5,35 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FlyerApproval">
+    tools:context=".FlyerApproval"
+    android:background="@color/tan">
 
     <Button
         android:id="@+id/approveBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#4CAF50"
+        android:layout_width="106dp"
+        android:layout_height="51dp"
         android:backgroundTintMode="add"
+        android:backgroundTint="@color/light_green"
         android:text="approve"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.211"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.91" />
 
     <Button
         android:id="@+id/rejectBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#F44336"
+        android:layout_width="99dp"
+        android:layout_height="51dp"
+        android:backgroundTint="@color/muted_red"
         android:text="reject"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.575"
         app:layout_constraintStart_toEndOf="@+id/approveBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.91" />
 
     <TextView
         android:id="@+id/approvalPromtVT"
@@ -41,6 +45,40 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/approveBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.098" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="278dp"
+        android:layout_height="338dp"
+        android:background="#92B1BD"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.348">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/img" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/eventDescTV"
+        android:layout_width="256dp"
+        android:layout_height="105dp"
+        android:text="Description: join the Computer Science CSC this Friday for food and games. Take a brake from your projects, bring a treat to share, or come and play games! We can’t wait to see everyone there :)"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        app:layout_constraintVertical_bias="0.145" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
