@@ -34,13 +34,17 @@ public class AttendingMockup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // turn yellow
+                // if it is already on, turn off
                 if (on){
                     attendingBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_off));
                     on = false;
+                    // basic change to attendance number
                     attendanceCount.setText("92");
+                // if it was off, turn on
                 }else{
                     attendingBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_on));
                     on = true;
+                    // basic change to attendance number
                     attendanceCount.setText("93");
                 }
 
