@@ -5,6 +5,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class AttendingMockup extends AppCompatActivity {
         });
 
         ImageButton attendingBtn = findViewById(R.id.attendingButton);
+        TextView attendanceCount = findViewById(R.id.attendanceCount);
         attendingBtn.setOnClickListener(new View.OnClickListener() {
             boolean on = false;
             @Override
@@ -35,9 +37,11 @@ public class AttendingMockup extends AppCompatActivity {
                 if (on){
                     attendingBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_off));
                     on = false;
+                    attendanceCount.setText("92");
                 }else{
                     attendingBtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_on));
                     on = true;
+                    attendanceCount.setText("93");
                 }
 
             }
