@@ -24,6 +24,15 @@ public class MainScreen extends AppCompatActivity {
             return insets;
         });
 
+        Button toOrganizationApprovalBtn = findViewById(R.id.toOrganizationApprovalBtn);
+        toOrganizationApprovalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent orgApprovalScreen = new Intent(getApplicationContext(), OrganizationApproval.class);
+                startActivity(orgApprovalScreen);
+            }
+        });
+
         Button toApprovalBtn = findViewById(R.id.toApprovBtn);
         toApprovalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
