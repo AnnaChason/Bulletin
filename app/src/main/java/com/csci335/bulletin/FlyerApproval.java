@@ -24,12 +24,15 @@ public class FlyerApproval extends AppCompatActivity {
             return insets;
         });
 
+        //gets elements from screen
         Button approveBtn = findViewById(R.id.approveBtn);
         Button rejectBtn = findViewById(R.id.rejectBtn);
         Intent flyerProcessed = new Intent(getApplicationContext(),flyerProcessed.class) ;
+
         approveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //go to processed screen and send it approval status
                 flyerProcessed.putExtra("com.csci335.approvalStatus","Flyer Approved!");
                 startActivity(flyerProcessed);
             }
@@ -37,6 +40,7 @@ public class FlyerApproval extends AppCompatActivity {
         rejectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //go to processed screen and send it approval status
                 flyerProcessed.putExtra("com.csci335.approvalStatus","Flyer Rejected");
                 startActivity(flyerProcessed);
             }

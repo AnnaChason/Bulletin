@@ -25,6 +25,7 @@ public class flyerProcessed extends AppCompatActivity {
         });
 
         if(getIntent().hasExtra("com.csci335.approvalStatus")){
+            //receives data passed from previous screen
             TextView approvalStatus = findViewById(R.id.approvalStatusTv);
             approvalStatus.setText(getIntent().getExtras().getString("com.csci335.approvalStatus"));
         }
