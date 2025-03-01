@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Mockups;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.csci335.bulletin.R;
 
 public class FlyerApproval extends AppCompatActivity {
 
@@ -27,7 +29,7 @@ public class FlyerApproval extends AppCompatActivity {
         //gets elements from screen
         Button approveBtn = findViewById(R.id.approveBtn);
         Button rejectBtn = findViewById(R.id.rejectBtn);
-        Intent flyerProcessed = new Intent(getApplicationContext(),flyerProcessed.class) ;
+        Intent flyerProcessed = new Intent(getApplicationContext(), com.csci335.bulletin.Mockups.flyerProcessed.class) ;
 
         approveBtn.setOnClickListener(new View.OnClickListener() {
             @Override

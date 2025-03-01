@@ -1,7 +1,5 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Mockups;
 
-import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,6 +11,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.csci335.bulletin.R;
 
 public class AttendingMockup extends AppCompatActivity {
 

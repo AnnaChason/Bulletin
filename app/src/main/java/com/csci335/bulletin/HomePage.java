@@ -3,7 +3,6 @@ package com.csci335.bulletin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -12,9 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.navigation.NavigationView;
 
 public class HomePage extends AppCompatActivity {
 
@@ -29,22 +26,24 @@ public class HomePage extends AppCompatActivity {
             return insets;
         });
 
-        NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBarMain);
+        //Bottom Navigation Bar Manager
+        NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBar);
         btmNavBarMain.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
                 Intent next = new Intent();
                 if(R.id.profile == itemId){
-                    next = new Intent(/*Put file name of profile screen here*/);
+                    next = new Intent(getApplicationContext(),HomePage.class);
+                    //FIX: next = new Intent(/*Put file name of profile screen here*/);
                 }
                 else if(R.id.home == itemId){
-                    next = new Intent(/*Put file name of home screen here*/);
+                    next = new Intent(getApplicationContext(),HomePage.class);
                 }
                 else if(R.id.new_event == itemId){
-                    next = new Intent(/*Put file name of new event screen here*/);
+                    next = new Intent(getApplicationContext(),EventApplicationForm.class);
                 }
-
+                startActivity(next);
                 return true;
             }
         });

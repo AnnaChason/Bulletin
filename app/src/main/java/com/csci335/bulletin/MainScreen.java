@@ -11,6 +11,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.csci335.bulletin.Mockups.AttendingMockup;
+import com.csci335.bulletin.Mockups.FlyerApproval;
+import com.csci335.bulletin.Mockups.OrganizationApproval;
+
 public class MainScreen extends AppCompatActivity {
 
     @Override
@@ -50,6 +54,16 @@ public class MainScreen extends AppCompatActivity {
                 startActivity(flyerAttendingScreen);
             }
     });
+
+        Button toHomeBtn = findViewById(R.id.toHomeBtn);
+        toHomeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toHome = new Intent(getApplicationContext(),HomePage.class);
+                startActivity(toHome);
+            }
+        });
+
 
     }
 }
