@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/EventFeed"
+            android:id="@+id/eventFeedRV"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>

@@ -1,0 +1,68 @@
+package com.csci335.bulletin;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecyclerViewAdapter.MyViewHolder>{
+
+    private ArrayList<Event> events;
+    private Context context;
+
+    public EventRecyclerViewAdapter(Context context, ArrayList<Event> events){
+        this.events = events;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    //inflates layout and gives look to each row
+    public EventRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflator = LayoutInflater.from(context);
+        View view = inflator.inflate(R.layout.event_recyclerview_row, parent,false);
+        return new EventRecyclerViewAdapter.MyViewHolder(view);
+    }
+
+    @Override
+    //assigns value to each row as it comes on screen
+    public void onBindViewHolder(@NonNull EventRecyclerViewAdapter.MyViewHolder holder, int position) {
+        holder.eventNameVT.setText(events.get(position).getEventName());
+        holder.dateVT.setText(events.get(position).getDate());
+        holder.locationVT.setText(events.get(position).getLocation());
+        holder.descriptionVT.setText(events.get(position).getDescription());
+        holder.numAttendingVT.setText(""+ events.get(position).getAttending() + " people attending");
+        holder.poster.setImageResource(events.get(position).getPosterImg());
+    }
+
+    @Override
+    //num items to be displayed
+    public int getItemCount() {
+        return events.size();
+    }
+
+    //gets all views from row layout and assigns them to variables
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
+        TextView eventNameVT, dateVT, locationVT,descriptionVT, numAttendingVT;
+        ImageView poster;
+
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            eventNameVT = itemView.findViewById(R.id.eventNameVT);
+            dateVT = itemView.findViewById(R.id.dateVT);
+            locationVT = itemView.findViewById(R.id.locationVT);
+            descriptionVT = itemView.findViewById(R.id.descriptionVT);
+            numAttendingVT = itemView.findViewById(R.id.numAttendingVT);
+            poster = itemView.findViewById(R.id.eventPosterView);
+        }
+    }
+
+}

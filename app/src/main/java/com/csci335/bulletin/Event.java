@@ -10,12 +10,20 @@ public class Event {
     private int attending;
     private int posterImg;
 
-    public Event(String location, String name, String date, String description, int posterImg) {
+    public Event(String name, String date, String location, String description, int posterImg) {
         this.location = location;
         this.name = name;
         this.date = date;
         this.description = description;
         this.posterImg = posterImg;
+        this.attending = 0;
+    }
+    public Event(String name, String date, String location, String description) {
+        this.location = location;
+        this.name = name;
+        this.date = date;
+        this.description = description;
+        this.posterImg = R.drawable.img;//PLACEHOLDER
         this.attending = 0;
     }
 
