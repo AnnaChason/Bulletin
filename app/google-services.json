@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "21980449239",
+    "project_id": "bulletin-dd8bd",
+    "storage_bucket": "bulletin-dd8bd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21980449239:android:a6ce2a6ae86b7e3c04a392",
+        "android_client_info": {
+          "package_name": "com.csci335.bulletin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21980449239-0d6kt2afraffsbejovgigdpe8eerno6m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.csci335.bulletin",
+            "certificate_hash": "8097ec7c9ba1e7c7b938f24e5eea32a9040496a3"
+          }
+        },
+        {
+          "client_id": "21980449239-4s4up58maj2ut347onh77bckci8r9tdk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUQyDXvwNI_MuxJGMaRJNG8ye6eVcYHME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21980449239-4s4up58maj2ut347onh77bckci8r9tdk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

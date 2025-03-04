@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/googleLoginBtn"
         android:layout_width="168dp"
         android:layout_height="69dp"
         android:text="Login With Google"
