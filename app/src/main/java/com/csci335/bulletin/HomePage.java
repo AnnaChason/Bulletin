@@ -38,10 +38,9 @@ public class HomePage extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                Intent next = new Intent();
+                Intent next = new Intent(getApplicationContext(),HomePage.class);
                 if(R.id.profile == itemId){
-                    next = new Intent(getApplicationContext(),HomePage.class);
-                    //FIX: next = new Intent(/*Put file name of profile screen here*/);
+                    next = new Intent(getApplicationContext(), Profile.class);
                 }
                 else if(R.id.home == itemId){
                     next = new Intent(getApplicationContext(),HomePage.class);
