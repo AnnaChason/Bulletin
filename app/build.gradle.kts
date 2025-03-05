@@ -1,10 +1,9 @@
 plugins {
-    //id("com.android.application")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
-    //baseid("com.google.gms.google-services")
+
 }
 
 android {
@@ -13,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.csci335.bulletin"
-        minSdk = 24
+        minSdk = 34
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -66,6 +65,7 @@ dependencies {
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,8 +73,30 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
 
-    implementation(libs.firebase.bom)
-    implementation(libs.google.firebase.auth)
-    implementation(libs.firebase.database)
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
+
+    // Also add the dependencies for the Credential Manager libraries and specify their versions
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    // manual realtime database dependencies
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-database")
 }

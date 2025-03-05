@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/tan"
-    tools:context=".AttendingMockup">
+    tools:context=".Mockups.AttendingMockup">
 
     <FrameLayout
         android:id="@+id/flyerPlaceholder"

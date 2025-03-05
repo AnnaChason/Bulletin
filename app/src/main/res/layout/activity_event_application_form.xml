@@ -9,41 +9,69 @@
 
     <EditText
         android:id="@+id/editTextDate"
-        android:layout_width="292dp"
-        android:layout_height="105dp"
+        android:layout_width="208dp"
+        android:layout_height="46dp"
         android:ems="10"
+        android:hint="Event Date"
         android:inputType="date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.441" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="526dp"
-        android:layout_marginEnd="517dp"
-        android:layout_marginBottom="200dp"
-        android:text="Enter Event Date"
-        app:layout_constraintBottom_toTopOf="@+id/editTextDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintVertical_bias="0.309" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/evtAppBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="507dp"
-        android:layout_marginTop="54dp"
-        android:layout_marginEnd="504dp"
-        android:layout_marginBottom="492dp"
-        android:text="Submit"
+        android:text="Submit Event Application"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.896" />
+
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Event Title"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.212" />
+
+    <EditText
+        android:id="@+id/editTextDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Event Description"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.479" />
+
+    <EditText
+        android:id="@+id/editTextLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Event Location"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.578" />
 </androidx.constraintlayout.widget.ConstraintLayout>

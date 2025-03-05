@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Mockups;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -9,25 +9,24 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import org.w3c.dom.Text;
+import com.csci335.bulletin.R;
 
-public class flyerProcessed extends AppCompatActivity {
+public class OrganizationProcessed extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_flyer_processed);
+        setContentView(R.layout.activity_organization_processed);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        if(getIntent().hasExtra("com.csci335.approvalStatus")){
-            //receives data passed from previous screen
-            TextView approvalStatus = findViewById(R.id.approvalStatusTv);
-            approvalStatus.setText(getIntent().getExtras().getString("com.csci335.approvalStatus"));
+        if(getIntent().hasExtra("OrgAppStatus")) {
+            TextView orgAppStatus = findViewById(R.id.statusText);
+            orgAppStatus.setText(getIntent().getExtras().getString("OrgAppStatus"));
         }
     }
 }
