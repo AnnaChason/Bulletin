@@ -3,6 +3,9 @@ package com.csci335.bulletin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -10,20 +13,48 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
+public class Profile extends AppCompatActivity {
 
-public class HomePage extends AppCompatActivity {
+    FirebaseAuth mAuth;
+    Button buttonLogout;
+    TextView textView;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_profile);
+
+        mAuth = FirebaseAuth.getInstance();
+        buttonLogout = findViewById(R.id.button_logout);
+        textView = findViewById(R.id.user_details);
+        user = mAuth.getCurrentUser();
+
+        if( user == null) {
+            Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+            startActivity(intent);
+            finish();
+        } else {
+            textView.setText(user.getEmail());
+        }
+
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -33,12 +64,12 @@ public class HomePage extends AppCompatActivity {
         /*
         Bottom Navigation Bar Manager
          */
-        NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBar);
+        NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBarP);
         btmNavBarMain.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                Intent next = new Intent(getApplicationContext(),HomePage.class);
+                Intent next = new Intent(getApplicationContext(),Profile.class);
                 if(R.id.profile == itemId){
                     next = new Intent(getApplicationContext(), Profile.class);
                 }
@@ -52,28 +83,5 @@ public class HomePage extends AppCompatActivity {
                 return true;
             }
         });
-
-
-        /*
-        Event display manager
-         */
-        ArrayList<Event> events = new ArrayList<Event>();
-        seUpEvents(events);
-
-        RecyclerView eventFeedRV = findViewById(R.id.eventFeedRV);
-        EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events);
-
-        eventFeedRV.setAdapter(rvAdapter);
-
-        eventFeedRV.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-
-    private void seUpEvents(ArrayList<Event> events){
-        /*
-        UPDATE this to actually get event info from database
-         */
-        events.add(new Event("CS dinner", "1/2/2025", "Saga", "testing thingsssss fooooodddddd"));
-        events.add(new Event("eventTest2", "3/4/2025","mysci","mysterious test event I need words to see formatting hello world come to my event, it's cool!"));
     }
 }
