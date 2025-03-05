@@ -68,6 +68,7 @@ public class EventApplicationForm extends AppCompatActivity {
         EditText titleEntry = findViewById(R.id.editTextTitle);
         EditText dateEntry = findViewById(R.id.editTextDate);
         EditText descEntry = findViewById(R.id.editTextDesc);
+        EditText locEntry = findViewById(R.id.editTextLocation);
 
         evtAppSubmit.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -79,7 +80,8 @@ public class EventApplicationForm extends AppCompatActivity {
                     String title = titleEntry.getEditableText().toString();
                     String date = dateEntry.getEditableText().toString();
                     String desc = descEntry.getEditableText().toString();
-                    EventApplication newApp = new EventApplication(date, title, desc);
+                    String loc = locEntry.getEditableText().toString();
+                    EventApplication newApp = new EventApplication(date, title, desc, loc);
 
                     reference.child(title).setValue(newApp);
 
