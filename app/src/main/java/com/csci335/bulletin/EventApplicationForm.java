@@ -65,7 +65,9 @@ public class EventApplicationForm extends AppCompatActivity {
 
         // submit button
         Button evtAppSubmit = findViewById(R.id.evtAppBtn);
+        EditText titleEntry = findViewById(R.id.editTextTitle);
         EditText dateEntry = findViewById(R.id.editTextDate);
+        EditText descEntry = findViewById(R.id.editTextDesc);
 
         evtAppSubmit.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -74,10 +76,12 @@ public class EventApplicationForm extends AppCompatActivity {
                     reference = rootNode.getReference("eventApplications");
 
                     // get value from form
+                    String title = titleEntry.getEditableText().toString();
                     String date = dateEntry.getEditableText().toString();
-                    EventApplication newApp = new EventApplication(date);
+                    String desc = descEntry.getEditableText().toString();
+                    EventApplication newApp = new EventApplication(date, title, desc);
 
-                    reference.child(date).setValue(newApp);
+                    reference.child(title).setValue(newApp);
 
                     // redirect to home page
                     Intent home = new Intent(getApplicationContext(), HomePage.class);
