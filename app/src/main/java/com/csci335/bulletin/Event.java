@@ -2,7 +2,7 @@ package com.csci335.bulletin;
 /*
 class to hold data for each event post
  */
-public class Event {
+public class Event implements Comparable<Event>{
     private String name;
     private String date;
     private String location;
@@ -55,5 +55,34 @@ public class Event {
     }
     public int getPosterImg() {
         return posterImg;
+    }
+
+
+    public int dateToNum(){
+        int dateNums = 0;
+        try{
+            int idx = date.indexOf("/");
+            dateNums = Integer.parseInt(date.substring(0, idx)) * 100;
+            dateNums += Integer.parseInt(date.substring(idx+1, date.indexOf("/",idx+1)));
+            idx = date.indexOf("/",idx+1);
+            String year = date.substring(idx+1);
+            if(year.length() > 2)
+                year = year.substring(year.length() - 2);
+            dateNums += Integer.parseInt(year) * 10000;
+    } catch (Exception e) {//date invalid
+            dateNums = -999;
+        }
+        return dateNums;
+    }
+
+
+    /*
+    comparing events by date earlier to later
+        (could come up with other ways to sort it later like number of attendees)
+    0 means equal, - number means this event is earlier, positive number means this event is later
+     */
+    @Override
+    public int compareTo(Event e) {
+        return Integer.compare(this.dateToNum(), e.dateToNum());
     }
 }
