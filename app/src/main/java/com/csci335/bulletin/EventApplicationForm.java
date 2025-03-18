@@ -18,14 +18,12 @@ import com.csci335.bulletin.Mockups.FlyerApproval;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class EventApplicationForm extends AppCompatActivity {
 
-    // stuff i added for database
-    FirebaseDatabase rootNode;
-    DatabaseReference reference;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +71,18 @@ public class EventApplicationForm extends AppCompatActivity {
         evtAppSubmit.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick (View view) {
-                    rootNode = FirebaseDatabase.getInstance();
-                    reference = rootNode.getReference("eventApplications");
+                    // get the database
+                    db = FirebaseFirestore.getInstance();
 
-                    // get value from form
+                    // get values to build the event application object
                     String title = titleEntry.getEditableText().toString();
                     String date = dateEntry.getEditableText().toString();
                     String desc = descEntry.getEditableText().toString();
                     String loc = locEntry.getEditableText().toString();
                     EventApplication newApp = new EventApplication(date, title, desc, loc);
 
-                    reference.child(title).setValue(newApp);
+                    // put the object in the database
+                    db.collection("eventApplications").document(title).set(newApp);
 
                     // redirect to home page
                     Intent home = new Intent(getApplicationContext(), HomePage.class);
