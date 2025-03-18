@@ -9,8 +9,8 @@
 
     <EditText
         android:id="@+id/editTextDate"
-        android:layout_width="208dp"
-        android:layout_height="46dp"
+        android:layout_width="218dp"
+        android:layout_height="48dp"
         android:ems="10"
         android:hint="Event Date"
         android:inputType="date"
@@ -34,8 +34,8 @@
 
     <EditText
         android:id="@+id/editTextTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="223dp"
+        android:layout_height="49dp"
         android:ems="10"
         android:hint="Event Title"
         android:inputType="text"
@@ -48,8 +48,8 @@
 
     <EditText
         android:id="@+id/editTextDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="226dp"
+        android:layout_height="54dp"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Event Description"
@@ -63,8 +63,8 @@
 
     <EditText
         android:id="@+id/editTextLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="217dp"
+        android:layout_height="49dp"
         android:ems="10"
         android:hint="Event Location"
         android:inputType="text"

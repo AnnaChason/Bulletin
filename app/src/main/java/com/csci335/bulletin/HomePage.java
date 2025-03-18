@@ -13,7 +13,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -57,23 +62,46 @@ public class HomePage extends AppCompatActivity {
         /*
         Event display manager
          */
+
+
+
         ArrayList<Event> events = new ArrayList<Event>();
-        seUpEvents(events);
 
         RecyclerView eventFeedRV = findViewById(R.id.eventFeedRV);
+
+        seUpEvents(events, eventFeedRV);
+
         EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events);
-
         eventFeedRV.setAdapter(rvAdapter);
-
         eventFeedRV.setLayoutManager(new LinearLayoutManager(this));
+
+
     }
 
 
-    private void seUpEvents(ArrayList<Event> events){
+    private void seUpEvents(ArrayList<Event> events, RecyclerView eventFeedRV){
         /*
         UPDATE this to actually get event info from database
          */
-        events.add(new Event("CS dinner", "1/2/2025", "Saga", "testing thingsssss fooooodddddd"));
-        events.add(new Event("eventTest2", "3/4/2025","mysci","mysterious test event I need words to see formatting hello world come to my event, it's cool!"));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("eventApplications")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                EventApplication eventapp = document.toObject(EventApplication.class);
+                                events.add(eventapp.toEvent());
+                            }
+                            eventFeedRV.getAdapter().notifyDataSetChanged();
+                        } else {
+                            System.out.println("ERROR RETREIVING EVENT FEED"); //fix later
+                        }
+                    }
+                });
+
+        //events.add(new Event("eventTest2", "3/4/2025","mysci","mysterious test event I need words to see formatting hello world come to my event, it's cool!"));
     }
 }

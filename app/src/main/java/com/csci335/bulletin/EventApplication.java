@@ -5,6 +5,8 @@ public class EventApplication {
     public String title;
     public String description;
     public String location;
+
+    public int posterImg;
     public int attendance;
 
     public EventApplication(String date, String title, String description, String location) {
@@ -50,11 +52,18 @@ public class EventApplication {
         this.location = location;
     }
 
+    public int getPosterImg(){return posterImg;}
+    public void setPosterImg(int poserImg){this.posterImg = poserImg;}
+
     public int getAttendance() {
         return attendance;
     }
 
     public void setAttendance(int attendance) {
         this.attendance = attendance;
+    }
+
+    public Event toEvent(){
+        return new Event(title,date,location,description,posterImg);
     }
 }
