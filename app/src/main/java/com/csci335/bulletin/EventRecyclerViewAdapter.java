@@ -63,7 +63,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getEventName()).update("attendance",events.get(holder.getAdapterPosition()).getAttending());
-                notifyItemChanged(position);
+                notifyItemChanged(holder.getAdapterPosition());
             }
         });
     }
