@@ -4,11 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -16,6 +19,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
     private ArrayList<Event> events;
     private Context context;
+
 
     public EventRecyclerViewAdapter(Context context, ArrayList<Event> events){
         this.events = events;
@@ -40,6 +44,28 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.descriptionVT.setText(events.get(position).getDescription());
         holder.numAttendingVT.setText(""+ events.get(position).getAttending() + " people attending");
         holder.poster.setImageResource(events.get(position).getPosterImg());
+
+
+        /*
+        updates attendance
+         */
+        holder.attendingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                updates event attendance, fix when we sort out differences between event and event application also need to deal with checked/vs unchecked
+                also need to figure out how to store which users are attending, and for the user which events they are attending.
+                */
+                if(holder.attendingBtn.isChecked())
+                    events.get(holder.getAdapterPosition()).updateAttending(1);
+                else
+                    events.get(holder.getAdapterPosition()).updateAttending(-1);
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getEventName()).update("attendance",events.get(holder.getAdapterPosition()).getAttending());
+                notifyItemChanged(position);
+            }
+        });
     }
 
     @Override
@@ -52,7 +78,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView eventNameVT, dateVT, locationVT,descriptionVT, numAttendingVT;
         ImageView poster;
-
+        CheckBox attendingBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,7 +88,10 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             descriptionVT = itemView.findViewById(R.id.descriptionVT);
             numAttendingVT = itemView.findViewById(R.id.numAttendingVT);
             poster = itemView.findViewById(R.id.eventPosterView);
+            attendingBtn = itemView.findViewById(R.id.attendingBtn);
+
         }
     }
 
 }
+

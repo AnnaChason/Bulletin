@@ -64,6 +64,6 @@ public class EventApplication {
     }
 
     public Event toEvent(){
-        return new Event(title,date,location,description,posterImg);
+        return new Event(title,date,location,description,posterImg,attendance);
     }
 }

@@ -75,6 +75,9 @@ public class HomePage extends AppCompatActivity {
         eventFeedRV.setAdapter(rvAdapter);
         eventFeedRV.setLayoutManager(new LinearLayoutManager(this));
 
+        /*
+        updates attendee number
+         */
 
     }
 

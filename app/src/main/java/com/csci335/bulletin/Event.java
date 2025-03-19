@@ -10,13 +10,14 @@ public class Event implements Comparable<Event>{
     private int attending;
     private int posterImg;
 
-    public Event(String name, String date, String location, String description, int posterImg) {
+    public Event(String name, String date, String location, String description, int posterImg, int attending) {
         this.location = location;
         this.name = name;
         this.date = date;
         this.description = description;
         this.posterImg = posterImg;
         this.attending = 0;
+        this.attending = attending;
     }
     public Event(String name, String date, String location, String description) {
         this.location = location;
