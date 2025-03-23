@@ -1,20 +1,21 @@
 package com.csci335.bulletin;
 
 public class EventApplication {
-    public String date;
-    public String title;
-    public String description;
-    public String location;
+    private String date;
+    private String title;
+    private String description;
+    private String location;
+    private int posterImg;
+    private int attendance;
+    private String category;
 
-    public int posterImg;
-    public int attendance;
-
-    public EventApplication(String date, String title, String description, String location) {
+    public EventApplication(String date, String title, String description, String location, String category) {
         this.date = date;
         this.title = title;
         this.description = description;
         this.location = location;
         this.attendance = 0;
+        this.category = category;
     }
 
     public EventApplication() {
@@ -63,7 +64,10 @@ public class EventApplication {
         this.attendance = attendance;
     }
 
+    public String getCategory(){return category;}
+    public void setCategory(String category){this.category=category;}
+
     public Event toEvent(){
-        return new Event(title,date,location,description,posterImg,attendance);
+        return new Event(title,date,location,description,posterImg,attendance,category);
     }
 }

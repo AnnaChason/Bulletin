@@ -44,6 +44,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.descriptionVT.setText(events.get(position).getDescription());
         holder.numAttendingVT.setText(""+ events.get(position).getAttending() + " people attending");
         holder.poster.setImageResource(events.get(position).getPosterImg());
+        holder.categoryVT.setText("#"+events.get(position).getCategory());
 
 
         /*
@@ -63,7 +64,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getEventName()).update("attendance",events.get(holder.getAdapterPosition()).getAttending());
-                notifyItemChanged(holder.getAdapterPosition());
+                notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
             }
         });
     }
@@ -76,7 +77,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
     //gets all views from row layout and assigns them to variables
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView eventNameVT, dateVT, locationVT,descriptionVT, numAttendingVT;
+        TextView eventNameVT, dateVT, locationVT,descriptionVT, numAttendingVT, categoryVT;
         ImageView poster;
         CheckBox attendingBtn;
 
@@ -89,6 +90,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             numAttendingVT = itemView.findViewById(R.id.numAttendingVT);
             poster = itemView.findViewById(R.id.eventPosterView);
             attendingBtn = itemView.findViewById(R.id.attendingBtn);
+            categoryVT = itemView.findViewById(R.id.categoryTV);
 
         }
     }

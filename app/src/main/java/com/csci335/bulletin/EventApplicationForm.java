@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class EventApplicationForm extends AppCompatActivity {
 
     FirebaseFirestore db;
+    String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,18 @@ public class EventApplicationForm extends AppCompatActivity {
         EditText descEntry = findViewById(R.id.editTextDesc);
         EditText locEntry = findViewById(R.id.editTextLocation);
 
+        // Handling category drop down menu
+        Spinner categorySpinner = findViewById(R.id.categorySpinner);
+        categorySpinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,Event.categoryOptions()));
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                category = Event.categoryOptions()[position];
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
         evtAppSubmit.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick (View view) {
@@ -79,7 +95,8 @@ public class EventApplicationForm extends AppCompatActivity {
                     String date = dateEntry.getEditableText().toString();
                     String desc = descEntry.getEditableText().toString();
                     String loc = locEntry.getEditableText().toString();
-                    EventApplication newApp = new EventApplication(date, title, desc, loc);
+                    EventApplication newApp = new EventApplication(date, title, desc, loc, category);
+
 
                     // put the object in the database
                     db.collection("eventApplications").document(title).set(newApp);

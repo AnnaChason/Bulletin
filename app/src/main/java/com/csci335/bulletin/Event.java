@@ -1,4 +1,7 @@
 package com.csci335.bulletin;
+
+import java.util.ArrayList;
+
 /*
 class to hold data for each event post
  */
@@ -9,25 +12,24 @@ public class Event implements Comparable<Event>{
     private String description;
     private int attending;
     private int posterImg;
+    private String category;
 
-    public Event(String name, String date, String location, String description, int posterImg, int attending) {
+    public Event(String name, String date, String location, String description, int posterImg, int attending, String category) {
         this.location = location;
         this.name = name;
         this.date = date;
         this.description = description;
         this.posterImg = posterImg;
-        this.attending = 0;
         this.attending = attending;
+        this.category = category;
     }
-    public Event(String name, String date, String location, String description) {
-        this.location = location;
-        this.name = name;
-        this.date = date;
-        this.description = description;
-        this.posterImg = R.drawable.img;//PLACEHOLDER
-        this.attending = 0;
+    public Event(){
+
     }
 
+    public static String[] categoryOptions(){
+        return new String[]{"", "Sport", "Music", "Ministry/Service", "Speaker", "Dance", "Faith", "Movie/Games", "informational"};
+    }
     /*
     Getters and Setters
      */
@@ -58,7 +60,17 @@ public class Event implements Comparable<Event>{
         return posterImg;
     }
 
+    public String getCategory() {
+        return category;
+    }
+    public void setCategory(String category){
+        this.category = category;
+    }
 
+
+    /*
+    Returns event date as a number that can be compared to other dates. form YYMMDD
+     */
     public int dateToNum(){
         int dateNums = 0;
         try{
@@ -76,7 +88,6 @@ public class Event implements Comparable<Event>{
         return dateNums;
     }
 
-
     /*
     comparing events by date earlier to later
         (could come up with other ways to sort it later like number of attendees)
@@ -86,4 +97,5 @@ public class Event implements Comparable<Event>{
     public int compareTo(Event e) {
         return Integer.compare(this.dateToNum(), e.dateToNum());
     }
+
 }
