@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".LoginScreen">
 
     <TextView
@@ -20,45 +20,59 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/Email"
-            android:hint="@string/Email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="@string/Email" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/Password"
-            android:hint="@string/password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="@string/password" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:visibility="gone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
 
     <Button
-        android:id="@+id/button_register"
-        android:layout_width="wrap_content"
+        android:id="@+id/adminRegister"
+        android:layout_width="224dp"
         android:layout_height="wrap_content"
-        android:text="SIGN UP" />
+        android:text="Register as Admin" />
+
+    <Button
+        android:id="@+id/studentRegister"
+        android:layout_width="224dp"
+        android:layout_height="wrap_content"
+        android:text="Register as Student" />
+
+    <Button
+        android:id="@+id/organizationRegister"
+        android:layout_width="224dp"
+        android:layout_height="wrap_content"
+        android:text="Register as Organization" />
 
     <TextView
         android:id="@+id/login_now"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="20dp"
+        android:gravity="center"
         android:text="@string/click_to_login"
         android:textSize="20sp"
         android:textStyle="bold" />

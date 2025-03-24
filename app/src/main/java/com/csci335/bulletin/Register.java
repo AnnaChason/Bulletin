@@ -26,7 +26,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Register extends AppCompatActivity {
     TextInputEditText editTextEmail, editTextPassword;
-    Button buttonReg;
+    Button adminReg;
+    Button studentReg;
+    Button orgReg;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     TextView textView;
@@ -52,7 +54,12 @@ public class Register extends AppCompatActivity {
         mAuth= FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.Email);
         editTextPassword = findViewById(R.id.Password);
-        buttonReg = findViewById(R.id.button_register);
+
+        // three registration button options
+        adminReg = findViewById(R.id.adminRegister);
+        studentReg = findViewById(R.id.studentRegister);
+        orgReg = findViewById(R.id.organizationRegister);
+
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.login_now);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +70,8 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        buttonReg.setOnClickListener(new View.OnClickListener() {
+        // admin button click handler
+        adminReg.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
                 String email, password;
@@ -88,7 +96,90 @@ public class Register extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Register.this, "Authentication success.",
                                             Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                                    // redirect to get additional admin info
+                                    Intent intent = new Intent(getApplicationContext(), AdminInfo.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(Register.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+
+        // student button click handler
+        studentReg.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                String email, password;
+                email = String.valueOf(editTextEmail.getText());
+                password = String.valueOf(editTextPassword.getText());
+
+                if(TextUtils.isEmpty(email)){
+                    Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(TextUtils.isEmpty(password)){
+                    Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
+                }
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                progressBar.setVisibility(View.GONE);
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(Register.this, "Authentication success.",
+                                            Toast.LENGTH_SHORT).show();
+                                    // redirect to get student demographic data
+                                    Intent intent = new Intent(getApplicationContext(), StudentInfo.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(Register.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+
+        // organization button click handler
+        orgReg.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                String email, password;
+                email = String.valueOf(editTextEmail.getText());
+                password = String.valueOf(editTextPassword.getText());
+
+                if(TextUtils.isEmpty(email)){
+                    Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(TextUtils.isEmpty(password)){
+                    Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
+                }
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                progressBar.setVisibility(View.GONE);
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(Register.this, "Authentication success.",
+                                            Toast.LENGTH_SHORT).show();
+                                    // redirect to organization info form
+                                    Intent intent = new Intent(getApplicationContext(), OrganizationInfo.class);
                                     startActivity(intent);
                                     finish();
 
