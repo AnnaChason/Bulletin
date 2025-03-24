@@ -95,11 +95,11 @@ public class EventApplicationForm extends AppCompatActivity {
                     String date = dateEntry.getEditableText().toString();
                     String desc = descEntry.getEditableText().toString();
                     String loc = locEntry.getEditableText().toString();
-                    EventApplication newApp = new EventApplication(date, title, desc, loc, category);
+                    Event newEventApp = new Event(title, date, loc, desc, 0, 0, "");
 
 
                     // put the object in the database
-                    db.collection("eventApplications").document(title).set(newApp);
+                    db.collection("eventApplications").document(title).set(newEventApp);
 
                     // redirect to home page
                     Intent home = new Intent(getApplicationContext(), HomePage.class);
