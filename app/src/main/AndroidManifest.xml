@@ -16,10 +16,7 @@
             android:name=".OrganizationInfo"
             android:exported="false" />
         <activity
-            android:name=".StudentInfo"
-            android:exported="false" />
-        <activity
-            android:name=".Search"
+            android:name=".AdminClasses.AdminInfoForm"
             android:exported="false" />
         <activity
             android:name=".Register"
