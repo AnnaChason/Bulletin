@@ -138,7 +138,7 @@ public class Register extends AppCompatActivity {
                                     Toast.makeText(Register.this, "Authentication success.",
                                             Toast.LENGTH_SHORT).show();
                                     // redirect to get student demographic data
-                                    Intent intent = new Intent(getApplicationContext(), StudentInfo.class);
+                                    Intent intent = new Intent(getApplicationContext(), StudentInfoForm.class);
                                     startActivity(intent);
                                     finish();
 
