@@ -33,39 +33,22 @@ public class Event implements Comparable<Event>{
     /*
     Getters and Setters
      */
-    public String getEventName() {
-        return name;
-    }
-    public String getDate() {
-        return date;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getAttending() {
-        return attending;
-    }
-
+    public String getName() {return name;}
+    public void setName(String name){this.name=name;}
+    public String getDate() {return date;}
+    public void setDate(String date){this.date =date;}
+    public String getLocation() {return location;}
+    public void setLocation(String location){this.location = location;}
+    public String getDescription() {return description;}
+    public void setDescription(String description){this.description = description;}
+    public int getAttending() {return attending;}
+    public void setAttending(int attending){this.attending = attending;}
     //adds num to number of attending (just use negative number to take away attendees)
-    public void updateAttending(int num){
-        attending += num;
-    }
-    public int getPosterImg() {
-        return posterImg;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-    public void setCategory(String category){
-        this.category = category;
-    }
+    public void updateAttending(int num){attending += num;}
+    public int getPosterImg() {return posterImg;}
+    public void setPosterImg(int posterImg){this.posterImg = posterImg;}
+    public String getCategory() {return category;}
+    public void setCategory(String category){this.category = category;}
 
 
     /*

@@ -90,8 +90,8 @@ public class HomePage extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                EventApplication eventapp = document.toObject(EventApplication.class);
-                                events.add(eventapp.toEvent());
+                                Event eventapp = document.toObject(Event.class);
+                                events.add(eventapp);
                             }
                             filterEvents(events);
                             Collections.sort(events);

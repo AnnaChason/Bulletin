@@ -38,7 +38,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     @Override
     //assigns value to each row as it comes on screen
     public void onBindViewHolder(@NonNull EventRecyclerViewAdapter.MyViewHolder holder, int position) {
-        holder.eventNameVT.setText(events.get(position).getEventName());
+        holder.eventNameVT.setText(events.get(position).getName());
         holder.dateVT.setText(events.get(position).getDate());
         holder.locationVT.setText(events.get(position).getLocation());
         holder.descriptionVT.setText(events.get(position).getDescription());
@@ -63,7 +63,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                     events.get(holder.getAdapterPosition()).updateAttending(-1);
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getEventName()).update("attendance",events.get(holder.getAdapterPosition()).getAttending());
+                db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getName()).update("attendance",events.get(holder.getAdapterPosition()).getAttending());
                 notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
             }
         });
