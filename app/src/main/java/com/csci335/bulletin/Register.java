@@ -17,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.csci335.bulletin.AdminClasses.AdminInfoForm;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -54,9 +55,9 @@ public class Register extends AppCompatActivity {
         editTextPassword = findViewById(R.id.Password);
 
         // three registration button options
-        adminReg = findViewById(R.id.adminRegister);
-        studentReg = findViewById(R.id.studentRegister);
-        orgReg = findViewById(R.id.organizationRegister);
+        Button adminReg = findViewById(R.id.adminRegister);
+        Button studentReg = findViewById(R.id.studentRegister);
+        Button orgReg = findViewById(R.id.orgReg);
 
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.login_now);
@@ -68,7 +69,9 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        // admin button click handler
+        /*
+         admin button click handler
+         */
         adminReg.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
@@ -95,7 +98,7 @@ public class Register extends AppCompatActivity {
                                     Toast.makeText(Register.this, "Authentication success.",
                                             Toast.LENGTH_SHORT).show();
                                     // redirect to get additional admin info
-                                    Intent intent = new Intent(getApplicationContext(), AdminInfo.class);
+                                    Intent intent = new Intent(getApplicationContext(), AdminInfoForm.class);
                                     startActivity(intent);
                                     finish();
 
@@ -109,7 +112,9 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        // student button click handler
+        /*
+        student button click handler
+         */
         studentReg.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
@@ -150,7 +155,9 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        // organization button click handler
+        /*
+         organization button click handler
+         */
         orgReg.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);

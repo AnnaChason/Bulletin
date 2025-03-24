@@ -17,7 +17,7 @@ public class AdminInfoForm extends AppCompatActivity {
 
     FirebaseFirestore db;
 
-   Button Registar = findViewById(R.id.button);
+   Button Register = findViewById(R.id.adminRegBtn);
    EditText titleEntry = findViewById(R.id.editTextCode);
 
     @Override

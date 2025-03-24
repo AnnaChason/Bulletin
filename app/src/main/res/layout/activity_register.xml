@@ -62,7 +62,7 @@
         android:text="Register as Student" />
 
     <Button
-        android:id="@+id/organizationRegister"
+        android:id="@+id/orgReg"
         android:layout_width="224dp"
         android:layout_height="wrap_content"
         android:text="Register as Organization" />
