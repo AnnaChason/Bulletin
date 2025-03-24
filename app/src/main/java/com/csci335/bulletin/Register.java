@@ -97,8 +97,8 @@ public class Register extends AppCompatActivity {
                                     Toast.makeText(Register.this, "Authentication success.",
                                             Toast.LENGTH_SHORT).show();
                                     // redirect to get additional admin info
-                                    Intent intent = new Intent(getApplicationContext(), AdminInfoForm.class);
-                                    startActivity(intent);
+                                    //Intent intent = new Intent(getApplicationContext(), AdminInfoForm.class);
+                                    //startActivity(intent);
                                     finish();
 
                                 } else {
