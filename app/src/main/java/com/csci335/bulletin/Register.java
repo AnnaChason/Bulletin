@@ -26,9 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Register extends AppCompatActivity {
     TextInputEditText editTextEmail, editTextPassword;
-    Button adminReg;
-    Button studentReg;
-    Button orgReg;
+    Button buttonReg;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     TextView textView;
