@@ -13,10 +13,10 @@
         android:theme="@style/Theme.Bulletin"
         tools:targetApi="34">
         <activity
-            android:name=".OrganizationInfo"
+            android:name=".StudentInfoForm"
             android:exported="false" />
         <activity
-            android:name=".AdminClasses.AdminInfoForm"
+            android:name=".Search"
             android:exported="false" />
         <activity
             android:name=".Register"
