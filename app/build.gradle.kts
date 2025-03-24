@@ -99,4 +99,6 @@ dependencies {
     // manual realtime database dependencies
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-database")
+
+
 }

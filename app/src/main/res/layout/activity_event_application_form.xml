@@ -9,10 +9,10 @@
 
     <EditText
         android:id="@+id/editTextDate"
-        android:layout_width="208dp"
-        android:layout_height="46dp"
+        android:layout_width="218dp"
+        android:layout_height="48dp"
         android:ems="10"
-        android:hint="Event Date"
+        android:hint="Event Date (MM/DD/YY)"
         android:inputType="date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,8 +34,8 @@
 
     <EditText
         android:id="@+id/editTextTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="223dp"
+        android:layout_height="49dp"
         android:ems="10"
         android:hint="Event Title"
         android:inputType="text"
@@ -48,8 +48,8 @@
 
     <EditText
         android:id="@+id/editTextDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="226dp"
+        android:layout_height="54dp"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Event Description"
@@ -63,8 +63,8 @@
 
     <EditText
         android:id="@+id/editTextLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="217dp"
+        android:layout_height="49dp"
         android:ems="10"
         android:hint="Event Location"
         android:inputType="text"
@@ -74,4 +74,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.578" />
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="184dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="12dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toTopOf="@+id/evtAppBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.651"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLocation"
+        app:layout_constraintVertical_bias="0.292" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="77dp"
+        android:layout_height="39dp"
+        android:text="Category:"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/evtAppBtn"
+        app:layout_constraintEnd_toStartOf="@+id/categorySpinner"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLocation"
+        app:layout_constraintVertical_bias="0.415" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
