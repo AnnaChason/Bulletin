@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -43,7 +44,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.locationVT.setText(events.get(position).getLocation());
         holder.descriptionVT.setText(events.get(position).getDescription());
         holder.numAttendingVT.setText(""+ events.get(position).getAttendance() + " people attending");
-        //holder.poster.setImageResource(events.get(position).getPosterImg());
+        // load the image
+        Glide.with(context).load(events.get(position).getPosterImg()).into(holder.poster);
         holder.categoryVT.setText("#"+events.get(position).getCategory());
 
 
