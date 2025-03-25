@@ -101,4 +101,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-storage:20.3.0")
     implementation ("com.google.firebase:firebase-firestore:24.9.1")
 
+    // FirebaseUI Storage only
+    implementation ("com.firebaseui:firebase-ui-storage:9.0.0")
+
 }

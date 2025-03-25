@@ -11,6 +11,7 @@ public class Event implements Comparable<Event>{
     private String location;
     private String description;
     private int attendance;
+    // posterImg is the complete database reference necessary to retrieve the image
     private String posterImg;
     private String category;
 

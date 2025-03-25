@@ -44,7 +44,6 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.locationVT.setText(events.get(position).getLocation());
         holder.descriptionVT.setText(events.get(position).getDescription());
         holder.numAttendingVT.setText(""+ events.get(position).getAttendance() + " people attending");
-        // load the image
         Glide.with(context).load(events.get(position).getPosterImg()).into(holder.poster);
         holder.categoryVT.setText("#"+events.get(position).getCategory());
 

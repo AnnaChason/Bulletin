@@ -29,6 +29,7 @@ import java.util.Iterator;
 
 
 public class HomePage extends AppCompatActivity {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,8 @@ public class HomePage extends AppCompatActivity {
             Event event = iterator.next();
             if (event.dateToNum() < todayDateNum) {
                 iterator.remove();  // Remove event if it's before today's date
+                // also delete from the database
+                db.collection("eventApplications").document(event.getTitle()).delete();
             }
         }
     }
