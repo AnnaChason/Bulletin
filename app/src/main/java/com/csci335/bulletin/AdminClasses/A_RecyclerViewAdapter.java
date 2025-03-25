@@ -35,7 +35,7 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
     @Override
     public void onBindViewHolder(@NonNull A_RecyclerViewAdapter.MyViewHolder holder, int position) {
         //assigning values
-        holder.eventNameVT.setText(pendingEvents.get(position).getName());
+        holder.eventNameVT.setText(pendingEvents.get(position).getTitle());
         holder.dateVT.setText(pendingEvents.get(position).getDate());
         holder.locationVT.setText(pendingEvents.get(position).getLocation());
         holder.descriptionVT.setText(pendingEvents.get(position).getDescription());

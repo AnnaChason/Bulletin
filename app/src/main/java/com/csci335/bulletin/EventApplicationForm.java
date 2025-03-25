@@ -122,36 +122,45 @@ public class EventApplicationForm extends AppCompatActivity {
 
     // upload image method
     private void uploadEvent(Uri file) {
+        // get the database
+        db = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+        //get textboxes from activity
         EditText titleEntry = findViewById(R.id.editTextTitle);
         EditText dateEntry = findViewById(R.id.editTextDate);
         EditText descEntry = findViewById(R.id.editTextDesc);
         EditText locEntry = findViewById(R.id.editTextLocation);
+        // get values to build the event application object
+        String title = titleEntry.getEditableText().toString();
+        String date = dateEntry.getEditableText().toString();
+        String desc = descEntry.getEditableText().toString();
+        String loc = locEntry.getEditableText().toString();
 
-        storageReference = FirebaseStorage.getInstance().getReference();
         imgRef = storageReference.child("images/" + UUID.randomUUID().toString());
-        imgRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+        if(file != null) {
+            imgRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    Event newEventApp = new Event(title, date, loc, desc, task.getResult().getMetadata().getPath(), 0, category);
 
-                // get the database
-                db = FirebaseFirestore.getInstance();
+                    // put the object in the database
+                    db.collection("eventApplications").document(title).set(newEventApp);
 
-                // get values to build the event application object
-                String title = titleEntry.getEditableText().toString();
-                String date = dateEntry.getEditableText().toString();
-                String desc = descEntry.getEditableText().toString();
-                String loc = locEntry.getEditableText().toString();
+                    // redirect to home page
+                    Intent home = new Intent(getApplicationContext(), HomePage.class);
+                    startActivity(home);
+                }
+            });
+        }
+        else{
+            // put the object in the database
+            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category);
+            db.collection("eventApplications").document(title).set(newEventApp);
 
-                Event newEventApp = new Event(title, date, loc, desc, task.getResult().getMetadata().getPath(), 0, category);
-
-                // put the object in the database
-                db.collection("eventApplications").document(title).set(newEventApp);
-
-                // redirect to home page
-                Intent home = new Intent(getApplicationContext(), HomePage.class);
-                startActivity(home);
-            }
-        });
+            // redirect to home page
+            Intent home = new Intent(getApplicationContext(), HomePage.class);
+            startActivity(home);
+        }
     }
     private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

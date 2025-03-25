@@ -38,11 +38,11 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     @Override
     //assigns value to each row as it comes on screen
     public void onBindViewHolder(@NonNull EventRecyclerViewAdapter.MyViewHolder holder, int position) {
-        holder.eventNameVT.setText(events.get(position).getName());
+        holder.eventNameVT.setText(events.get(position).getTitle());
         holder.dateVT.setText(events.get(position).getDate());
         holder.locationVT.setText(events.get(position).getLocation());
         holder.descriptionVT.setText(events.get(position).getDescription());
-        holder.numAttendingVT.setText(""+ events.get(position).getAttending() + " people attending");
+        holder.numAttendingVT.setText(""+ events.get(position).getAttendance() + " people attending");
         //holder.poster.setImageResource(events.get(position).getPosterImg());
         holder.categoryVT.setText("#"+events.get(position).getCategory());
 
@@ -58,12 +58,12 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 also need to figure out how to store which users are attending, and for the user which events they are attending.
                 */
                 if(holder.attendingBtn.isChecked())
-                    events.get(holder.getAdapterPosition()).updateAttending(1);
+                    events.get(holder.getAdapterPosition()).updateAttendance(1);
                 else
-                    events.get(holder.getAdapterPosition()).updateAttending(-1);
+                    events.get(holder.getAdapterPosition()).updateAttendance(-1);
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getName()).update("attendance",events.get(holder.getAdapterPosition()).getAttending());
+                db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getTitle()).update("attendance",events.get(holder.getAdapterPosition()).getAttendance());
                 notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
             }
         });

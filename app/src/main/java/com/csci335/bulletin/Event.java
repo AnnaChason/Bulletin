@@ -6,21 +6,21 @@ import java.util.ArrayList;
 class to hold data for each event post
  */
 public class Event implements Comparable<Event>{
-    private String name;
+    private String title;
     private String date;
     private String location;
     private String description;
-    private int attending;
+    private int attendance;
     private String posterImg;
     private String category;
 
-    public Event(String name, String date, String location, String description, String posterImg, int attending, String category) {
+    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category) {
         this.location = location;
-        this.name = name;
+        this.title = title;
         this.date = date;
         this.description = description;
         this.posterImg = posterImg;
-        this.attending = attending;
+        this.attendance = attendance;
         this.category = category;
     }
     public Event(){
@@ -33,18 +33,18 @@ public class Event implements Comparable<Event>{
     /*
     Getters and Setters
      */
-    public String getName() {return name;}
-    public void setName(String name){this.name=name;}
+    public String getTitle() {return title;}
+    public void setTitle(String title){this.title=title;}
     public String getDate() {return date;}
     public void setDate(String date){this.date =date;}
     public String getLocation() {return location;}
     public void setLocation(String location){this.location = location;}
     public String getDescription() {return description;}
     public void setDescription(String description){this.description = description;}
-    public int getAttending() {return attending;}
-    public void setAttending(int attending){this.attending = attending;}
-    //adds num to number of attending (just use negative number to take away attendees)
-    public void updateAttending(int num){attending += num;}
+    public int getAttendance() {return attendance;}
+    public void setAttendance(int attendance){this.attendance = attendance;}
+    //adds num to number of attendance (just use negative number to take away attendees)
+    public void updateAttendance(int num){attendance += num;}
     public String getPosterImg() {return posterImg;}
     public void setPosterImg(String posterImg){this.posterImg = posterImg;}
     public String getCategory() {return category;}
