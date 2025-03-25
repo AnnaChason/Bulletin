@@ -20,6 +20,8 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +32,7 @@ import java.util.Iterator;
 
 public class HomePage extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    StorageReference storage = FirebaseStorage.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +122,10 @@ public class HomePage extends AppCompatActivity {
             Event event = iterator.next();
             if (event.dateToNum() < todayDateNum) {
                 iterator.remove();  // Remove event if it's before today's date
-                // also delete from the database
+                // also delete event from the database
                 db.collection("eventApplications").document(event.getTitle()).delete();
+                // and delete the image that goes with it
+                storage.child(event.getPosterImg()).delete();
             }
         }
     }
