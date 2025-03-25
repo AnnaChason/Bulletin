@@ -3,23 +3,18 @@ package com.csci335.bulletin.AdminClasses;
 public class AdminUser {
     private String email;
     private String uid;
-    private int code = 1234;
+    private static String adminCode = "1234";
 
-    public AdminUser( String email, String uid) {
+
+
+    public AdminUser(String email, String uid) {
         this.email = email;
         this.uid = uid;
     }
 
+    public static String getAdminCode(){return adminCode;}
+
     public AdminUser(){
-    }
-
-    public Boolean testCode(int code){
-        boolean test = false;
-        if( this.code == code){
-            test = true;
-        }
-
-        return test;
     }
 
     public String getEmail() {

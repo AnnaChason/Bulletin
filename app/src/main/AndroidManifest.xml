@@ -57,6 +57,8 @@
         <activity
             android:name=".MainScreen"
             android:exported="true" />
+        <activity
+            android:name=".AdminClasses.AdminInfoForm"/>
     </application>
 
 </manifest>
