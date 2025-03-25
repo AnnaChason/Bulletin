@@ -3,6 +3,7 @@ package com.csci335.bulletin;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,11 +26,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Mockups.FlyerApproval;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
@@ -38,27 +43,12 @@ public class EventApplicationForm extends AppCompatActivity {
 
     FirebaseFirestore db;
     String category;
-
     // for image upload use
     StorageReference storageReference;
     Uri image;
     Button selectImgBtn, uploadImgBtn;
     ImageView imgView;
     StorageReference imgRef;
-    private final ActivityResultLauncher<Intent> activityResultLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == RESULT_OK) {
-                if (result.getData() != null) {
-                    uploadImgBtn.setEnabled(true);
-                    image = result.getData().getData();
-                    Glide.with(getApplicationContext()).load(image).into(imgView);
-                }
-            }
-        }});
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,12 +81,22 @@ public class EventApplicationForm extends AppCompatActivity {
                 return true;
             }
         }); **/
-
+        // Handling category drop down menu
+        Spinner categorySpinner = findViewById(R.id.categorySpinner);
+        categorySpinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,Event.categoryOptions()));
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                category = Event.categoryOptions()[position];
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
         /** image upload handling **/
         selectImgBtn = findViewById(R.id.selectImgBtn);
         uploadImgBtn = findViewById(R.id.uploadImgBtn);
         imgView = findViewById(R.id.imageView3);
-        StorageReference imgRef = null;
+        //StorageReference imgRef = null;
 
         selectImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,60 +110,61 @@ public class EventApplicationForm extends AppCompatActivity {
         uploadImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadImage(image);
+                uploadEvent(image);
             }
         });
 
 
 
 
-        /** form submission handling **/
-        // submit button
-        Button evtAppSubmit = findViewById(R.id.evtAppBtn);
+
+    }
+
+    // upload image method
+    private void uploadEvent(Uri file) {
         EditText titleEntry = findViewById(R.id.editTextTitle);
         EditText dateEntry = findViewById(R.id.editTextDate);
         EditText descEntry = findViewById(R.id.editTextDesc);
         EditText locEntry = findViewById(R.id.editTextLocation);
 
-        // Handling category drop down menu
-        Spinner categorySpinner = findViewById(R.id.categorySpinner);
-        categorySpinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,Event.categoryOptions()));
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                category = Event.categoryOptions()[position];
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        evtAppSubmit.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick (View view) {
-                    // get the database
-                    db = FirebaseFirestore.getInstance();
-
-                    // get values to build the event application object
-                    String title = titleEntry.getEditableText().toString();
-                    String date = dateEntry.getEditableText().toString();
-                    String desc = descEntry.getEditableText().toString();
-                    String loc = locEntry.getEditableText().toString();
-                    Event newEventApp = new Event(title, date, loc, desc, imgRef.getPath(), 0, "");
-
-
-                    // put the object in the database
-                    db.collection("eventApplications").document(title).set(newEventApp);
-
-                    // redirect to home page
-                    Intent home = new Intent(getApplicationContext(), HomePage.class);
-                    startActivity(home);
-                }
-        });
-    }
-
-    // upload image method
-    private void uploadImage(Uri file) {
+        storageReference = FirebaseStorage.getInstance().getReference();
         imgRef = storageReference.child("images/" + UUID.randomUUID().toString());
-        imgRef.putFile(file);
+        imgRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                // get the database
+                db = FirebaseFirestore.getInstance();
+
+                // get values to build the event application object
+                String title = titleEntry.getEditableText().toString();
+                String date = dateEntry.getEditableText().toString();
+                String desc = descEntry.getEditableText().toString();
+                String loc = locEntry.getEditableText().toString();
+
+                Event newEventApp = new Event(title, date, loc, desc, task.getResult().getMetadata().getPath(), 0, category);
+
+                // put the object in the database
+                db.collection("eventApplications").document(title).set(newEventApp);
+
+                // redirect to home page
+                Intent home = new Intent(getApplicationContext(), HomePage.class);
+                startActivity(home);
+            }
+        });
     }
+    private final ActivityResultLauncher<Intent> activityResultLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == RESULT_OK) {
+                                if (result.getData() != null) {
+                                    uploadImgBtn.setEnabled(true);
+                                    image = result.getData().getData();
+                                    Glide.with(getApplicationContext()).load(image).into(imgView);
+                                }
+                            }
+                        }});
+
 }

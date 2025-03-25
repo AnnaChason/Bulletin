@@ -48,6 +48,7 @@ public class AdminInfoForm extends AppCompatActivity {
                     Intent toHome = new Intent(getApplicationContext(), AdminHomePage.class);
                     startActivity(toHome);
                 }
+
             }
         });
     }
