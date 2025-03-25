@@ -1,6 +1,8 @@
 package com.csci335.bulletin;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +46,12 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.locationVT.setText(events.get(position).getLocation());
         holder.descriptionVT.setText(events.get(position).getDescription());
         holder.numAttendingVT.setText(""+ events.get(position).getAttendance() + " people attending");
-        Glide.with(context).load(events.get(position).getPosterImg()).into(holder.poster);
-        holder.categoryVT.setText("#"+events.get(position).getCategory());
+        holder.categoryVT.setText("#" + events.get(position).getCategory());
+
+        //load the image
+        Glide.with(context)
+                .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
+                .into(holder.poster);
 
 
         /*
@@ -89,7 +95,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             locationVT = itemView.findViewById(R.id.locationVT);
             descriptionVT = itemView.findViewById(R.id.descriptionVT);
             numAttendingVT = itemView.findViewById(R.id.numAttendingVT);
-            //poster = itemView.findViewById(R.id.eventPosterView);
+            poster = itemView.findViewById(R.id.eventPosterView);
             attendingBtn = itemView.findViewById(R.id.attendingBtn);
             categoryVT = itemView.findViewById(R.id.categoryTV);
 
