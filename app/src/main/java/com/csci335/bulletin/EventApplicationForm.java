@@ -138,7 +138,7 @@ public class EventApplicationForm extends AppCompatActivity {
 
         imgRef = storageReference.child("images/" + UUID.randomUUID().toString());
         if(file != null) {
-            imgRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            /*imgRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     Event newEventApp = new Event(title, date, loc, desc, task.getResult().getMetadata().getPath(), 0, category);
@@ -150,6 +150,19 @@ public class EventApplicationForm extends AppCompatActivity {
                     Intent home = new Intent(getApplicationContext(), HomePage.class);
                     startActivity(home);
                 }
+            });*/
+            imgRef.putFile(file).addOnSuccessListener(taskSnapshot -> {
+                imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String downloadUrl = uri.toString();  // This is the URL you can use in Glide
+                    Event newEventApp = new Event(title, date, loc, desc, downloadUrl, 0, category);
+                    db.collection("eventApplications").document(title).set(newEventApp);
+
+                    // Redirect to home page
+                    Intent home = new Intent(getApplicationContext(), HomePage.class);
+                    startActivity(home);
+                });
+            }).addOnFailureListener(e -> {
+                Log.e("GlideDebug", "Failed to upload image: ", e);
             });
         }
         else{
