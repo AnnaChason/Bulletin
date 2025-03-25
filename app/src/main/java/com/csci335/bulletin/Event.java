@@ -11,10 +11,10 @@ public class Event implements Comparable<Event>{
     private String location;
     private String description;
     private int attending;
-    private int posterImg;
+    private String posterImg;
     private String category;
 
-    public Event(String name, String date, String location, String description, int posterImg, int attending, String category) {
+    public Event(String name, String date, String location, String description, String posterImg, int attending, String category) {
         this.location = location;
         this.name = name;
         this.date = date;
@@ -45,8 +45,8 @@ public class Event implements Comparable<Event>{
     public void setAttending(int attending){this.attending = attending;}
     //adds num to number of attending (just use negative number to take away attendees)
     public void updateAttending(int num){attending += num;}
-    public int getPosterImg() {return posterImg;}
-    public void setPosterImg(int posterImg){this.posterImg = posterImg;}
+    public String getPosterImg() {return posterImg;}
+    public void setPosterImg(String posterImg){this.posterImg = posterImg;}
     public String getCategory() {return category;}
     public void setCategory(String category){this.category = category;}
 

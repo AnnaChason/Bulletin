@@ -96,7 +96,7 @@ public class EventApplicationForm extends AppCompatActivity {
         selectImgBtn = findViewById(R.id.selectImgBtn);
         uploadImgBtn = findViewById(R.id.uploadImgBtn);
         imgView = findViewById(R.id.imageView3);
-        StorageReference imgRef;
+        StorageReference imgRef = null;
 
         selectImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +148,7 @@ public class EventApplicationForm extends AppCompatActivity {
                     String date = dateEntry.getEditableText().toString();
                     String desc = descEntry.getEditableText().toString();
                     String loc = locEntry.getEditableText().toString();
-                    Event newEventApp = new Event(title, date, loc, desc, 0, 0, "");
+                    Event newEventApp = new Event(title, date, loc, desc, imgRef.getPath(), 0, "");
 
 
                     // put the object in the database
@@ -164,5 +164,6 @@ public class EventApplicationForm extends AppCompatActivity {
     // upload image method
     private void uploadImage(Uri file) {
         imgRef = storageReference.child("images/" + UUID.randomUUID().toString());
+        imgRef.putFile(file);
     }
 }
