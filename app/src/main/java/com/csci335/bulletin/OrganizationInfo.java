@@ -37,7 +37,7 @@ public class OrganizationInfo extends AppCompatActivity {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 Organization newOrg = new Organization(orgNameTV.getText().toString(),orgDescTV.getText().toString(),auth.getCurrentUser().getUid());
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("organizationInfo").document(newOrg.getName()).set(newOrg); // put object in database
+                db.collection("organizationInfo").document(newOrg.getID()).set(newOrg); // put object in database
 
                 Intent toLogin = new Intent(getApplicationContext(),LoginScreen.class);
                 startActivity(toLogin);
