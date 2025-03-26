@@ -29,6 +29,7 @@ import com.csci335.bulletin.Mockups.FlyerApproval;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -154,7 +155,10 @@ public class EventApplicationForm extends AppCompatActivity {
             imgRef.putFile(file).addOnSuccessListener(taskSnapshot -> {
                 imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     String downloadUrl = uri.toString();  // This is the URL you can use in Glide
-                    Event newEventApp = new Event(title, date, loc, desc, downloadUrl, 0, category);
+                    // get the organization info
+                    String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String orgName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                    Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id, orgName);
                     db.collection("eventApplications").document(title).set(newEventApp);
 
                     // Redirect to home page
@@ -167,7 +171,10 @@ public class EventApplicationForm extends AppCompatActivity {
         }
         else{
             // put the object in the database
-            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category);
+            // get the organization info
+            String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String orgName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id, orgName);
             db.collection("eventApplications").document(title).set(newEventApp);
 
             // redirect to home page

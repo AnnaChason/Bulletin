@@ -14,8 +14,10 @@ public class Event implements Comparable<Event>{
     // posterImg is the complete database reference necessary to retrieve the image
     private String posterImg;
     private String category;
+    private String organizationID;
+    private String organizationName;
 
-    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category) {
+    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, String organizationName) {
         this.location = location;
         this.title = title;
         this.date = date;
@@ -23,6 +25,8 @@ public class Event implements Comparable<Event>{
         this.posterImg = posterImg;
         this.attendance = attendance;
         this.category = category;
+        this.organizationID = organizationID;
+        this.organizationName = organizationName;
     }
     public Event(){
 
@@ -50,11 +54,14 @@ public class Event implements Comparable<Event>{
     public void setPosterImg(String posterImg){this.posterImg = posterImg;}
     public String getCategory() {return category;}
     public void setCategory(String category){this.category = category;}
-
+    public String getOrganizationID() {return organizationID;}
+    public void setOrganizationID(String organizationID) {this.organizationID = organizationID;}
+    public String getOrganizationName() {return organizationName;}
+    public void setOrganizationName(String organizationName) {this.organizationName = organizationName;}
 
     /*
-    Returns event date as a number that can be compared to other dates. form YYMMDD
-     */
+            Returns event date as a number that can be compared to other dates. form YYMMDD
+             */
     public int dateToNum(){
         int dateNums = 0;
         try{
