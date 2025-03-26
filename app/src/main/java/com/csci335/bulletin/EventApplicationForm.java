@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -157,7 +158,7 @@ public class EventApplicationForm extends AppCompatActivity {
                     String downloadUrl = uri.toString();  // This is the URL you can use in Glide
                     // get the organization info
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    String orgName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                    String orgName = orgIDtoName(id); /// THIS LINE DOES NOT WORK !!!!!!!!!!!!!!
                     Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id, orgName);
                     db.collection("eventApplications").document(title).set(newEventApp);
 
@@ -173,7 +174,8 @@ public class EventApplicationForm extends AppCompatActivity {
             // put the object in the database
             // get the organization info
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            String orgName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+
+            String orgName = orgIDtoName(id); /// THIS LINE DOES NOT WORK !!!!!!!!!!!!!!
             Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id, orgName);
             db.collection("eventApplications").document(title).set(newEventApp);
 
@@ -195,5 +197,9 @@ public class EventApplicationForm extends AppCompatActivity {
                                 }
                             }
                         }});
-
+    /** using a user id, searches the organization info to find the matching organization name **/
+    private String orgIDtoName(String id) {
+        Query query = db.collection("organizationInfo").whereEqualTo("organizationID", id);
+        return "";
+    }
 }
