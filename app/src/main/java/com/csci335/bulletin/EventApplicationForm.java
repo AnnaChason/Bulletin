@@ -27,11 +27,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Mockups.FlyerApproval;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -158,7 +161,7 @@ public class EventApplicationForm extends AppCompatActivity {
                     String downloadUrl = uri.toString();  // This is the URL you can use in Glide
                     // get the organization info
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    String orgName = orgIDtoName(id); /// THIS LINE DOES NOT WORK !!!!!!!!!!!!!!
+                    String orgName = orgIDtoName(id);
                     Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id, orgName);
                     db.collection("eventApplications").document(title).set(newEventApp);
 
@@ -175,7 +178,7 @@ public class EventApplicationForm extends AppCompatActivity {
             // get the organization info
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            String orgName = orgIDtoName(id); /// THIS LINE DOES NOT WORK !!!!!!!!!!!!!!
+            String orgName = orgIDtoName(id);
             Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id, orgName);
             db.collection("eventApplications").document(title).set(newEventApp);
 
@@ -199,7 +202,15 @@ public class EventApplicationForm extends AppCompatActivity {
                         }});
     /** using a user id, searches the organization info to find the matching organization name **/
     private String orgIDtoName(String id) {
-        Query query = db.collection("organizationInfo").whereEqualTo("organizationID", id);
-        return "";
+        final String[] name = {""};
+        DocumentReference docRef = db.collection("organizationInfo").document(id);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Organization org = documentSnapshot.toObject(Organization.class);
+                name[0] = org.getName();
+            }
+        });
+        return name[0];
     }
 }
