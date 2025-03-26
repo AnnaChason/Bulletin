@@ -12,6 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.csci335.bulletin.LoginScreen;
 import com.csci335.bulletin.Organization;
 import com.csci335.bulletin.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,18 +35,31 @@ public class AdminInfoForm extends AppCompatActivity {
 
 
         Button registerbtn = findViewById(R.id.adminRegBtn);
-        EditText titleEntry = findViewById(R.id.editTextCode);
+        EditText codeEntry = findViewById(R.id.editTextCode);
 
         registerbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(titleEntry.getText().toString().equals(AdminUser.getAdminCode())){
+                if(codeEntry.getText().toString().equals(AdminUser.getAdminCode())){
                     FirebaseAuth auth = FirebaseAuth.getInstance();
                     AdminUser newAdmin = new AdminUser("fakeemail@gmail.com",auth.getCurrentUser().getUid());
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("organizationInfo").document(newAdmin.getEmail()).set(newAdmin); // put object in database
 
                     Intent toHome = new Intent(getApplicationContext(), AdminHomePage.class);
+                    startActivity(toHome);
+                }
+                else{
+                    /*
+                    To Do: delete account if unsucessful
+                     */
+                    //quick fix, logout
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                    startActivity(intent);
+                    finish();
+                    //back to login page
+                    Intent toHome = new Intent(getApplicationContext(), LoginScreen.class);
                     startActivity(toHome);
                 }
 

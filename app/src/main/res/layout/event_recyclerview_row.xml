@@ -37,49 +37,51 @@
 
             <TextView
                 android:id="@+id/locationVT"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="196dp"
+                android:layout_width="92dp"
+                android:layout_height="22dp"
+                android:layout_marginEnd="12dp"
                 android:text="Location"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/descriptionVT"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.702"
-                app:layout_constraintStart_toEndOf="@+id/dateVT"
-                app:layout_constraintTop_toBottomOf="@+id/eventNameVT"
-                app:layout_constraintVertical_bias="0.255" />
+                app:layout_constraintTop_toBottomOf="@+id/orgNameBtn"
+                app:layout_constraintVertical_bias="0.509" />
 
             <TextView
                 android:id="@+id/dateVT"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="12dp"
+                android:layout_width="60dp"
+                android:layout_height="19dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="42dp"
                 android:text="Date"
+                app:layout_constraintBottom_toBottomOf="@+id/locationVT"
+                app:layout_constraintEnd_toStartOf="@+id/locationVT"
+                app:layout_constraintHorizontal_bias="0.23"
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
-                app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
+                app:layout_constraintTop_toTopOf="@+id/locationVT"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/eventNameVT"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="179dp"
+                android:layout_height="22dp"
                 android:layout_marginTop="16dp"
                 android:text="EventName"
-                android:textSize="16sp"
+                android:textAlignment="center"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.484"
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/descriptionVT"
-                android:layout_width="165dp"
-                android:layout_height="96dp"
-                android:layout_marginTop="44dp"
+                android:layout_width="166dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="96dp"
                 android:text="Description"
                 android:textAlignment="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.363"
+                app:layout_constraintHorizontal_bias="0.488"
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
 
@@ -117,6 +119,17 @@
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toBottomOf="@+id/descriptionVT"
                 app:layout_constraintVertical_bias="0.221" />
+
+            <Button
+                android:id="@+id/orgNameBtn"
+                android:layout_width="176dp"
+                android:layout_height="40dp"
+                android:backgroundTint="#5D6385"
+                android:text="organizationName"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/eventPosterView"
+                app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

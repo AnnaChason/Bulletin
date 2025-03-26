@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,7 +48,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.descriptionVT.setText(events.get(position).getDescription());
         holder.numAttendingVT.setText(""+ events.get(position).getAttendance() + " people attending");
         holder.categoryVT.setText("#" + events.get(position).getCategory());
-
+        holder.orgNameBtn.setText(events.get(position).getOrganizationName());
         //load the image
         Glide.with(context)
                 .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
@@ -74,6 +75,20 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
             }
         });
+
+        /*
+        to organization profile
+         */
+        holder.orgNameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toOrgProfile = new Intent(context,OrganizationProfilePage.class);
+                toOrgProfile.putExtra("OrgName",events.get(holder.getAdapterPosition()).getOrganizationName());
+                toOrgProfile.putExtra("OrgId",events.get(holder.getAdapterPosition()).getOrganizationID());
+                context.startActivity(toOrgProfile);
+            }
+        });
+
     }
 
     @Override
@@ -87,6 +102,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         TextView eventNameVT, dateVT, locationVT,descriptionVT, numAttendingVT, categoryVT;
         ImageView poster;
         CheckBox attendingBtn;
+        Button orgNameBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,6 +114,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             poster = itemView.findViewById(R.id.eventPosterView);
             attendingBtn = itemView.findViewById(R.id.attendingBtn);
             categoryVT = itemView.findViewById(R.id.categoryTV);
+            orgNameBtn = itemView.findViewById(R.id.orgNameBtn);
 
         }
     }

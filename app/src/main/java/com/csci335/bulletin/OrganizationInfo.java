@@ -28,12 +28,6 @@ public class OrganizationInfo extends AppCompatActivity {
             return insets;
         });
 
-        TextView orgNameTV = findViewById(R.id.orgName);
-        TextView orgDescTV = findViewById(R.id.orgDesc);
-        Organization newOrg = new Organization(orgNameTV.getText().toString(),orgDescTV.getText().toString(),"idk"/*figure out how to get user ID*/);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("eventApplications").document(newOrg.getName()).set(newOrg); // put object in database
-
         Button orgRegisterBtn = findViewById(R.id.orgRegisterButton);
         orgRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
