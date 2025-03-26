@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Event;
 import com.csci335.bulletin.EventRecyclerViewAdapter;
 import com.csci335.bulletin.R;
@@ -39,8 +40,13 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
         holder.dateVT.setText(pendingEvents.get(position).getDate());
         holder.locationVT.setText(pendingEvents.get(position).getLocation());
         holder.descriptionVT.setText(pendingEvents.get(position).getDescription());
-        //holder.poster.setImageResource(pendingEvents.get(position).getPosterImg());
         holder.status.setText(pendingEvents.get(position).getCategory());
+
+        //load the image
+        Glide.with(context)
+                .load(pendingEvents.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
+                .into(holder.poster);
+
     }
 
     @Override
@@ -59,7 +65,7 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
             dateVT = itemView.findViewById(R.id.dateVT);
             locationVT = itemView.findViewById(R.id.locationVT);
             descriptionVT = itemView.findViewById(R.id.descriptionVT);
-            //poster = itemView.findViewById(R.id.eventPosterView);
+            poster = itemView.findViewById(R.id.eventPosterView);
             status = itemView.findViewById(R.id.pendingBtn);
         }
     }

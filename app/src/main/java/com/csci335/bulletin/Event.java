@@ -1,6 +1,21 @@
 package com.csci335.bulletin;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 /*
 class to hold data for each event post
@@ -16,6 +31,8 @@ public class Event implements Comparable<Event>{
     private String category;
     private String organizationID;
     private String organizationName;
+    private static StorageReference storage = FirebaseStorage.getInstance().getReference();
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, String organizationName) {
         this.location = location;
@@ -87,6 +104,74 @@ public class Event implements Comparable<Event>{
     @Override
     public int compareTo(Event e) {
         return Integer.compare(this.dateToNum(), e.dateToNum());
+    }
+
+    /*
+   gets events from the database
+    */
+    public static ArrayList<Event> setUpEvents(RecyclerView eventRV){
+        ArrayList<Event> events = new ArrayList<>();
+        db.collection("eventApplications")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Event eventapp = document.toObject(Event.class);
+                                events.add(eventapp);
+                            }
+                            filterEvents(events);
+                            Collections.sort(events);
+                            eventRV.getAdapter().notifyDataSetChanged();
+                        } else {
+                            System.out.println("ERROR RETREIVING EVENT FEED"); //fix later
+                        }
+                    }
+                });
+        return events;
+    }
+
+    /*
+   removes past events
+    */
+    private static void filterEvents(ArrayList<Event> events){
+        // Get today's date in YYMMDD format
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
+        String formattedDate = currentDate.format(formatter);
+        int[] currentDateArr = dateToNum(formattedDate);  // Convert today's date to YYMMDD
+        int todayDateNum = (currentDateArr[2] * 10000) + (currentDateArr[0] * 100) + currentDateArr[1];  // Construct YYMMDD
+        // Filter out events that have already happened
+        Iterator<Event> iterator = events.iterator();
+        while (iterator.hasNext()) {
+            Event event = iterator.next();
+            if (event.dateToNum() < todayDateNum) {
+                iterator.remove();  // Remove event if it's before today's date
+                // also delete event from the database
+                db.collection("eventApplications").document(event.getTitle()).delete();
+                // and delete the image that goes with it
+                storage.child(event.getPosterImg()).delete();
+            }
+        }
+    }
+
+    /*
+    returns int array where index 0 has the month, 1 has the day, and 0 has the last 2 digits of the year
+    should get rid of for cleaner code, but that's a later problem
+     */
+    private static int[] dateToNum(String date){
+        int[] dateNums = new int[3];
+        try{
+            int idx = date.indexOf("/");
+            dateNums[0] = Integer.parseInt(date.substring(0, idx));
+            dateNums[1] = Integer.parseInt(date.substring(idx+1, date.indexOf("/",idx+1)));
+            idx = date.indexOf("/",idx+1);
+            dateNums[2] = Integer.parseInt(date.substring(idx+1));
+        } catch (Exception e) {
+            dateNums = new int[]{-900,0,0};
+        }
+        return dateNums;
     }
 
 }
