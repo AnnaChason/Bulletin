@@ -7,4 +7,6 @@ public class Student {
     private int age;
     private Year year;
     private Gender gender;
+
+
 }

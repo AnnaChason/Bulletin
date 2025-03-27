@@ -23,7 +23,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class Register extends AppCompatActivity {
     TextInputEditText editTextEmail, editTextPassword;
@@ -32,7 +31,7 @@ public class Register extends AppCompatActivity {
     ProgressBar progressBar;
     TextView textView;
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -42,7 +41,7 @@ public class Register extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-    }
+    }*/
 
     @SuppressLint("MissingInflatedId")
     @Override

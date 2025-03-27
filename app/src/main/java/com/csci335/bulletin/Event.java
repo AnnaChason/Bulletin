@@ -1,27 +1,49 @@
 package com.csci335.bulletin;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 /*
 class to hold data for each event post
  */
 public class Event implements Comparable<Event>{
-    private String name;
+    private String title;
     private String date;
     private String location;
     private String description;
-    private int attending;
-    private int posterImg;
+    private int attendance;
+    // posterImg is the complete database reference necessary to retrieve the image
+    private String posterImg;
     private String category;
+    private String organizationID;
+    private String organizationName;
+    private static StorageReference storage = FirebaseStorage.getInstance().getReference();
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public Event(String name, String date, String location, String description, int posterImg, int attending, String category) {
+    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, String organizationName) {
         this.location = location;
-        this.name = name;
+        this.title = title;
         this.date = date;
         this.description = description;
         this.posterImg = posterImg;
-        this.attending = attending;
+        this.attendance = attendance;
         this.category = category;
+        this.organizationID = organizationID;
+        this.organizationName = organizationName;
     }
     public Event(){
 
@@ -33,27 +55,30 @@ public class Event implements Comparable<Event>{
     /*
     Getters and Setters
      */
-    public String getName() {return name;}
-    public void setName(String name){this.name=name;}
+    public String getTitle() {return title;}
+    public void setTitle(String title){this.title=title;}
     public String getDate() {return date;}
     public void setDate(String date){this.date =date;}
     public String getLocation() {return location;}
     public void setLocation(String location){this.location = location;}
     public String getDescription() {return description;}
     public void setDescription(String description){this.description = description;}
-    public int getAttending() {return attending;}
-    public void setAttending(int attending){this.attending = attending;}
-    //adds num to number of attending (just use negative number to take away attendees)
-    public void updateAttending(int num){attending += num;}
-    public int getPosterImg() {return posterImg;}
-    public void setPosterImg(int posterImg){this.posterImg = posterImg;}
+    public int getAttendance() {return attendance;}
+    public void setAttendance(int attendance){this.attendance = attendance;}
+    //adds num to number of attendance (just use negative number to take away attendees)
+    public void updateAttendance(int num){attendance += num;}
+    public String getPosterImg() {return posterImg;}
+    public void setPosterImg(String posterImg){this.posterImg = posterImg;}
     public String getCategory() {return category;}
     public void setCategory(String category){this.category = category;}
-
+    public String getOrganizationID() {return organizationID;}
+    public void setOrganizationID(String organizationID) {this.organizationID = organizationID;}
+    public String getOrganizationName() {return organizationName;}
+    public void setOrganizationName(String organizationName) {this.organizationName = organizationName;}
 
     /*
-    Returns event date as a number that can be compared to other dates. form YYMMDD
-     */
+            Returns event date as a number that can be compared to other dates. form YYMMDD
+             */
     public int dateToNum(){
         int dateNums = 0;
         try{
@@ -79,6 +104,74 @@ public class Event implements Comparable<Event>{
     @Override
     public int compareTo(Event e) {
         return Integer.compare(this.dateToNum(), e.dateToNum());
+    }
+
+    /*
+   gets events from the database
+    */
+    public static ArrayList<Event> setUpEvents(RecyclerView eventRV){
+        ArrayList<Event> events = new ArrayList<>();
+        db.collection("eventApplications")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Event eventapp = document.toObject(Event.class);
+                                events.add(eventapp);
+                            }
+                            filterEvents(events);
+                            Collections.sort(events);
+                            eventRV.getAdapter().notifyDataSetChanged();
+                        } else {
+                            System.out.println("ERROR RETREIVING EVENT FEED"); //fix later
+                        }
+                    }
+                });
+        return events;
+    }
+
+    /*
+   removes past events
+    */
+    private static void filterEvents(ArrayList<Event> events){
+        // Get today's date in YYMMDD format
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
+        String formattedDate = currentDate.format(formatter);
+        int[] currentDateArr = dateToNum(formattedDate);  // Convert today's date to YYMMDD
+        int todayDateNum = (currentDateArr[2] * 10000) + (currentDateArr[0] * 100) + currentDateArr[1];  // Construct YYMMDD
+        // Filter out events that have already happened
+        Iterator<Event> iterator = events.iterator();
+        while (iterator.hasNext()) {
+            Event event = iterator.next();
+            if (event.dateToNum() < todayDateNum) {
+                iterator.remove();  // Remove event if it's before today's date
+                // also delete event from the database
+                db.collection("eventApplications").document(event.getTitle()).delete();
+                // and delete the image that goes with it
+                storage.child(event.getPosterImg()).delete();
+            }
+        }
+    }
+
+    /*
+    returns int array where index 0 has the month, 1 has the day, and 0 has the last 2 digits of the year
+    should get rid of for cleaner code, but that's a later problem
+     */
+    private static int[] dateToNum(String date){
+        int[] dateNums = new int[3];
+        try{
+            int idx = date.indexOf("/");
+            dateNums[0] = Integer.parseInt(date.substring(0, idx));
+            dateNums[1] = Integer.parseInt(date.substring(idx+1, date.indexOf("/",idx+1)));
+            idx = date.indexOf("/",idx+1);
+            dateNums[2] = Integer.parseInt(date.substring(idx+1));
+        } catch (Exception e) {
+            dateNums = new int[]{-900,0,0};
+        }
+        return dateNums;
     }
 
 }

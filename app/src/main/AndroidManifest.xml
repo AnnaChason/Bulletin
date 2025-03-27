@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Bulletin"
         tools:targetApi="34">
         <activity
+            android:name=".OrganizationProfilePage"
+            android:exported="false" />
+        <activity
             android:name=".StudentInfoForm"
             android:exported="false" />
         <activity
@@ -57,6 +60,9 @@
         <activity
             android:name=".MainScreen"
             android:exported="true" />
+        <activity android:name=".AdminClasses.AdminInfoForm" />
+        <activity android:name=".AdminClasses.AdminHomePage" />
+        <activity android:name=".OrganizationInfo" />
     </application>
 
 </manifest>

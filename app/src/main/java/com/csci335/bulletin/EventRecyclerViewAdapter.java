@@ -1,9 +1,12 @@
 package com.csci335.bulletin;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
     private ArrayList<Event> events;
     private Context context;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     public EventRecyclerViewAdapter(Context context, ArrayList<Event> events){
@@ -38,13 +43,17 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     @Override
     //assigns value to each row as it comes on screen
     public void onBindViewHolder(@NonNull EventRecyclerViewAdapter.MyViewHolder holder, int position) {
-        holder.eventNameVT.setText(events.get(position).getName());
+        holder.eventNameVT.setText(events.get(position).getTitle());
         holder.dateVT.setText(events.get(position).getDate());
         holder.locationVT.setText(events.get(position).getLocation());
         holder.descriptionVT.setText(events.get(position).getDescription());
-        holder.numAttendingVT.setText(""+ events.get(position).getAttending() + " people attending");
-        holder.poster.setImageResource(events.get(position).getPosterImg());
-        holder.categoryVT.setText("#"+events.get(position).getCategory());
+        holder.numAttendingVT.setText(""+ events.get(position).getAttendance() + " people attending");
+        holder.categoryVT.setText("#" + events.get(position).getCategory());
+        holder.orgNameBtn.setText(events.get(position).getOrganizationName());
+        //load the image
+        Glide.with(context)
+                .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
+                .into(holder.poster);
 
 
         /*
@@ -58,15 +67,28 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 also need to figure out how to store which users are attending, and for the user which events they are attending.
                 */
                 if(holder.attendingBtn.isChecked())
-                    events.get(holder.getAdapterPosition()).updateAttending(1);
+                    events.get(holder.getAdapterPosition()).updateAttendance(1);
                 else
-                    events.get(holder.getAdapterPosition()).updateAttending(-1);
+                    events.get(holder.getAdapterPosition()).updateAttendance(-1);
 
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getName()).update("attendance",events.get(holder.getAdapterPosition()).getAttending());
+                db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getTitle()).update("attendance",events.get(holder.getAdapterPosition()).getAttendance());
                 notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
             }
         });
+
+        /*
+        to organization profile
+         */
+        holder.orgNameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toOrgProfile = new Intent(context,OrganizationProfilePage.class);
+                toOrgProfile.putExtra("OrgName",events.get(holder.getAdapterPosition()).getOrganizationName());
+                toOrgProfile.putExtra("OrgId",events.get(holder.getAdapterPosition()).getOrganizationID());
+                context.startActivity(toOrgProfile);
+            }
+        });
+
     }
 
     @Override
@@ -80,6 +102,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         TextView eventNameVT, dateVT, locationVT,descriptionVT, numAttendingVT, categoryVT;
         ImageView poster;
         CheckBox attendingBtn;
+        Button orgNameBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,6 +114,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             poster = itemView.findViewById(R.id.eventPosterView);
             attendingBtn = itemView.findViewById(R.id.attendingBtn);
             categoryVT = itemView.findViewById(R.id.categoryTV);
+            orgNameBtn = itemView.findViewById(R.id.orgNameBtn);
 
         }
     }
