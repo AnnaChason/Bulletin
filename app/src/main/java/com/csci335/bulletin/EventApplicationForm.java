@@ -142,27 +142,14 @@ public class EventApplicationForm extends AppCompatActivity {
         String loc = locEntry.getEditableText().toString();
 
         imgRef = storageReference.child("images/" + UUID.randomUUID().toString());
-        if(file != null) {
-            /*imgRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    Event newEventApp = new Event(title, date, loc, desc, task.getResult().getMetadata().getPath(), 0, category);
-
-                    // put the object in the database
-                    db.collection("eventApplications").document(title).set(newEventApp);
-
-                    // redirect to home page
-                    Intent home = new Intent(getApplicationContext(), HomePage.class);
-                    startActivity(home);
-                }
-            });*/
+        if(file!= null){
             imgRef.putFile(file).addOnSuccessListener(taskSnapshot -> {
                 imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     String downloadUrl = uri.toString();  // This is the URL you can use in Glide
                     // get the organization info
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     String orgName = orgIDtoName(id);
-                    Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id, orgName);
+                    Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id);
                     db.collection("eventApplications").document(title).set(newEventApp);
 
                     // Redirect to home page
@@ -174,12 +161,10 @@ public class EventApplicationForm extends AppCompatActivity {
             });
         }
         else{
-            // put the object in the database
             // get the organization info
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-            String orgName = orgIDtoName(id);
-            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id, orgName);
+             //put the object in the database
+            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id);
             db.collection("eventApplications").document(title).set(newEventApp);
 
             // redirect to home page

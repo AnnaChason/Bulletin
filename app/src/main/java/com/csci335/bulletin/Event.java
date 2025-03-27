@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -34,7 +37,7 @@ public class Event implements Comparable<Event>{
     private static StorageReference storage = FirebaseStorage.getInstance().getReference();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, String organizationName) {
+    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID) {
         this.location = location;
         this.title = title;
         this.date = date;
@@ -43,19 +46,35 @@ public class Event implements Comparable<Event>{
         this.attendance = attendance;
         this.category = category;
         this.organizationID = organizationID;
-        this.organizationName = organizationName;
+        if(organizationID != null && !organizationID.equals("")) {
+            DocumentReference docRef = db.collection("organizationInfo").document(organizationID);
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot != null) {
+                        Organization org = documentSnapshot.toObject(Organization.class);
+                        if (org != null) {
+                            setOrganizationName(org.getName());
+                            db.collection("eventApplications").document(title).update("organizationName", org.getName());
+                        }
+                    }
+                }
+            });
+        }
     }
     public Event(){
 
     }
 
     public static String[] categoryOptions(){
-        return new String[]{"", "Sport", "Music", "Ministry/Service", "Speaker", "Dance", "Faith", "Movie/Games", "informational"};
+        return new String[]{"", "Sport", "Music", "Ministry/Service", "Speaker", "Dance", "Faith", "Movie/Games", "informational", "art","food"};
     }
     /*
     Getters and Setters
      */
-    public String getTitle() {return title;}
+    public String getTitle() {
+        return title;
+    }
     public void setTitle(String title){this.title=title;}
     public String getDate() {return date;}
     public void setDate(String date){this.date =date;}

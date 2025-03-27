@@ -23,8 +23,8 @@ public class Organization {
     public String getDescription(){return description;}
     public void setDescription(String description){this.description = description;}
 
-    public String getID(){return ID;}
-    public void setID(String ID){this.ID = ID;}
+    public String getId(){return ID;}
+    public void setId(String ID){this.ID = ID;}
 
 
 }
