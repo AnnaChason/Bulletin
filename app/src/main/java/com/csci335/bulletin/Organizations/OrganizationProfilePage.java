@@ -1,7 +1,6 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Organizations;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +8,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.csci335.bulletin.Events.Event;
+import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
+import com.csci335.bulletin.R;
 
 import java.util.ArrayList;
 

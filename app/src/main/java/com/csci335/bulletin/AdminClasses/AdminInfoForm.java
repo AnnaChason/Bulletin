@@ -12,8 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.csci335.bulletin.LoginScreen;
-import com.csci335.bulletin.Organization;
+import com.csci335.bulletin.Main.LoginScreen;
 import com.csci335.bulletin.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,7 +33,7 @@ public class AdminInfoForm extends AppCompatActivity {
         });
 
 
-        Button registerbtn = findViewById(R.id.adminRegBtn);
+       Button registerbtn = findViewById(R.id.AdminInfoFormbutton);
         EditText codeEntry = findViewById(R.id.editTextCode);
 
         registerbtn.setOnClickListener(new View.OnClickListener(){
@@ -42,9 +41,11 @@ public class AdminInfoForm extends AppCompatActivity {
             public void onClick(View v) {
                 if(codeEntry.getText().toString().equals(AdminUser.getAdminCode())){
                     FirebaseAuth auth = FirebaseAuth.getInstance();
-                    AdminUser newAdmin = new AdminUser("fakeemail@gmail.com",auth.getCurrentUser().getUid());
+                    String uid = auth.getCurrentUser().getUid().toString();
+                    String email = auth.getCurrentUser().getEmail().toString();
+                    AdminUser newAdmin = new AdminUser(email, uid);
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("organizationInfo").document(newAdmin.getEmail()).set(newAdmin); // put object in database
+                    db.collection("adminInfo").document(email).set(newAdmin);
 
                     Intent toHome = new Intent(getApplicationContext(), AdminHomePage.class);
                     startActivity(toHome);

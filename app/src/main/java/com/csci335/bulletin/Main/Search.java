@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Main;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.csci335.bulletin.R;
 
 public class Search extends AppCompatActivity {
 

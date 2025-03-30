@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.csci335.bulletin.AdminClasses.AdminHomePage;
+import com.csci335.bulletin.AdminClasses.AdminInfoForm;
+import com.csci335.bulletin.Events.EventApplicationForm;
+import com.csci335.bulletin.R;
+import com.csci335.bulletin.StudentClasses.HomePage;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +27,7 @@ public class Profile extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     Button buttonLogout;
+    Button InfoFormbutton;
     TextView textView;
     FirebaseUser user;
 
@@ -33,10 +39,11 @@ public class Profile extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         buttonLogout = findViewById(R.id.button_logout);
+        InfoFormbutton = findViewById(R.id.AdminInfoForm);
         textView = findViewById(R.id.user_details);
         user = mAuth.getCurrentUser();
 
-        if( user == null) {
+        if (user == null) {
             Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
             startActivity(intent);
             finish();
@@ -49,6 +56,15 @@ public class Profile extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        InfoFormbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), AdminInfoForm.class);
                 startActivity(intent);
                 finish();
             }
@@ -74,10 +90,10 @@ public class Profile extends AppCompatActivity {
                     next = new Intent(getApplicationContext(), Profile.class);
                 }
                 else if(R.id.home == itemId){
-                    next = new Intent(getApplicationContext(),HomePage.class);
+                    next = new Intent(getApplicationContext(), HomePage.class);
                 }
                 else if(R.id.new_event == itemId){
-                    next = new Intent(getApplicationContext(),EventApplicationForm.class);
+                    next = new Intent(getApplicationContext(), EventApplicationForm.class);
                 }
                 startActivity(next);
                 return true;
