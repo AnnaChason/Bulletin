@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Organizations;
 /*
 Not connected to an activity.
 Class for keeping track of each organization's data

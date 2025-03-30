@@ -1,8 +1,9 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Events;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.csci335.bulletin.Organizations.Organization;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -34,7 +35,7 @@ public class Event implements Comparable<Event>{
     private String category;
     private String organizationID;
     private String organizationName;
-    private static StorageReference storage = FirebaseStorage.getInstance().getReference();
+ //   private static StorageReference storage = FirebaseStorage.getInstance().getReference();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID) {
@@ -154,7 +155,7 @@ public class Event implements Comparable<Event>{
     /*
    removes past events
     */
-    private static void filterEvents(ArrayList<Event> events){
+    public static void filterEvents(ArrayList<Event> events){
         // Get today's date in YYMMDD format
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
@@ -170,7 +171,7 @@ public class Event implements Comparable<Event>{
                 // also delete event from the database
                 db.collection("eventApplications").document(event.getTitle()).delete();
                 // and delete the image that goes with it
-                storage.child(event.getPosterImg()).delete();
+              //  storage.child(event.getPosterImg()).delete();
             }
         }
     }

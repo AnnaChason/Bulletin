@@ -5,8 +5,6 @@ public class AdminUser {
     private String uid;
     private static String adminCode = "1234";
 
-
-
     public AdminUser(String email, String uid) {
         this.email = email;
         this.uid = uid;
