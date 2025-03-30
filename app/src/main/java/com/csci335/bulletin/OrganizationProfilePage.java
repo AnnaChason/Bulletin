@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class OrganizationProfilePage extends AppCompatActivity {
-    String orgName;
+    //String orgName;
     String orgId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +37,22 @@ public class OrganizationProfilePage extends AppCompatActivity {
         figure out how to display the right info based on which organization it is.
         need to filter events and get the right name and description
          */
-        orgName = "";
+        TextView orgNameTV = findViewById(R.id.orgNameTV);
         orgId = "";
         //retrieving info passed in
         if(getIntent().hasExtra("OrgName")) {
-            orgName = getIntent().getExtras().getString("OrgAppStatus");
+            orgNameTV.setText(getIntent().getExtras().getString("OrgAppStatus"));
+
+
         }
         if(getIntent().hasExtra("OrgId")) {
             orgId = getIntent().getExtras().getString("OrgAppStatus");
         }
-        if(orgName.equals("") && orgId.equals("")){//current user is the organization trying to view their own page
+        //if(orgName.equals("") && orgId.equals("")){//current user is the organization trying to view their own page
             /*
             get data on current user
             maybe put the data retreiving method in event class
              */
-        }
+        //}
     }
 }
