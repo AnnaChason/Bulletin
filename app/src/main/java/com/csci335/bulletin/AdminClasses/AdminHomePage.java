@@ -38,7 +38,7 @@ public class AdminHomePage extends AppCompatActivity {
             return insets;
         });
 
-              /*
+        /*
         Event display manager
          */
         ArrayList<Event> pendingEvents = new ArrayList<Event>();//all events to be displayed on feed
@@ -46,7 +46,7 @@ public class AdminHomePage extends AppCompatActivity {
         A_RecyclerViewAdapter rvAdapter = new A_RecyclerViewAdapter(this, pendingEvents);
         RecyclerView.setAdapter(rvAdapter);
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
-       // setUpEvents(pendingEvents, rvAdapter);
+        setUpEvents(pendingEvents, rvAdapter);
     }
 
     private void setUpEvents(ArrayList<Event> events, A_RecyclerViewAdapter adapter) {
