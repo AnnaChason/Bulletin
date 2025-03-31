@@ -38,7 +38,6 @@ import com.google.firebase.storage.UploadTask;
 import java.util.UUID;
 
 public class EventApplicationForm extends AppCompatActivity {
-
     FirebaseFirestore db;
     String category;
     // for image upload use
