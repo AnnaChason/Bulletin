@@ -28,8 +28,8 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
     }
     //inflates layout and gives look to each row
     public A_RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflator = LayoutInflater.from(context);
-        View view = inflator.inflate(R.layout.admin_recyler_view_row, parent,false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.admin_recyler_view_row, parent,false);
         return new A_RecyclerViewAdapter.MyViewHolder(view);
     }
 
@@ -50,10 +50,9 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
         updates collections
          */
         holder.pendingBT.setOnClickListener(new View.OnClickListener() {
-            Boolean isChecked = false;
+
             @Override
             public void onClick(View v) {
-                isChecked = true;
                 if(holder.pendingBT.isChecked()) {
                     Event event = pendingEvents.get(holder.getAdapterPosition());
                     //Deletes from ArrayList
@@ -61,8 +60,9 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
 
                     //Delete from Collection 1  in Firebase
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                   //db.collection("eventApplications").document(event.getTitle()).delete();
-                    db.collection("ApprovedEvents").document(event.getTitle()).set(event);
+                    db.collection("eventApplications").document(event.getTitle()).delete();
+                    db.collection("approvedEvents").document(event.getTitle()).set(event);
+                    notifyDataSetChanged();
                 } else {
                    return;
                 }
@@ -80,7 +80,7 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
         //grabbing views and assigning variables
         TextView eventNameVT, dateVT, locationVT,descriptionVT;
         ImageView poster;
-        CheckBox status;
+        TextView status, PendingStatus;
         CheckBox pendingBT;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +90,8 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
             descriptionVT = itemView.findViewById(R.id.descriptionVT);
             pendingBT = itemView.findViewById(R.id.pendingBT);
             poster = itemView.findViewById(R.id.myImageView);
+            status = itemView.findViewById(R.id.status);
+            PendingStatus = itemView.findViewById(R.id.PendingStatus);
         }
     }
 
