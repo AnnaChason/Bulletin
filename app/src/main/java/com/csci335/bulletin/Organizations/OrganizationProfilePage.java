@@ -1,6 +1,7 @@
 package com.csci335.bulletin.Organizations;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,12 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
 import com.csci335.bulletin.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class OrganizationProfilePage extends AppCompatActivity {
-    //String orgName;
+    String orgName;
     String orgId;
+    FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,22 +48,57 @@ public class OrganizationProfilePage extends AppCompatActivity {
         figure out how to display the right info based on which organization it is.
         need to filter events and get the right name and description
          */
-        TextView orgNameTV = findViewById(R.id.orgNameTV);
+        orgName = "";
         orgId = "";
         //retrieving info passed in
         if(getIntent().hasExtra("OrgName")) {
-            orgNameTV.setText(getIntent().getExtras().getString("OrgAppStatus"));
-
-
+            orgName = getIntent().getExtras().getString("OrgAppStatus");
         }
         if(getIntent().hasExtra("OrgId")) {
             orgId = getIntent().getExtras().getString("OrgAppStatus");
         }
-        //if(orgName.equals("") && orgId.equals("")){//current user is the organization trying to view their own page
+        if(orgName.equals("") && orgId.equals("")){//current user is the organization trying to view their own page
             /*
             get data on current user
             maybe put the data retreiving method in event class
              */
-        //}
+            orgId = FirebaseAuth.getInstance().getUid();
+            orgName = orgIDtoName(orgId);
+
+        }
+
+        // retrieve organization description
+        String orgDesc = "";
+        final String[] desc = {""};
+        DocumentReference docRef = db.collection("organizationInfo").document(orgId);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Organization org = documentSnapshot.toObject(Organization.class);
+                desc[0] = org.getDescription();
+            }
+        });
+        orgDesc = desc[0];
+
+        // build the info onto the page
+        TextView orgNameTV = findViewById(R.id.orgNameTV);
+        TextView orgDescTV = findViewById(R.id.orgDescTV);
+
+        orgNameTV.setText(orgName);
+        orgDescTV.setText(orgDesc);
+
+    }
+
+    private String orgIDtoName(String id) {
+        final String[] name = {""};
+        DocumentReference docRef = db.collection("organizationInfo").document(id);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Organization org = documentSnapshot.toObject(Organization.class);
+                name[0] = org.getName();
+            }
+        });
+        return name[0];
     }
 }
