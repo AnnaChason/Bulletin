@@ -72,7 +72,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 else
                     events.get(holder.getAdapterPosition()).updateAttendance(-1);
 
-                db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getTitle()).update("attendance",events.get(holder.getAdapterPosition()).getAttendance());
+                db.collection("approvedEvents").document(events.get(holder.getAdapterPosition()).getTitle()).update("attendance",events.get(holder.getAdapterPosition()).getAttendance());
                 notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
             }
         });

@@ -56,7 +56,7 @@ public class Event implements Comparable<Event>{
                         Organization org = documentSnapshot.toObject(Organization.class);
                         if (org != null) {
                             setOrganizationName(org.getName());
-                            db.collection("eventApplications").document(title).update("organizationName", org.getName());
+                            db.collection("approvedEvents").document(title).update("organizationName", org.getName());
                         }
                     }
                 }
@@ -131,15 +131,15 @@ public class Event implements Comparable<Event>{
     */
     public static ArrayList<Event> setUpEvents(RecyclerView eventRV){
         ArrayList<Event> events = new ArrayList<>();
-        db.collection("eventApplications")
+        db.collection("approvedEvents")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Event eventapp = document.toObject(Event.class);
-                                events.add(eventapp);
+                                Event event = document.toObject(Event.class);
+                                events.add(event);
                             }
                             filterEvents(events);
                             Collections.sort(events);
@@ -156,6 +156,7 @@ public class Event implements Comparable<Event>{
    removes past events
     */
     public static void filterEvents(ArrayList<Event> events){
+        StorageReference storage = FirebaseStorage.getInstance().getReference();
         // Get today's date in YYMMDD format
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
@@ -168,10 +169,11 @@ public class Event implements Comparable<Event>{
             Event event = iterator.next();
             if (event.dateToNum() < todayDateNum) {
                 iterator.remove();  // Remove event if it's before today's date
-                // also delete event from the database
-                db.collection("eventApplications").document(event.getTitle()).delete();
-                // and delete the image that goes with it
-              //  storage.child(event.getPosterImg()).delete();
+                // also delete event from the database and its poster
+                if(event.getTitle() != null){
+                    db.collection("approvedEvents").document(event.getTitle()).delete();
+                    storage.child(event.getPosterImg()).delete();
+                }
             }
         }
     }

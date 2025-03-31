@@ -35,8 +35,6 @@ import java.util.Iterator;
 
 
 public class HomePage extends AppCompatActivity {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    StorageReference storage = FirebaseStorage.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,38 +76,14 @@ public class HomePage extends AppCompatActivity {
          */
         ArrayList<Event> events = new ArrayList<Event>();//all events to be displayed on feed
         RecyclerView eventFeedRV = findViewById(R.id.eventFeedRV);
-        seUpEvents(events, eventFeedRV);//retreives events from database
+        events = Event.setUpEvents(eventFeedRV);//retreives events from database
         EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events);
         eventFeedRV.setAdapter(rvAdapter);
         eventFeedRV.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
-    private void seUpEvents(ArrayList<Event> events, RecyclerView eventFeedRV){
-        /*
-        UPDATE this to actually get event info from database
-         */
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("eventApplications")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Event eventapp = document.toObject(Event.class);
-                                events.add(eventapp);
-                            }
-                            filterEvents(events);
-                            Collections.sort(events);
-                            eventFeedRV.getAdapter().notifyDataSetChanged();
-                        } else {
-                            System.out.println("ERROR RETREIVING EVENT FEED"); //fix later
-                        }
-                    }
-                });
-    }
     /*
     removes past events
      */
