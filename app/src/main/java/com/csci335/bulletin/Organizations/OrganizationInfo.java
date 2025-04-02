@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Organizations;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.csci335.bulletin.Main.LoginScreen;
+import com.csci335.bulletin.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -37,9 +39,9 @@ public class OrganizationInfo extends AppCompatActivity {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 Organization newOrg = new Organization(orgNameTV.getText().toString(),orgDescTV.getText().toString(),auth.getCurrentUser().getUid());
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("organizationInfo").document(newOrg.getID()).set(newOrg); // put object in database
+                db.collection("organizationInfo").document(newOrg.getId()).set(newOrg); // put object in database
 
-                Intent toLogin = new Intent(getApplicationContext(),LoginScreen.class);
+                Intent toLogin = new Intent(getApplicationContext(), LoginScreen.class);
                 startActivity(toLogin);
             }
         });

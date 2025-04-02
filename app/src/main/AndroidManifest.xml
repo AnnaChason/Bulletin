@@ -13,25 +13,28 @@
         android:theme="@style/Theme.Bulletin"
         tools:targetApi="34">
         <activity
-            android:name=".OrganizationProfilePage"
+            android:name=".Main.UserLoadingScreen"
             android:exported="false" />
         <activity
-            android:name=".StudentInfoForm"
+            android:name=".Organizations.OrganizationProfilePage"
             android:exported="false" />
         <activity
-            android:name=".Search"
+            android:name=".StudentClasses.StudentInfoForm"
             android:exported="false" />
         <activity
-            android:name=".Register"
+            android:name=".Main.Search"
             android:exported="false" />
         <activity
-            android:name=".EventApplicationForm"
+            android:name=".Main.Register"
             android:exported="false" />
         <activity
-            android:name=".Profile"
+            android:name=".Events.EventApplicationForm"
             android:exported="false" />
         <activity
-            android:name=".LoginScreen"
+            android:name=".Main.Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Main.LoginScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomePage"
+            android:name=".StudentClasses.HomePage"
             android:exported="true" />
         <activity
             android:name=".Mockups.OrganizationProcessed"
@@ -58,11 +61,11 @@
             android:name=".Mockups.FlyerApproval"
             android:exported="false" />
         <activity
-            android:name=".MainScreen"
+            android:name=".Main.MainScreen"
             android:exported="true" />
         <activity android:name=".AdminClasses.AdminInfoForm" />
         <activity android:name=".AdminClasses.AdminHomePage" />
-        <activity android:name=".OrganizationInfo" />
+        <activity android:name=".Organizations.OrganizationInfo" />
     </application>
 
 </manifest>

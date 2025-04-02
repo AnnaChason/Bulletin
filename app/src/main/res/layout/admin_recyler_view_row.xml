@@ -24,7 +24,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/eventPosterView"
+                android:id="@+id/myImageView"
                 android:layout_width="200dp"
                 android:layout_height="300dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -55,7 +55,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="12dp"
                 android:text="Date"
-                app:layout_constraintStart_toEndOf="@+id/eventPosterView"
+                app:layout_constraintStart_toEndOf="@+id/myImageView"
                 app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
 
             <TextView
@@ -68,7 +68,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.484"
-                app:layout_constraintStart_toEndOf="@+id/eventPosterView"
+                app:layout_constraintStart_toEndOf="@+id/myImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -80,20 +80,20 @@
                 android:textAlignment="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.363"
-                app:layout_constraintStart_toEndOf="@+id/eventPosterView"
+                app:layout_constraintStart_toEndOf="@+id/myImageView"
                 app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
 
             <CheckBox
-                android:id="@+id/pendingBtn"
+                android:id="@+id/pendingBT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="76dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.035"
-                app:layout_constraintStart_toEndOf="@+id/eventPosterView"
+                app:layout_constraintHorizontal_bias="0.835"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/descriptionVT"
-                app:layout_constraintVertical_bias="0.783" />
+                app:layout_constraintVertical_bias="0.162" />
 
             <TextView
                 android:id="@+id/status"
@@ -104,10 +104,48 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.478"
-                app:layout_constraintStart_toEndOf="@+id/eventPosterView"
+                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintStart_toEndOf="@+id/myImageView"
                 app:layout_constraintTop_toBottomOf="@+id/descriptionVT"
-                app:layout_constraintVertical_bias="0.221" />
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/PendingStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status: Pending"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.694"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.718" />
+
+            <Button
+                android:id="@+id/rejectButton"
+                android:layout_width="102dp"
+                android:layout_height="46dp"
+                android:backgroundTint="#D88C8C"
+                android:text="Reject"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.623"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.948" />
+
+            <Button
+                android:id="@+id/approveButton"
+                android:layout_width="104dp"
+                android:layout_height="49dp"
+                android:backgroundTint="#88C9A1"
+                android:text="Approve"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.984"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.944" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

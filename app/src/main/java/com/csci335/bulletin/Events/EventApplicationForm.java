@@ -1,10 +1,9 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Events;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,7 +16,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -25,27 +23,21 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
-import com.csci335.bulletin.Mockups.FlyerApproval;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.csci335.bulletin.StudentClasses.HomePage;
+import com.csci335.bulletin.Organizations.Organization;
+import com.csci335.bulletin.R;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
-
 public class EventApplicationForm extends AppCompatActivity {
-
     FirebaseFirestore db;
     String category;
     // for image upload use
@@ -88,7 +80,7 @@ public class EventApplicationForm extends AppCompatActivity {
         }); **/
         // Handling category drop down menu
         Spinner categorySpinner = findViewById(R.id.categorySpinner);
-        categorySpinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,Event.categoryOptions()));
+        categorySpinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, Event.categoryOptions()));
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -142,27 +134,14 @@ public class EventApplicationForm extends AppCompatActivity {
         String loc = locEntry.getEditableText().toString();
 
         imgRef = storageReference.child("images/" + UUID.randomUUID().toString());
-        if(file != null) {
-            /*imgRef.putFile(file).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    Event newEventApp = new Event(title, date, loc, desc, task.getResult().getMetadata().getPath(), 0, category);
-
-                    // put the object in the database
-                    db.collection("eventApplications").document(title).set(newEventApp);
-
-                    // redirect to home page
-                    Intent home = new Intent(getApplicationContext(), HomePage.class);
-                    startActivity(home);
-                }
-            });*/
+        if(file!= null){
             imgRef.putFile(file).addOnSuccessListener(taskSnapshot -> {
                 imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     String downloadUrl = uri.toString();  // This is the URL you can use in Glide
                     // get the organization info
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     String orgName = orgIDtoName(id);
-                    Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id, orgName);
+                    Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id);
                     db.collection("eventApplications").document(title).set(newEventApp);
 
                     // Redirect to home page
@@ -174,12 +153,10 @@ public class EventApplicationForm extends AppCompatActivity {
             });
         }
         else{
-            // put the object in the database
             // get the organization info
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-            String orgName = orgIDtoName(id);
-            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id, orgName);
+             //put the object in the database
+            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id);
             db.collection("eventApplications").document(title).set(newEventApp);
 
             // redirect to home page

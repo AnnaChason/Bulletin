@@ -1,8 +1,7 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Events;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.csci335.bulletin.Organizations.OrganizationProfilePage;
+import com.csci335.bulletin.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -67,11 +68,11 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 also need to figure out how to store which users are attending, and for the user which events they are attending.
                 */
                 if(holder.attendingBtn.isChecked())
-                    events.get(holder.getAdapterPosition()).updateAttendance(1);
+                    events.get(holder.getAdapterPosition()).updateAttendance(+1);
                 else
                     events.get(holder.getAdapterPosition()).updateAttendance(-1);
 
-                db.collection("eventApplications").document(events.get(holder.getAdapterPosition()).getTitle()).update("attendance",events.get(holder.getAdapterPosition()).getAttendance());
+                db.collection("approvedEvents").document(events.get(holder.getAdapterPosition()).getTitle()).update("attendance",events.get(holder.getAdapterPosition()).getAttendance());
                 notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
             }
         });
@@ -82,7 +83,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.orgNameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toOrgProfile = new Intent(context,OrganizationProfilePage.class);
+                Intent toOrgProfile = new Intent(context, OrganizationProfilePage.class);
                 toOrgProfile.putExtra("OrgName",events.get(holder.getAdapterPosition()).getOrganizationName());
                 toOrgProfile.putExtra("OrgId",events.get(holder.getAdapterPosition()).getOrganizationID());
                 context.startActivity(toOrgProfile);

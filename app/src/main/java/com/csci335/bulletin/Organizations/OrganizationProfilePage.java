@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Organizations;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -10,11 +10,22 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.csci335.bulletin.Events.Event;
+import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
+import com.csci335.bulletin.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 public class OrganizationProfilePage extends AppCompatActivity {
     String orgName;
     String orgId;
+    FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +62,43 @@ public class OrganizationProfilePage extends AppCompatActivity {
             get data on current user
             maybe put the data retreiving method in event class
              */
+            orgId = FirebaseAuth.getInstance().getUid();
+            orgName = orgIDtoName(orgId);
+
         }
+
+        // retrieve organization description
+        String orgDesc = "";
+        final String[] desc = {""};
+        DocumentReference docRef = db.collection("organizationInfo").document(orgId);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Organization org = documentSnapshot.toObject(Organization.class);
+                desc[0] = org.getDescription();
+            }
+        });
+        orgDesc = desc[0];
+
+        // build the info onto the page
+        TextView orgNameTV = findViewById(R.id.orgNameTV);
+        TextView orgDescTV = findViewById(R.id.orgDescTV);
+
+        orgNameTV.setText(orgName);
+        orgDescTV.setText(orgDesc);
+
+    }
+
+    private String orgIDtoName(String id) {
+        final String[] name = {""};
+        DocumentReference docRef = db.collection("organizationInfo").document(id);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Organization org = documentSnapshot.toObject(Organization.class);
+                name[0] = org.getName();
+            }
+        });
+        return name[0];
     }
 }

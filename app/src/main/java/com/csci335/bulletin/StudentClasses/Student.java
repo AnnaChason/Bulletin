@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.StudentClasses;
 
 import java.util.Set;
 

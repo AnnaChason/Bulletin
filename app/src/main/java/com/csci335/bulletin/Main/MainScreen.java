@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.csci335.bulletin.Mockups.AttendingMockup;
 import com.csci335.bulletin.Mockups.FlyerApproval;
 import com.csci335.bulletin.Mockups.OrganizationApproval;
+import com.csci335.bulletin.R;
+import com.csci335.bulletin.StudentClasses.HomePage;
 
 public class MainScreen extends AppCompatActivity {
 
@@ -59,7 +61,7 @@ public class MainScreen extends AppCompatActivity {
         toHomeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toHome = new Intent(getApplicationContext(),HomePage.class);
+                Intent toHome = new Intent(getApplicationContext(), HomePage.class);
                 startActivity(toHome);
             }
         });

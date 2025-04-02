@@ -1,10 +1,14 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Events;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.csci335.bulletin.Organizations.Organization;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -31,10 +35,10 @@ public class Event implements Comparable<Event>{
     private String category;
     private String organizationID;
     private String organizationName;
-    private static StorageReference storage = FirebaseStorage.getInstance().getReference();
+ //   private static StorageReference storage = FirebaseStorage.getInstance().getReference();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, String organizationName) {
+    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID) {
         this.location = location;
         this.title = title;
         this.date = date;
@@ -43,19 +47,35 @@ public class Event implements Comparable<Event>{
         this.attendance = attendance;
         this.category = category;
         this.organizationID = organizationID;
-        this.organizationName = organizationName;
+        if(organizationID != null && !organizationID.equals("")) {
+            DocumentReference docRef = db.collection("organizationInfo").document(organizationID);
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot != null) {
+                        Organization org = documentSnapshot.toObject(Organization.class);
+                        if (org != null) {
+                            setOrganizationName(org.getName());
+                            db.collection("approvedEvents").document(title).update("organizationName", org.getName());
+                        }
+                    }
+                }
+            });
+        }
     }
     public Event(){
 
     }
 
     public static String[] categoryOptions(){
-        return new String[]{"", "Sport", "Music", "Ministry/Service", "Speaker", "Dance", "Faith", "Movie/Games", "informational"};
+        return new String[]{"", "Sport", "Music", "Ministry/Service", "Speaker", "Dance", "Faith", "Movie/Games", "informational", "art","food"};
     }
     /*
     Getters and Setters
      */
-    public String getTitle() {return title;}
+    public String getTitle() {
+        return title;
+    }
     public void setTitle(String title){this.title=title;}
     public String getDate() {return date;}
     public void setDate(String date){this.date =date;}
@@ -111,15 +131,15 @@ public class Event implements Comparable<Event>{
     */
     public static ArrayList<Event> setUpEvents(RecyclerView eventRV){
         ArrayList<Event> events = new ArrayList<>();
-        db.collection("eventApplications")
+        db.collection("approvedEvents")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Event eventapp = document.toObject(Event.class);
-                                events.add(eventapp);
+                                Event event = document.toObject(Event.class);
+                                events.add(event);
                             }
                             filterEvents(events);
                             Collections.sort(events);
@@ -135,7 +155,8 @@ public class Event implements Comparable<Event>{
     /*
    removes past events
     */
-    private static void filterEvents(ArrayList<Event> events){
+    public static void filterEvents(ArrayList<Event> events){
+        StorageReference storage = FirebaseStorage.getInstance().getReference();
         // Get today's date in YYMMDD format
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
@@ -148,10 +169,11 @@ public class Event implements Comparable<Event>{
             Event event = iterator.next();
             if (event.dateToNum() < todayDateNum) {
                 iterator.remove();  // Remove event if it's before today's date
-                // also delete event from the database
-                db.collection("eventApplications").document(event.getTitle()).delete();
-                // and delete the image that goes with it
-                storage.child(event.getPosterImg()).delete();
+                // also delete event from the database and its poster
+                if(event.getTitle() != null){
+                    db.collection("approvedEvents").document(event.getTitle()).delete();
+                    storage.child(event.getPosterImg()).delete();
+                }
             }
         }
     }

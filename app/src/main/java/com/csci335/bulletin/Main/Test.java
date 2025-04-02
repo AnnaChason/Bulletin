@@ -1,4 +1,4 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.Main;
 
 import com.google.firebase.database.FirebaseDatabase;
 

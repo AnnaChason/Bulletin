@@ -1,9 +1,8 @@
-package com.csci335.bulletin;
+package com.csci335.bulletin.StudentClasses;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -14,6 +13,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.csci335.bulletin.Events.Event;
+import com.csci335.bulletin.Events.EventApplicationForm;
+import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
+import com.csci335.bulletin.Main.Profile;
+import com.csci335.bulletin.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
@@ -31,8 +35,6 @@ import java.util.Iterator;
 
 
 public class HomePage extends AppCompatActivity {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    StorageReference storage = FirebaseStorage.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class HomePage extends AppCompatActivity {
                     next = new Intent(getApplicationContext(),HomePage.class);
                 }
                 else if(R.id.new_event == itemId){
-                    next = new Intent(getApplicationContext(),EventApplicationForm.class);
+                    next = new Intent(getApplicationContext(), EventApplicationForm.class);
                 }
                 startActivity(next);
                 return true;
@@ -82,4 +84,40 @@ public class HomePage extends AppCompatActivity {
     }
 
 
+    /*
+    removes past events
+     */
+    private void filterEvents(ArrayList<Event> events){
+        // Get today's date in YYMMDD format
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
+        String formattedDate = currentDate.format(formatter);
+        int[] currentDateArr = dateToNum(formattedDate);  // Convert today's date to YYMMDD
+        int todayDateNum = (currentDateArr[2] * 10000) + (currentDateArr[0] * 100) + currentDateArr[1];  // Construct YYMMDD
+        // Filter out events that have already happened
+        Iterator<Event> iterator = events.iterator();
+        while (iterator.hasNext()) {
+            Event event = iterator.next();
+            if (event.dateToNum() < todayDateNum) {
+                iterator.remove();  // Remove event if it's before today's date
+            }
+        }
+    }
+    /*
+    returns int array where index 0 has the month, 1 has the day, and 0 has the last 2 digits of the year
+    should get rid of for cleaner code, but that's a later problem
+     */
+    private int[] dateToNum(String date) {
+        int[] dateNums = new int[3];
+        try {
+            int idx = date.indexOf("/");
+            dateNums[0] = Integer.parseInt(date.substring(0, idx));
+            dateNums[1] = Integer.parseInt(date.substring(idx + 1, date.indexOf("/", idx + 1)));
+            idx = date.indexOf("/", idx + 1);
+            dateNums[2] = Integer.parseInt(date.substring(idx + 1));
+        } catch (Exception e) {
+            dateNums = new int[]{-900, 0, 0};
+        }
+        return dateNums;
+    }
 }
