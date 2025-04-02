@@ -45,7 +45,7 @@ public class AdminInfoForm extends AppCompatActivity {
                     String email = auth.getCurrentUser().getEmail().toString();
                     AdminUser newAdmin = new AdminUser(email, uid);
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("adminInfo").document(email).set(newAdmin);
+                    db.collection("adminInfo").document(newAdmin.getUid()).set(newAdmin);
 
                     Intent toHome = new Intent(getApplicationContext(), AdminHomePage.class);
                     startActivity(toHome);

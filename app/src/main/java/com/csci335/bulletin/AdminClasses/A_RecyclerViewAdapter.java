@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,14 +42,29 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
         holder.locationVT.setText(pendingEvents.get(position).getLocation());
         holder.descriptionVT.setText(pendingEvents.get(position).getDescription());
         holder.status.setText(pendingEvents.get(position).getCategory());
+
         //load the image
         Glide.with(context)
                 .load(pendingEvents.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
 
-         /*
+        /*
         updates collections
          */
+        holder.approveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Event event = pendingEvents.get(holder.getAdapterPosition());
+                //Deletes from ArrayList
+                pendingEvents.remove(holder.getAdapterPosition());
+
+                //Delete from Collection 1  in Firebase
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("eventApplications").document(event.getTitle()).delete();
+                db.collection("approvedEvents").document(event.getTitle()).set(event);
+                notifyDataSetChanged();
+            }
+        });
+
         holder.pendingBT.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -82,6 +98,7 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
         ImageView poster;
         TextView status, PendingStatus;
         CheckBox pendingBT;
+        Button approveButton, rejectButton;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             eventNameVT = itemView.findViewById(R.id.eventNameVT);
@@ -92,6 +109,10 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
             poster = itemView.findViewById(R.id.myImageView);
             status = itemView.findViewById(R.id.status);
             PendingStatus = itemView.findViewById(R.id.PendingStatus);
+            rejectButton = itemView.findViewById(R.id.rejectButton);
+            approveButton = itemView.findViewById(R.id.approveButton);
+
+            //rejectButton.backgroundTintList = ColorStateList.valueOf(Color.RED);
         }
     }
 
