@@ -22,7 +22,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 public class OrganizationProfilePage extends AppCompatActivity {
-    String orgName;
     String orgId;
     FirebaseFirestore db;
 
@@ -48,57 +47,43 @@ public class OrganizationProfilePage extends AppCompatActivity {
         figure out how to display the right info based on which organization it is.
         need to filter events and get the right name and description
          */
-        orgName = "";
-        orgId = "";
         //retrieving info passed in
-        if(getIntent().hasExtra("OrgName")) {
-            orgName = getIntent().getExtras().getString("OrgAppStatus");
-        }
         if(getIntent().hasExtra("OrgId")) {
-            orgId = getIntent().getExtras().getString("OrgAppStatus");
+            orgId = getIntent().getExtras().getString("OrgId");
         }
-        if(orgName.equals("") && orgId.equals("")){//current user is the organization trying to view their own page
+        if(orgId == null){//current user is the organization trying to view their own page
             /*
             get data on current user
             maybe put the data retreiving method in event class
              */
             orgId = FirebaseAuth.getInstance().getUid();
-            orgName = orgIDtoName(orgId);
 
         }
 
-        // retrieve organization description
-        String orgDesc = "";
-        final String[] desc = {""};
+        TextView orgNameTV = findViewById(R.id.orgNameTV);
+        TextView orgDescTV = findViewById(R.id.orgDescTV);
+
+
+        // retrieve organization info
+        db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("organizationInfo").document(orgId);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Organization org = documentSnapshot.toObject(Organization.class);
-                desc[0] = org.getDescription();
+                if (documentSnapshot.exists()) {
+                    Organization org = documentSnapshot.toObject(Organization.class);
+                    orgNameTV.setText(org.getName());
+                    orgDescTV.setText(org.getDescription());
+                }
+                else {
+                    orgNameTV.setText(orgId);
+                    orgDescTV.setText("This organization does not exist");
+                }
+
             }
         });
-        orgDesc = desc[0];
 
-        // build the info onto the page
-        TextView orgNameTV = findViewById(R.id.orgNameTV);
-        TextView orgDescTV = findViewById(R.id.orgDescTV);
 
-        orgNameTV.setText(orgName);
-        orgDescTV.setText(orgDesc);
 
-    }
-
-    private String orgIDtoName(String id) {
-        final String[] name = {""};
-        DocumentReference docRef = db.collection("organizationInfo").document(id);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Organization org = documentSnapshot.toObject(Organization.class);
-                name[0] = org.getName();
-            }
-        });
-        return name[0];
     }
 }

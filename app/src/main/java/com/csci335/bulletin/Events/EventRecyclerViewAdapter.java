@@ -84,7 +84,6 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             @Override
             public void onClick(View v) {
                 Intent toOrgProfile = new Intent(context, OrganizationProfilePage.class);
-                toOrgProfile.putExtra("OrgName",events.get(holder.getAdapterPosition()).getOrganizationName());
                 toOrgProfile.putExtra("OrgId",events.get(holder.getAdapterPosition()).getOrganizationID());
                 context.startActivity(toOrgProfile);
             }
