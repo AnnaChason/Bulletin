@@ -5,6 +5,5 @@ public enum Year {
     Sophomore,
     Junior,
     Senior,
-    SuperSenior,
     Grad,
 }
