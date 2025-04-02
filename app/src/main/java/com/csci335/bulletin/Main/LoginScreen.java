@@ -41,7 +41,9 @@ public class LoginScreen extends AppCompatActivity {
             FirebaseUser currentUser = mAuth.getCurrentUser();
 
             if(currentUser != null){
-                String uid = currentUser.getUid();
+              Intent toProcessing = new Intent(getApplicationContext(),UserLoadingScreen.class);
+              startActivity(toProcessing);
+               /* String uid = currentUser.getUid();
                 if ("admin".equals(uid)) {
                     Intent intent = new Intent(getApplicationContext(), AdminHomePage.class);
                     startActivity(intent);
@@ -49,7 +51,7 @@ public class LoginScreen extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), HomePage.class);
                     startActivity(intent);
                 }
-                finish();
+                finish();*/
             }
         }
 
