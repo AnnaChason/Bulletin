@@ -3,6 +3,7 @@ package com.csci335.bulletin.StudentClasses;
 import com.csci335.bulletin.R;
 import android.content.Intent;
 import android.os.Bundle;
+import com.csci335.bulletin.R;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +62,9 @@ public class StudentInfoForm extends AppCompatActivity {
 
             }
         });
+
+        yearRadioGroup = findViewById(R.id.yearRG);
+
         yearRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

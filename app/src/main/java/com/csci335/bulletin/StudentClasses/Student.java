@@ -17,6 +17,8 @@ public class Student {
         this.ID = ID;
     }
 
+    public Student() {}
+
     public String getID() { return ID; }
     public void setID(String ID) { this.ID = ID; }
     public String getEmail() { return email; }
