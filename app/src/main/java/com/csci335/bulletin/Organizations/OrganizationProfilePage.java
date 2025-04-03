@@ -1,6 +1,9 @@
 package com.csci335.bulletin.Organizations;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -8,11 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
 import com.csci335.bulletin.R;
+import com.csci335.bulletin.StudentClasses.HomePage;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -42,6 +47,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
         ArrayList<Event> events = Event.setUpEvents(orgEventsRV);
         EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events);
         orgEventsRV.setAdapter(rvAdapter);
+        orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
 
         /*
         figure out how to display the right info based on which organization it is.
@@ -52,12 +58,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
             orgId = getIntent().getExtras().getString("OrgId");
         }
         if(orgId == null){//current user is the organization trying to view their own page
-            /*
-            get data on current user
-            maybe put the data retreiving method in event class
-             */
             orgId = FirebaseAuth.getInstance().getUid();
-
         }
 
         TextView orgNameTV = findViewById(R.id.orgNameTV);
@@ -83,7 +84,14 @@ public class OrganizationProfilePage extends AppCompatActivity {
             }
         });
 
-
+        //return to main feed
+        Button backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), HomePage.class));
+            }
+        });
 
     }
 }

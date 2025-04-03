@@ -100,14 +100,8 @@ public class LoginScreen extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                                         FirebaseUser currentUser = mAuth.getCurrentUser();
-                                        String uid = currentUser.getUid();
-                                        if ("admin".equals(uid)) {
-                                            Intent intent = new Intent(getApplicationContext(), AdminHomePage.class);
-                                            startActivity(intent);
-                                        } else {
-                                            Intent intent = new Intent(getApplicationContext(), HomePage.class);
-                                            startActivity(intent);
-                                        }
+                                        Intent intent = new Intent(getApplicationContext(), HomePage.class);
+                                        startActivity(intent);
                                         finish();
 
                                     } else {

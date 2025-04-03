@@ -5,45 +5,66 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/light_green"
     tools:context=".Organizations.OrganizationProfilePage">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="125dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/orgNameTV"
-            android:layout_width="88dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/orgDescTV"
-            android:layout_width="312dp"
-            android:layout_height="61dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orgNameTV" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/light_green">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/orgProfileRV"
-        android:layout_width="409dp"
-        android:layout_height="604dp"
-        android:layout_marginTop="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            <TextView
+                android:id="@+id/orgNameTV"
+                android:layout_width="246dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/orgDescTV"
+                android:layout_width="312dp"
+                android:layout_height="61dp"
+                android:text="TextView"
+                android:textAlignment="textStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orgNameTV" />
+
+            <Button
+                android:id="@+id/backBtn"
+                android:layout_width="98dp"
+                android:layout_height="52dp"
+                android:backgroundTint="@color/white"
+                android:text="Back"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/orgNameTV"
+                app:layout_constraintEnd_toStartOf="@+id/orgNameTV"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/orgProfileRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="6" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

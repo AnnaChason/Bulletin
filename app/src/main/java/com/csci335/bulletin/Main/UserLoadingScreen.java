@@ -80,13 +80,16 @@ public class UserLoadingScreen extends AppCompatActivity {
         stuRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()) {
+                //temporary until students are finished.
+                //if(documentSnapshot.exists()) {
                     currentUserType = 3;
                     Intent toHome = new Intent(getApplicationContext(), HomePage.class);
                     startActivity(toHome);
-                }
+                //}
             }
         });
+        Intent toHome = new Intent(getApplicationContext(), HomePage.class);
+        startActivity(toHome);
 
         Button logOutBtn = findViewById(R.id.logoutBtn);
         logOutBtn.setOnClickListener(new View.OnClickListener() {
