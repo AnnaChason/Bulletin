@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.csci335.bulletin.AdminClasses.AdminInfoForm;
 import com.csci335.bulletin.Organizations.OrganizationInfo;
 import com.csci335.bulletin.R;
+import com.csci335.bulletin.StudentClasses.Student;
 import com.csci335.bulletin.StudentClasses.StudentInfoForm;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

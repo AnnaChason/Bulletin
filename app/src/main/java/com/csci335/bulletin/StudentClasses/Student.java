@@ -13,8 +13,7 @@ public class Student {
     private Set<SpecialStatus> specialStatus;
 
     // unneeded?
-    public Student(String name, String ID){
-        this.name = name;
+    public Student(String ID){
         this.ID = ID;
     }
 
