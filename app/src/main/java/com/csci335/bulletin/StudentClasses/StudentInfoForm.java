@@ -61,6 +61,9 @@ public class StudentInfoForm extends AppCompatActivity {
 
             }
         });
+
+        yearRadioGroup = findViewById(R.id.yearRG);
+
         yearRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
