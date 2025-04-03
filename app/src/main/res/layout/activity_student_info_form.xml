@@ -32,12 +32,12 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="Name"
-                app:layout_constraintBottom_toTopOf="@+id/editTextText"
+                app:layout_constraintBottom_toTopOf="@+id/nameET"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/nameET"
                 android:layout_width="210dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="40dp"
@@ -59,9 +59,9 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="Year"
-                app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+                app:layout_constraintBottom_toTopOf="@+id/yearRG"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
+                app:layout_constraintTop_toBottomOf="@+id/maleFemaleRG" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -71,9 +71,9 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="12dp"
                 android:text="Age"
-                app:layout_constraintBottom_toTopOf="@+id/editTextText3"
+                app:layout_constraintBottom_toTopOf="@+id/ageET"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/yearRG" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -82,51 +82,51 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="Extra status (check if applies)"
-                app:layout_constraintBottom_toTopOf="@+id/checkBox"
+                app:layout_constraintBottom_toTopOf="@+id/InternationalCB"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText3"
+                app:layout_constraintTop_toBottomOf="@+id/ageET"
                 app:layout_constraintVertical_chainStyle="spread" />
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/InternationalCB"
                 android:layout_width="200dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="16dp"
                 android:text="International"
-                app:layout_constraintBottom_toTopOf="@+id/checkBox2"
+                app:layout_constraintBottom_toTopOf="@+id/missionaryKidCB"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5"
                 app:layout_constraintVertical_chainStyle="spread" />
 
             <CheckBox
-                android:id="@+id/checkBox2"
+                android:id="@+id/missionaryKidCB"
                 android:layout_width="200dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="40dp"
                 android:text="Missionary Kid"
-                app:layout_constraintBottom_toTopOf="@+id/checkBox3"
+                app:layout_constraintBottom_toTopOf="@+id/thirdCultureCB"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+                app:layout_constraintTop_toBottomOf="@+id/InternationalCB" />
 
             <CheckBox
-                android:id="@+id/checkBox3"
+                android:id="@+id/thirdCultureCB"
                 android:layout_width="200dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="40dp"
                 android:text="Third Culture"
-                app:layout_constraintBottom_toTopOf="@+id/checkBox4"
+                app:layout_constraintBottom_toTopOf="@+id/pastorKidCB"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+                app:layout_constraintTop_toBottomOf="@+id/missionaryKidCB" />
 
             <CheckBox
-                android:id="@+id/checkBox4"
+                android:id="@+id/pastorKidCB"
                 android:layout_width="200dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="40dp"
                 android:text="Pastor Kid"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+                app:layout_constraintTop_toBottomOf="@+id/thirdCultureCB" />
 
             <Button
                 android:id="@+id/ConfirmationButton"
@@ -141,11 +141,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox4"
+                app:layout_constraintTop_toBottomOf="@+id/pastorKidCB"
                 app:layout_constraintVertical_bias="0.0" />
 
             <EditText
-                android:id="@+id/editTextText3"
+                android:id="@+id/ageET"
                 android:layout_width="200dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="40dp"
@@ -159,7 +159,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <RadioGroup
-                android:id="@+id/radioGroup"
+                android:id="@+id/yearRG"
                 android:layout_width="343dp"
                 android:layout_height="243dp"
                 android:layout_marginStart="40dp"
@@ -169,31 +169,31 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3">
 
                 <RadioButton
-                    android:id="@+id/radioButton"
+                    android:id="@+id/freshmenRB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Freshmen" />
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/sophomoreRB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Sophomore" />
 
                 <RadioButton
-                    android:id="@+id/radioButton3"
+                    android:id="@+id/juniorRB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Junior" />
 
                 <RadioButton
-                    android:id="@+id/radioButton4"
+                    android:id="@+id/seniorRB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Senior" />
 
                 <RadioButton
-                    android:id="@+id/radioButton5"
+                    android:id="@+id/gradRB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Grad" />
@@ -206,12 +206,12 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="Gender"
-                app:layout_constraintBottom_toTopOf="@+id/radioGroup2"
+                app:layout_constraintBottom_toTopOf="@+id/maleFemaleRG"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+                app:layout_constraintTop_toBottomOf="@+id/nameET" />
 
             <RadioGroup
-                android:id="@+id/radioGroup2"
+                android:id="@+id/maleFemaleRG"
                 android:layout_width="277dp"
                 android:layout_height="96dp"
                 android:layout_marginStart="40dp"
@@ -222,16 +222,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView6">
 
                 <RadioButton
-                    android:id="@+id/radioButton6"
+                    android:id="@+id/maleRB"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:text="Male" />
 
                 <RadioButton
-                    android:id="@+id/radioButton7"
+                    android:id="@+id/femaleRB"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:text="RadioButton" />
+                    android:text="Female" />
             </RadioGroup>
 
 
