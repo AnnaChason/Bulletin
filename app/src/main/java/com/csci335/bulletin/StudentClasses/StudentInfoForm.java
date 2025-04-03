@@ -104,6 +104,12 @@ public class StudentInfoForm extends AppCompatActivity {
                 // Put inputted info into student object and enter into database
                 student.setName(String.valueOf(nameEditText.getText()));
                 student.setAge(Integer.parseInt(String.valueOf(ageEditText.getText())));
+
+                internationalCB = findViewById(R.id.InternationalCB);
+                missionaryCB = findViewById(R.id.missionaryKidCB);
+                thirdCultureCB = findViewById(R.id.thirdCultureCB);
+                pastorKidCB = findViewById(R.id.pastorKidCB);
+
                 if (internationalCB.isChecked()) {
                     student.setSpecialStatus(SpecialStatus.International);
                 } else if (missionaryCB.isChecked()) {
