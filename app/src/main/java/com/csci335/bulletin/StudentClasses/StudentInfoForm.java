@@ -2,7 +2,7 @@ package com.csci335.bulletin.StudentClasses;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.mtdaps.bulletin.R;
+import com.csci335.bulletin.R;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
