@@ -15,9 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
+import com.csci335.bulletin.Main.NavigationManager;
+import com.csci335.bulletin.Main.Profile;
 import com.csci335.bulletin.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,6 +50,14 @@ public class AdminHomePage extends AppCompatActivity {
         RecyclerView.setAdapter(rvAdapter);
         RecyclerView.setLayoutManager(new LinearLayoutManager(this));
         setUpEvents(pendingEvents, rvAdapter);
+        
+         /*
+        Bottom Navigation Bar Manager
+         */
+        NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBarA);
+        btmNavBarMain.setSelectedItemId(R.id.home);
+        new NavigationManager(btmNavBarMain, AdminHomePage.this);
+
     }
 
     private void setUpEvents(ArrayList<Event> events, A_RecyclerViewAdapter adapter) {

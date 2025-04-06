@@ -1,4 +1,4 @@
-package com.csci335.bulletin.Events;
+package com.csci335.bulletin.Organizations;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -23,17 +23,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
-import com.csci335.bulletin.StudentClasses.HomePage;
-import com.csci335.bulletin.Organizations.Organization;
+import com.csci335.bulletin.Events.Event;
+import com.csci335.bulletin.Events.HomePage;
+import com.csci335.bulletin.Main.NavigationManager;
 import com.csci335.bulletin.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
@@ -57,27 +58,14 @@ public class EventApplicationForm extends AppCompatActivity {
             return insets;
         });
 
-        /**Bottom Navigation Bar Manager
-        NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBar);
-        btmNavBarMain.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                Intent next = new Intent();
-                if(R.id.profile == itemId){
-                    next = new Intent(getApplicationContext(),HomePage.class);
-                    //Fix This: next = new Intent(/*Put file name of profile screen here);
-                }
-                else if(R.id.home == itemId){
-                    next = new Intent(getApplicationContext(),HomePage.class);
-                }
-                else if(R.id.new_event == itemId){
-                    next = new Intent(getApplicationContext(),EventApplicationForm.class);
-                }
-                startActivity(next);
-                return true;
-            }
-        }); **/
+        /*
+        Bottom Navigation Bar Manager
+         */
+        NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBarEA);
+        btmNavBarMain.setSelectedItemId(R.id.home);
+        new NavigationManager(btmNavBarMain, EventApplicationForm.this);
+
+
         // Handling category drop down menu
         Spinner categorySpinner = findViewById(R.id.categorySpinner);
         categorySpinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, Event.categoryOptions()));

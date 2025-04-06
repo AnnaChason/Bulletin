@@ -12,10 +12,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.csci335.bulletin.AdminClasses.AdminHomePage;
-import com.csci335.bulletin.Events.EventApplicationForm;
-import com.csci335.bulletin.Organizations.OrganizationProfilePage;
+import com.csci335.bulletin.Events.HomePage;
+import com.csci335.bulletin.Organizations.EventApplicationForm;
 import com.csci335.bulletin.R;
-import com.csci335.bulletin.StudentClasses.HomePage;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -34,6 +33,8 @@ public class UserLoadingScreen extends AppCompatActivity {
    3 is student
     */
     private static int currentUserType;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,21 @@ public class UserLoadingScreen extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Button logOutBtn = findViewById(R.id.logoutBtn);
+        logOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
         FirebaseAuth fauth = FirebaseAuth.getInstance();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
@@ -60,6 +76,7 @@ public class UserLoadingScreen extends AppCompatActivity {
                     currentUserType = 1;
                     Intent toHome = new Intent(getApplicationContext(), AdminHomePage.class);
                     startActivity(toHome);
+                    finish();
                 }
             }
         });
@@ -72,6 +89,7 @@ public class UserLoadingScreen extends AppCompatActivity {
                     currentUserType = 2;
                     Intent toHome = new Intent(getApplicationContext(), EventApplicationForm.class);
                     startActivity(toHome);
+                    finish();
                 }
             }
         });
@@ -81,26 +99,17 @@ public class UserLoadingScreen extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 //temporary until students are finished.
-                //if(documentSnapshot.exists()) {
+                if(documentSnapshot.exists()) {
                     currentUserType = 3;
                     Intent toHome = new Intent(getApplicationContext(), HomePage.class);
                     startActivity(toHome);
-                //}
+                    finish();
+                }
             }
         });
-        Intent toHome = new Intent(getApplicationContext(), HomePage.class);
-        startActivity(toHome);
+        //Intent toHome = new Intent(getApplicationContext(), HomePage.class);
+        //startActivity(toHome);
 
-        Button logOutBtn = findViewById(R.id.logoutBtn);
-        logOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
 
     public static int getCurrentUserType(){

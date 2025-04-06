@@ -16,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
+import com.csci335.bulletin.Main.NavigationManager;
+import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.R;
-import com.csci335.bulletin.StudentClasses.HomePage;
+import com.csci335.bulletin.Events.HomePage;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,6 +43,15 @@ public class OrganizationProfilePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        /*
+        Bottom Navigation Bar Manager
+         */
+
+        NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBarOP);
+        if(UserLoadingScreen.getCurrentUserType() == 2)
+            btmNavBarMain.setSelectedItemId(R.id.profile);
+        new NavigationManager(btmNavBarMain, OrganizationProfilePage.this);
+
         /*
         Setting up recyclerview and getting events
          */

@@ -15,9 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.csci335.bulletin.AdminClasses.AdminHomePage;
+import com.csci335.bulletin.Events.HomePage;
 import com.csci335.bulletin.R;
-import com.csci335.bulletin.StudentClasses.HomePage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -43,15 +42,7 @@ public class LoginScreen extends AppCompatActivity {
             if(currentUser != null){
               Intent toProcessing = new Intent(getApplicationContext(),UserLoadingScreen.class);
               startActivity(toProcessing);
-               /* String uid = currentUser.getUid();
-                if ("admin".equals(uid)) {
-                    Intent intent = new Intent(getApplicationContext(), AdminHomePage.class);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getApplicationContext(), HomePage.class);
-                    startActivity(intent);
-                }
-                finish();*/
+
             }
         }
 
@@ -100,7 +91,7 @@ public class LoginScreen extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                                         FirebaseUser currentUser = mAuth.getCurrentUser();
-                                        Intent intent = new Intent(getApplicationContext(), HomePage.class);
+                                        Intent intent = new Intent(getApplicationContext(), UserLoadingScreen.class);
                                         startActivity(intent);
                                         finish();
 

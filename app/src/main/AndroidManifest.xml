@@ -22,13 +22,13 @@
             android:name=".StudentClasses.StudentInfoForm"
             android:exported="false" />
         <activity
-            android:name=".Main.Search"
+            android:name=".StudentClasses.Search"
             android:exported="false" />
         <activity
             android:name=".Main.Register"
             android:exported="false" />
         <activity
-            android:name=".Events.EventApplicationForm"
+            android:name=".Organizations.EventApplicationForm"
             android:exported="false" />
         <activity
             android:name=".Main.Profile"
@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StudentClasses.HomePage"
+            android:name=".Events.HomePage"
             android:exported="true" />
         <activity
             android:name=".Mockups.OrganizationProcessed"
@@ -61,7 +61,7 @@
             android:name=".Mockups.FlyerApproval"
             android:exported="false" />
         <activity
-            android:name=".Main.MainScreen"
+            android:name=".Mockups.MainScreen"
             android:exported="true" />
         <activity android:name=".AdminClasses.AdminInfoForm" />
         <activity android:name=".AdminClasses.AdminHomePage" />

@@ -5,13 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StudentClasses.HomePage">
+    tools:context=".Events.HomePage">
 
   <FrameLayout
       android:id="@+id/mainFrame"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      app:layout_constraintBottom_toTopOf="@+id/btmNavBar"
+      app:layout_constraintBottom_toTopOf="@+id/btmNavBarA"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
@@ -24,9 +24,10 @@
   </FrameLayout>
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
-      android:id="@+id/btmNavBar"
+      android:id="@+id/btmNavBarA"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:background="@drawable/nav_background"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StudentClasses.HomePage">
+    tools:context=".Events.HomePage">
 
     <FrameLayout
         android:id="@+id/mainFrame"
@@ -27,6 +27,7 @@
         android:id="@+id/btmNavBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background ="@drawable/nav_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,4 +1,4 @@
-package com.csci335.bulletin.Main;
+package com.csci335.bulletin.StudentClasses;
 
 import android.os.Bundle;
 
@@ -8,7 +8,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.csci335.bulletin.Main.NavigationManager;
+import com.csci335.bulletin.Main.Profile;
 import com.csci335.bulletin.R;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class Search extends AppCompatActivity {
 
@@ -22,5 +25,12 @@ public class Search extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+         /*
+        Bottom Navigation Bar Manager
+         */
+        NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBarS);
+        btmNavBarMain.setSelectedItemId(R.id.other);
+        new NavigationManager(btmNavBarMain, Search.this);
+
     }
 }

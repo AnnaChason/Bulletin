@@ -1,4 +1,4 @@
-package com.csci335.bulletin.Main;
+package com.csci335.bulletin.Mockups;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.csci335.bulletin.Mockups.AttendingMockup;
-import com.csci335.bulletin.Mockups.FlyerApproval;
-import com.csci335.bulletin.Mockups.OrganizationApproval;
+import com.csci335.bulletin.Events.HomePage;
 import com.csci335.bulletin.R;
-import com.csci335.bulletin.StudentClasses.HomePage;
 
 public class MainScreen extends AppCompatActivity {
 

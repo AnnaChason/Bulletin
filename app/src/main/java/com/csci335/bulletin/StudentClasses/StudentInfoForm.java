@@ -1,8 +1,9 @@
 package com.csci335.bulletin.StudentClasses;
 
-import com.csci335.bulletin.R;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.csci335.bulletin.Events.HomePage;
 import com.csci335.bulletin.R;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.csci335.bulletin.StudentClasses.SpecialStatus;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,12 +43,12 @@ public class StudentInfoForm extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_student_info_form);
 
-        /*FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         student = new Student(auth.getCurrentUser().getUid());
         // Components (text + radio buttons + check boxes)
         nameEditText = findViewById(R.id.nameET);
         ageEditText = findViewById(R.id.ageET);
-        maleFemaleRadioGroup = findViewById(R.id.maleFemaleRG);*/
+        maleFemaleRadioGroup = findViewById(R.id.maleFemaleRG);
 
         maleFemaleRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -97,7 +97,7 @@ public class StudentInfoForm extends AppCompatActivity {
             return insets;
         });
 
-        /*Button confirmationButton = findViewById(R.id.ConfirmationButton);
+        Button confirmationButton = findViewById(R.id.ConfirmationButton);
         confirmationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +128,6 @@ public class StudentInfoForm extends AppCompatActivity {
                 Intent homePage = new Intent(getApplicationContext(), HomePage.class);
                 startActivity(homePage);
             }
-        });*/
+        });
     }
 }

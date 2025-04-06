@@ -13,12 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.Navigation;
 
-import com.csci335.bulletin.AdminClasses.AdminHomePage;
 import com.csci335.bulletin.AdminClasses.AdminInfoForm;
-import com.csci335.bulletin.Events.EventApplicationForm;
+import com.csci335.bulletin.Organizations.EventApplicationForm;
 import com.csci335.bulletin.R;
-import com.csci335.bulletin.StudentClasses.HomePage;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,23 +80,14 @@ public class Profile extends AppCompatActivity {
         Bottom Navigation Bar Manager
          */
         NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBarP);
-        btmNavBarMain.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                Intent next = new Intent(getApplicationContext(),Profile.class);
-                if(R.id.profile == itemId){
-                    next = new Intent(getApplicationContext(), Profile.class);
-                }
-                else if(R.id.home == itemId){
-                    next = new Intent(getApplicationContext(), HomePage.class);
-                }
-                else if(R.id.new_event == itemId){
-                    next = new Intent(getApplicationContext(), EventApplicationForm.class);
-                }
-                startActivity(next);
-                return true;
-            }
-        });
+        if(UserLoadingScreen.getCurrentUserType() == 2)
+            btmNavBarMain.setSelectedItemId(R.id.other);
+        else
+            btmNavBarMain.setSelectedItemId(R.id.profile);
+        new NavigationManager(btmNavBarMain, Profile.this);
+
+        TextView utype = findViewById(R.id.userTypeTV);
+        utype.setText("User Type: " + UserLoadingScreen.getCurrentUserType());
+
     }
 }
