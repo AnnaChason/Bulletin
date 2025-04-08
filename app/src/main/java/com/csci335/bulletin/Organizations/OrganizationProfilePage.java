@@ -2,11 +2,13 @@ package com.csci335.bulletin.Organizations;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,14 +22,22 @@ import com.csci335.bulletin.Main.NavigationManager;
 import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.R;
 import com.csci335.bulletin.Events.HomePage;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class OrganizationProfilePage extends AppCompatActivity {
     String orgId;
@@ -43,29 +53,17 @@ public class OrganizationProfilePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         /*
         Bottom Navigation Bar Manager
          */
-
         NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBarOP);
         if(UserLoadingScreen.getCurrentUserType() == 2)
             btmNavBarMain.setSelectedItemId(R.id.profile);
         new NavigationManager(btmNavBarMain, OrganizationProfilePage.this);
 
-        /*
-        Setting up recyclerview and getting events
-         */
-        RecyclerView orgEventsRV = findViewById(R.id.orgProfileRV);
-        ArrayList<Event> events = Event.setUpEvents(orgEventsRV);
-        EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events);
-        orgEventsRV.setAdapter(rvAdapter);
-        orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
 
-        /*
-        figure out how to display the right info based on which organization it is.
-        need to filter events and get the right name and description
-         */
-        //retrieving info passed in
+        //Figuring out which organization to display
         if(getIntent().hasExtra("OrgId")) {
             orgId = getIntent().getExtras().getString("OrgId");
         }
@@ -75,7 +73,6 @@ public class OrganizationProfilePage extends AppCompatActivity {
 
         TextView orgNameTV = findViewById(R.id.orgNameTV);
         TextView orgDescTV = findViewById(R.id.orgDescTV);
-
 
         // retrieve organization info
         db = FirebaseFirestore.getInstance();
@@ -96,8 +93,28 @@ public class OrganizationProfilePage extends AppCompatActivity {
             }
         });
 
+        /*
+        Setting up recyclerview and getting events
+         */
+        RecyclerView orgEventsRV = findViewById(R.id.orgProfileRV);
+        ArrayList<Event> events = new ArrayList<>();
+        EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events);
+        orgEventsRV.setAdapter(rvAdapter);
+        orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
+        db.collection("approvedEvents").whereEqualTo("organizationID", orgId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                   events.add(document.toObject(Event.class));
+                }
+                rvAdapter.notifyDataSetChanged();
+            }
+        });
+
+
         //return to main feed
-        Button backBtn = findViewById(R.id.backBtn);
+        //to do: fix this so it goes to the correct page depending on user! (or just get rid of it?
+        Button backBtn = findViewById(R.id.backBtn);//make this a textView for aesthetics
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

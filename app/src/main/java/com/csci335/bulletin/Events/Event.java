@@ -56,7 +56,7 @@ public class Event implements Comparable<Event>{
                         Organization org = documentSnapshot.toObject(Organization.class);
                         if (org != null) {
                             setOrganizationName(org.getName());
-                            db.collection("approvedEvents").document(title).update("organizationName", org.getName());
+                            db.collection("eventApplications").document(title).update("organizationName", org.getName());
                         }
                     }
                 }

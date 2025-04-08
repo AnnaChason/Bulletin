@@ -77,11 +77,12 @@ public class EventApplicationForm extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-        /** image upload handling **/
+
+        /* image upload handling **/
         selectImgBtn = findViewById(R.id.selectImgBtn);
         uploadImgBtn = findViewById(R.id.uploadImgBtn);
         imgView = findViewById(R.id.imageView3);
-        //StorageReference imgRef = null;
+
 
         selectImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,10 +99,6 @@ public class EventApplicationForm extends AppCompatActivity {
                 uploadEvent(image);
             }
         });
-
-
-
-
 
     }
 
@@ -128,12 +125,11 @@ public class EventApplicationForm extends AppCompatActivity {
                     String downloadUrl = uri.toString();  // This is the URL you can use in Glide
                     // get the organization info
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    String orgName = orgIDtoName(id);
                     Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id);
                     db.collection("eventApplications").document(title).set(newEventApp);
 
-                    // Redirect to home page
-                    Intent home = new Intent(getApplicationContext(), HomePage.class);
+                    // Redirect to profile page
+                    Intent home = new Intent(getApplicationContext(), OrganizationProfilePage.class);
                     startActivity(home);
                 });
             }).addOnFailureListener(e -> {
