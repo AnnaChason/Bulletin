@@ -68,7 +68,7 @@ public class Event implements Comparable<Event>{
     }
 
     public static String[] categoryOptions(){
-        return new String[]{"", "Sport", "Music", "Ministry/Service", "Speaker", "Dance", "Faith", "Movie/Games", "informational", "art","food"};
+        return new String[]{"", "Sport", "Performance", "Ministry/Service", "Speaker", "Faith", "Movie/Games", "Informational", "Art", "Food", "Academics"};
     }
     /*
     Getters and Setters
