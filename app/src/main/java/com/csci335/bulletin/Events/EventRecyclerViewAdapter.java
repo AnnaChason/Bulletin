@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,7 +56,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         Glide.with(context)
                 .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
-
+        if(UserLoadingScreen.getCurrentUserType() != 1){
+            holder.attendingBtn.setVisibility(View.GONE); //organizations and admin don't attend events
+        }
 
         /*
         updates attendance
@@ -64,8 +67,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             @Override
             public void onClick(View v) {
                 /*
-                updates event attendance, fix when we sort out differences between event and event application also need to deal with checked/vs unchecked
-                also need to figure out how to store which users are attending, and for the user which events they are attending.
+                need to figure out how to store which users are attending, and for the user which events they are attending.
                 */
                 if(holder.attendingBtn.isChecked())
                     events.get(holder.getAdapterPosition()).updateAttendance(+1);

@@ -40,8 +40,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class OrganizationProfilePage extends AppCompatActivity {
-    String orgId;
-    FirebaseFirestore db;
+    private String orgId;
+    private FirebaseFirestore db;
+    private ArrayList<Event> events = new ArrayList<>();
+    private EventRecyclerViewAdapter rvAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +65,35 @@ public class OrganizationProfilePage extends AppCompatActivity {
         new NavigationManager(btmNavBarMain, OrganizationProfilePage.this);
 
 
+        Button mpBtn = findViewById(R.id.multiPurposeBtn);
         //Figuring out which organization to display
         if(getIntent().hasExtra("OrgId")) {
             orgId = getIntent().getExtras().getString("OrgId");
         }
         if(orgId == null){//current user is the organization trying to view their own page
             orgId = FirebaseAuth.getInstance().getUid();
+
+            /*
+            working on lettting the organization view their pending events. Not done!
+             */
+            mpBtn.setText("View Pending Events");
+            mpBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //need to work on going back to current Events
+                    events = new ArrayList<>();
+                    mpBtn.setText("View Current Events");
+                    db.collection("pendingEvents").whereEqualTo("organizationID", orgId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                events.add(document.toObject(Event.class));
+                            }
+                            rvAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            });
         }
 
         TextView orgNameTV = findViewById(R.id.orgNameTV);
@@ -91,14 +116,14 @@ public class OrganizationProfilePage extends AppCompatActivity {
                 }
 
             }
+
         });
 
         /*
         Setting up recyclerview and getting events
          */
         RecyclerView orgEventsRV = findViewById(R.id.orgProfileRV);
-        ArrayList<Event> events = new ArrayList<>();
-        EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events);
+        rvAdapter = new EventRecyclerViewAdapter(this, events);
         orgEventsRV.setAdapter(rvAdapter);
         orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
         db.collection("approvedEvents").whereEqualTo("organizationID", orgId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
