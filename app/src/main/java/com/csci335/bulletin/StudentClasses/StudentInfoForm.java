@@ -1,5 +1,7 @@
 package com.csci335.bulletin.StudentClasses;
 
+import java.util.*;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -44,7 +46,7 @@ public class StudentInfoForm extends AppCompatActivity {
         setContentView(R.layout.activity_student_info_form);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        student = new Student(auth.getCurrentUser().getUid());
+        student = new Student(auth.getCurrentUser().getUid(), new ArrayList<SpecialStatus>());
         // Components (text + radio buttons + check boxes)
         nameEditText = findViewById(R.id.nameET);
         ageEditText = findViewById(R.id.ageET);
@@ -113,17 +115,20 @@ public class StudentInfoForm extends AppCompatActivity {
 
                 if (internationalCB.isChecked()) {
                     student.setSpecialStatus(SpecialStatus.International);
-                } else if (missionaryCB.isChecked()) {
+                }
+                if (missionaryCB.isChecked()) {
                     student.setSpecialStatus(SpecialStatus.MK);
-                } else if (thirdCultureCB.isChecked()) {
+                }
+                if (thirdCultureCB.isChecked()) {
                     student.setSpecialStatus(SpecialStatus.ThirdCulture);
-                } else if (pastorKidCB.isChecked()) {
+                }
+                if (pastorKidCB.isChecked()) {
                     student.setSpecialStatus(SpecialStatus.PK);
                 }
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 CollectionReference studentInfo = db.collection("studentInfo");
-                db.collection("studentInfo").document(student.getName()).set(student);
+                db.collection("studentInfo").document(student.getID()).set(student);
 
                 Intent homePage = new Intent(getApplicationContext(), HomePage.class);
                 startActivity(homePage);
