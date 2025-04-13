@@ -41,8 +41,11 @@ import java.util.Iterator;
 
 public class OrganizationProfilePage extends AppCompatActivity {
     private String orgId;
-    private FirebaseFirestore db;
-    private ArrayList<Event> events = new ArrayList<>();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();;
+
+    //events to be displayed on screen
+    private ArrayList<Event> events;
+    private ArrayList<Event> approved = new ArrayList<>();;
     private EventRecyclerViewAdapter rvAdapter;
 
     @Override
@@ -64,43 +67,23 @@ public class OrganizationProfilePage extends AppCompatActivity {
             btmNavBarMain.setSelectedItemId(R.id.profile);
         new NavigationManager(btmNavBarMain, OrganizationProfilePage.this);
 
-
+        /*
+        setting up screen based on user type
+         */
         Button mpBtn = findViewById(R.id.multiPurposeBtn);
-        //Figuring out which organization to display
         if(getIntent().hasExtra("OrgId")) {
             orgId = getIntent().getExtras().getString("OrgId");
         }
         if(orgId == null){//current user is the organization trying to view their own page
             orgId = FirebaseAuth.getInstance().getUid();
-
-            /*
-            working on lettting the organization view their pending events. Not done!
-             */
-            mpBtn.setText("View Pending Events");
-            mpBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //need to work on going back to current Events
-                    events = new ArrayList<>();
-                    mpBtn.setText("View Current Events");
-                    db.collection("pendingEvents").whereEqualTo("organizationID", orgId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                events.add(document.toObject(Event.class));
-                            }
-                            rvAdapter.notifyDataSetChanged();
-                        }
-                    });
-                }
-            });
+            mpBtn.setText("View pending events");
         }
-
         TextView orgNameTV = findViewById(R.id.orgNameTV);
         TextView orgDescTV = findViewById(R.id.orgDescTV);
 
-        // retrieve organization info
-        db = FirebaseFirestore.getInstance();
+        /*
+        retrieve organization info
+         */
         DocumentReference docRef = db.collection("organizationInfo").document(orgId);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -118,34 +101,98 @@ public class OrganizationProfilePage extends AppCompatActivity {
             }
 
         });
+        if(UserLoadingScreen.getCurrentUserType() == 2){
+            mpBtn.setOnClickListener(orgListener(mpBtn));
+        }
+        else{
+            mpBtn.setOnClickListener(followListener(mpBtn));
+        }
 
         /*
-        Setting up recyclerview and getting events
+         Setting up recyclerview
          */
         RecyclerView orgEventsRV = findViewById(R.id.orgProfileRV);
+        events = new ArrayList<>();
         rvAdapter = new EventRecyclerViewAdapter(this, events);
         orgEventsRV.setAdapter(rvAdapter);
         orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
+
+        /*
+        set up events
+         */
         db.collection("approvedEvents").whereEqualTo("organizationID", orgId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                   events.add(document.toObject(Event.class));
+                    approved.add(document.toObject(Event.class));
+                    events.add(document.toObject(Event.class));
                 }
                 rvAdapter.notifyDataSetChanged();
             }
         });
+    }
 
+    /*
+    makes the button switch between approved events and pending events
+     */
+    private View.OnClickListener orgListener(Button mpBtn) {
+        return new View.OnClickListener() {
+            boolean clicked = false;
+            ArrayList<Event> pending;
 
-        //return to main feed
-        //to do: fix this so it goes to the correct page depending on user! (or just get rid of it?
-        Button backBtn = findViewById(R.id.backBtn);//make this a textView for aesthetics
-        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), HomePage.class));
+                events.clear();
+                rvAdapter.notifyDataSetChanged();
+                if (clicked) {//going back to approved events
+                    mpBtn.setText("View pending events");
+                    for (Event e : approved) {
+                        events.add(e);
+                    }
+                    rvAdapter.notifyDataSetChanged();
+                } else {//going to pending events
+                    mpBtn.setText("View approved events");
+                    if (pending == null) {//haven't loaded pending events yet
+                        pending = new ArrayList<>();
+                        db.collection("eventApplications").whereEqualTo("organizationID", orgId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    pending.add(document.toObject(Event.class));
+                                    events.add(document.toObject(Event.class));
+                                }
+                                rvAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    } else {
+                        for (Event e : pending) {
+                            events.add(e);
+                        }
+                        rvAdapter.notifyDataSetChanged();
+                    }
+                }
+                clicked = !clicked;
             }
-        });
+        };
+    }
 
+
+    /*
+    makes button handle following/unfollowing organizations
+     */
+    private View.OnClickListener followListener (Button mpBtn){
+        return new View.OnClickListener() {
+            boolean clicked = false; //fix this to see if user is following the organization!
+            @Override
+            public void onClick(View v) {
+                if(clicked){
+                    mpBtn.setText("Follow");
+                }
+                else{
+                    mpBtn.setText("Unfollow");
+                }
+                clicked = !clicked;
+            }
+        };
     }
 }

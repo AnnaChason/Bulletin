@@ -98,7 +98,6 @@ public class UserLoadingScreen extends AppCompatActivity {
         stuRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                //temporary until students are finished.
                 if(documentSnapshot.exists()) {
                     currentUserType = 3;
                     Intent toHome = new Intent(getApplicationContext(), HomePage.class);
@@ -107,8 +106,6 @@ public class UserLoadingScreen extends AppCompatActivity {
                 }
             }
         });
-        //Intent toHome = new Intent(getApplicationContext(), HomePage.class);
-        //startActivity(toHome);
 
     }
 

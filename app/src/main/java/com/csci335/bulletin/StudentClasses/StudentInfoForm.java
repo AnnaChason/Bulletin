@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.csci335.bulletin.Events.HomePage;
+import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.R;
 import android.view.View;
 import android.widget.Button;
@@ -130,8 +131,8 @@ public class StudentInfoForm extends AppCompatActivity {
                 CollectionReference studentInfo = db.collection("studentInfo");
                 db.collection("studentInfo").document(student.getID()).set(student);
 
-                Intent homePage = new Intent(getApplicationContext(), HomePage.class);
-                startActivity(homePage);
+                Intent next = new Intent(getApplicationContext(), UserLoadingScreen.class);
+                startActivity(next);
             }
         });
     }

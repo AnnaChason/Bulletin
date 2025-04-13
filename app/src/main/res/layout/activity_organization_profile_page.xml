@@ -48,23 +48,13 @@
                 app:layout_constraintVertical_bias="0.166" />
 
             <Button
-                android:id="@+id/backBtn"
-                android:layout_width="98dp"
-                android:layout_height="52dp"
-                android:backgroundTint="@color/white"
-                android:text="Back"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/orgNameTV"
-                app:layout_constraintEnd_toStartOf="@+id/orgNameTV"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
                 android:id="@+id/multiPurposeBtn"
-                android:layout_width="172dp"
-                android:layout_height="46dp"
-                android:backgroundTint="#F0ECEC"
+                android:layout_width="210dp"
+                android:layout_height="51dp"
+                android:backgroundTint="#F6F4F4"
                 android:text="Follow"
-                android:textColor="#2E2727"
+                android:textColor="#231F1F"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
