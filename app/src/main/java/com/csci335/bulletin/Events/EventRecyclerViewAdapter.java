@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
+import com.csci335.bulletin.Zoom;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     private ArrayList<Event> events;
     private Context context;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+           /*
+        updates collections
+         */
 
 
     public EventRecyclerViewAdapter(Context context, ArrayList<Event> events){
@@ -79,6 +84,15 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             }
         });
 
+        holder.zoomButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, Zoom.class);
+                intent.putExtra("imageUrl", events.get(holder.getAdapterPosition()).getPosterImg());
+                context.startActivity(intent);
+            }
+        });
+
         /*
         to organization profile
          */
@@ -104,7 +118,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         TextView eventNameVT, dateVT, locationVT,descriptionVT, numAttendingVT, categoryVT;
         ImageView poster;
         CheckBox attendingBtn;
-        Button orgNameBtn;
+        Button orgNameBtn, zoomButton;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -117,6 +131,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             attendingBtn = itemView.findViewById(R.id.attendingBtn);
             categoryVT = itemView.findViewById(R.id.categoryTV);
             orgNameBtn = itemView.findViewById(R.id.orgNameBtn);
+            zoomButton = itemView.findViewById(R.id.zoomButton);
 
         }
     }

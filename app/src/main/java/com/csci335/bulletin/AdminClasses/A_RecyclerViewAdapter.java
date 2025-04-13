@@ -1,6 +1,7 @@
 package com.csci335.bulletin.AdminClasses;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Events.Event;
+import com.csci335.bulletin.Main.Register;
 import com.csci335.bulletin.R;
+import com.csci335.bulletin.Zoom;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -47,6 +50,7 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
         Glide.with(context)
                 .load(pendingEvents.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
+
 
         /*
         updates collections
@@ -98,21 +102,20 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
         ImageView poster;
         TextView status, PendingStatus;
         CheckBox pendingBT;
-        Button approveButton, rejectButton;
+        Button approveButton, rejectButton, zoomButton;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             eventNameVT = itemView.findViewById(R.id.eventNameVT);
             dateVT = itemView.findViewById(R.id.dateVT);
             locationVT = itemView.findViewById(R.id.locationVT);
             descriptionVT = itemView.findViewById(R.id.descriptionVT);
-            pendingBT = itemView.findViewById(R.id.pendingBT);
             poster = itemView.findViewById(R.id.myImageView);
             status = itemView.findViewById(R.id.status);
-            PendingStatus = itemView.findViewById(R.id.PendingStatus);
             rejectButton = itemView.findViewById(R.id.rejectButton);
             approveButton = itemView.findViewById(R.id.approveButton);
 
-            //rejectButton.backgroundTintList = ColorStateList.valueOf(Color.RED);
+
+
         }
     }
 

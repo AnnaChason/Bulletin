@@ -23,10 +23,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <ImageView
                 android:id="@+id/myImageView"
-                android:layout_width="200dp"
-                android:layout_height="300dp"
+                android:layout_width="189dp"
+                android:layout_height="289dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -83,23 +84,11 @@
                 app:layout_constraintStart_toEndOf="@+id/myImageView"
                 app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
 
-            <CheckBox
-                android:id="@+id/pendingBT"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="76dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.835"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionVT"
-                app:layout_constraintVertical_bias="0.162" />
-
             <TextView
                 android:id="@+id/status"
                 android:layout_width="169dp"
                 android:layout_height="21dp"
-                android:text="Current Status"
+                android:text="Approval"
                 android:textAlignment="center"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -109,43 +98,32 @@
                 app:layout_constraintTop_toBottomOf="@+id/descriptionVT"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/PendingStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status: Pending"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.694"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.718" />
-
             <Button
                 android:id="@+id/rejectButton"
-                android:layout_width="102dp"
-                android:layout_height="46dp"
+                android:layout_width="105dp"
+                android:layout_height="49dp"
                 android:backgroundTint="#D88C8C"
                 android:text="Reject"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.623"
+                app:layout_constraintHorizontal_bias="0.615"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.948" />
+                app:layout_constraintVertical_bias="0.897" />
 
             <Button
                 android:id="@+id/approveButton"
-                android:layout_width="104dp"
+                android:layout_width="107dp"
                 android:layout_height="49dp"
                 android:backgroundTint="#88C9A1"
                 android:text="Approve"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.984"
+                app:layout_constraintHorizontal_bias="0.986"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.944" />
+                app:layout_constraintVertical_bias="0.895" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
