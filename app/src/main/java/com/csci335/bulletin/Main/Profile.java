@@ -38,7 +38,6 @@ public class Profile extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         buttonLogout = findViewById(R.id.button_logout);
-        InfoFormbutton = findViewById(R.id.AdminInfoForm);
         textView = findViewById(R.id.user_details);
         user = mAuth.getCurrentUser();
 
@@ -59,16 +58,6 @@ public class Profile extends AppCompatActivity {
                 finish();
             }
         });
-
-        InfoFormbutton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), AdminInfoForm.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Events.HomePage">
+    tools:context=".Events.HomePage"
+    android:background="@color/tan">
 
     <FrameLayout
         android:id="@+id/mainFrame"
@@ -19,7 +20,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/eventFeedRV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
     </FrameLayout>
 

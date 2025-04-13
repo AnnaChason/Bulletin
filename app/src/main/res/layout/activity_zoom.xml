@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Zoom">
+    tools:context=".Events.Zoom">
 
     <Button
         android:id="@+id/returnButton"
@@ -19,7 +19,7 @@
         android:id="@+id/zoomImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FF7043"
+        android:background="@color/light_orange"
         android:scaleType="fitCenter"/>
 
 

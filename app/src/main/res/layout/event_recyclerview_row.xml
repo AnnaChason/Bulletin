@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/light_orange">
 
     <androidx.cardview.widget.CardView
         android:layout_width="409dp"
@@ -23,24 +24,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <Button
                 android:id="@+id/zoomButton"
-                android:layout_width="190dp"
-                android:layout_height="289dp"
+                android:layout_width="192dp"
+                android:layout_height="297dp"
+                android:backgroundTint="@color/light_blue"
                 android:text=""
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.545" />
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="200dp"
+                android:layout_height="280dp"
+                android:layout_marginEnd="22dp"
+                app:layout_constraintBottom_toBottomOf="@+id/eventPosterView"
+                app:layout_constraintEnd_toEndOf="@+id/eventPosterView"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/zoomButton"
+                app:layout_constraintVertical_bias="0.31"
+                app:srcCompat="@drawable/flyerbackgroundthing" />
 
-                app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
                 android:id="@+id/eventPosterView"
                 android:layout_width="200dp"
                 android:layout_height="300dp"
-                android:background="#FF7043"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -59,6 +73,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/orgNameBtn"
                 app:layout_constraintVertical_bias="0.509" />
+
 
             <TextView
                 android:id="@+id/dateVT"
@@ -138,12 +153,14 @@
                 android:id="@+id/orgNameBtn"
                 android:layout_width="176dp"
                 android:layout_height="40dp"
-                android:backgroundTint="#5D6385"
+                android:backgroundTint="@color/medium_blue"
                 android:text="organizationName"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

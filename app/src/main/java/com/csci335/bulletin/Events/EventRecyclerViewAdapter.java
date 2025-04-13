@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
-import com.csci335.bulletin.Zoom;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;

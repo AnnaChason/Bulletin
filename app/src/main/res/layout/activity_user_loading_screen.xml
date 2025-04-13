@@ -5,14 +5,17 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/tan"
     tools:context=".Main.UserLoadingScreen">
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="146dp"
-        android:layout_height="42dp"
+        android:layout_width="302dp"
+        android:layout_height="73dp"
         android:text="Loading..."
-        android:textSize="20sp"
+        android:textColor="@color/dark_blue"
+        android:textAlignment="center"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -22,8 +25,8 @@
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="168dp"
-        android:layout_height="55dp"
+        android:layout_width="208dp"
+        android:layout_height="71dp"
         android:layout_marginTop="172dp"
         android:text="If not redirected, there is a problem with your account"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Log Out"
+        android:backgroundTint="@color/muted_red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

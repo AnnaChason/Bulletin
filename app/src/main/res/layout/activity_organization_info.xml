@@ -5,12 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/tan"
     tools:context=".Organizations.OrganizationInfo">
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="27dp"
         android:text="Register as an Organization"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,8 +22,8 @@
 
     <EditText
         android:id="@+id/orgName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="226dp"
+        android:layout_height="52dp"
         android:ems="10"
         android:hint="Organization Name"
         android:inputType="text"
@@ -35,8 +36,8 @@
 
     <EditText
         android:id="@+id/orgDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="226dp"
+        android:layout_height="48dp"
         android:ems="10"
         android:hint="Description"
         android:inputType="text"
@@ -49,8 +50,9 @@
 
     <Button
         android:id="@+id/orgRegisterButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="121dp"
+        android:layout_height="62dp"
+        android:backgroundTint="@color/orange"
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

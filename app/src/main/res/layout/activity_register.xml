@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@color/tan"
     tools:context=".Main.LoginScreen">
 
     <TextView
@@ -53,19 +54,22 @@
         android:id="@+id/adminRegister"
         android:layout_width="224dp"
         android:layout_height="wrap_content"
-        android:text="Register as Admin" />
-
-    <Button
-        android:id="@+id/studentRegister"
-        android:layout_width="224dp"
-        android:layout_height="wrap_content"
-        android:text="Register as Student" />
-
+        android:text="Register as Admin"
+        android:backgroundTint="@color/navy_blue"/>
     <Button
         android:id="@+id/orgReg"
         android:layout_width="224dp"
         android:layout_height="wrap_content"
-        android:text="Register as Organization" />
+        android:text="Register as Organization"
+        android:backgroundTint="@color/medium_blue"/>
+    <Button
+        android:id="@+id/studentRegister"
+        android:layout_width="224dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/orange"
+        android:text="Register as Student" />
+
+
 
     <TextView
         android:id="@+id/login_now"
