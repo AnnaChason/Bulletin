@@ -101,21 +101,24 @@ public class OrganizationProfilePage extends AppCompatActivity {
             }
 
         });
+        boolean editVisible;
         if(UserLoadingScreen.getCurrentUserType() == 2){
             mpBtn.setOnClickListener(orgListener(mpBtn));
+            editVisible = true;
         }
         else{
             mpBtn.setOnClickListener(followListener(mpBtn));
+            editVisible = false;
         }
-
         /*
          Setting up recyclerview
          */
         RecyclerView orgEventsRV = findViewById(R.id.orgProfileRV);
         events = new ArrayList<>();
-        rvAdapter = new EventRecyclerViewAdapter(this, events);
+        rvAdapter = new EventRecyclerViewAdapter(this, events, editVisible);
         orgEventsRV.setAdapter(rvAdapter);
         orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
+
 
         /*
         set up events
