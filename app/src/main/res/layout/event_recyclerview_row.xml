@@ -99,6 +99,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -106,7 +107,7 @@
                 android:id="@+id/descriptionVT"
                 android:layout_width="166dp"
                 android:layout_height="55dp"
-                android:layout_marginTop="96dp"
+                android:layout_marginTop="92dp"
                 android:text="Description"
                 android:textAlignment="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -144,22 +145,37 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.478"
+                app:layout_constraintHorizontal_bias="0.551"
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toBottomOf="@+id/descriptionVT"
-                app:layout_constraintVertical_bias="0.221" />
+                app:layout_constraintVertical_bias="0.144" />
 
             <Button
                 android:id="@+id/orgNameBtn"
                 android:layout_width="176dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:backgroundTint="@color/medium_blue"
                 android:text="organizationName"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.545"
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
 
+            <ImageButton
+                android:id="@+id/editBtn"
+                android:layout_width="54dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/navy_blue"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/eventNameVT"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/baseline_edit_24" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

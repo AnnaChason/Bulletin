@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,16 +26,13 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
     private ArrayList<Event> events;
     private Context context;
+    private EventRecyclerViewAdapter.MyViewHolder holder;
+    private boolean editBtnVisible;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-           /*
-        updates collections
-         */
-
-
-    public EventRecyclerViewAdapter(Context context, ArrayList<Event> events){
+    public EventRecyclerViewAdapter(Context context, ArrayList<Event> events, boolean editBtnVisible){
         this.events = events;
         this.context = context;
+        this.editBtnVisible = editBtnVisible;
     }
 
     @NonNull
@@ -43,7 +41,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     public EventRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflator = LayoutInflater.from(context);
         View view = inflator.inflate(R.layout.event_recyclerview_row, parent,false);
-        return new EventRecyclerViewAdapter.MyViewHolder(view);
+        holder = new EventRecyclerViewAdapter.MyViewHolder(view);
+        return holder;
     }
 
     @Override
@@ -60,7 +59,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         Glide.with(context)
                 .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
-        if(UserLoadingScreen.getCurrentUserType() != 1){
+        if(UserLoadingScreen.getCurrentUserType() != 3){
             holder.attendingBtn.setVisibility(View.GONE); //organizations and admin don't attend events
         }
 
@@ -103,6 +102,20 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 context.startActivity(toOrgProfile);
             }
         });
+        if(editBtnVisible) {
+            holder.editBtn.setVisibility(View.VISIBLE);
+            holder.editBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent toEdit = new Intent(context, eventEdit.class);
+                    toEdit.putExtra("event", events.get(holder.getAdapterPosition()).getTitle());
+                    context.startActivity(toEdit);
+                }
+            });
+        }
+        else{
+            holder.editBtn.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -118,6 +131,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         ImageView poster;
         CheckBox attendingBtn;
         Button orgNameBtn, zoomButton;
+        ImageButton editBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -131,6 +145,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             categoryVT = itemView.findViewById(R.id.categoryTV);
             orgNameBtn = itemView.findViewById(R.id.orgNameBtn);
             zoomButton = itemView.findViewById(R.id.zoomButton);
+            editBtn = itemView.findViewById(R.id.editBtn);
 
         }
     }
