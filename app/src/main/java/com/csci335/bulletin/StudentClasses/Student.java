@@ -1,5 +1,7 @@
 package com.csci335.bulletin.StudentClasses;
 
+import com.csci335.bulletin.Events.Event;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,10 +17,14 @@ public class Student {
     private Gender gender;
     private List<SpecialStatus> specialStatus;
 
+    private List<Event> events;
+
     // unneeded?
     public Student(String ID, ArrayList<SpecialStatus> status){
         this.ID = ID;
         this.specialStatus = status;
+
+        events = new ArrayList<Event>();
     }
 
     public Student() {
@@ -39,4 +45,20 @@ public class Student {
     public void setGender(Gender gender) { this.gender = gender; }
     public List<SpecialStatus> getSpecialStatus() { return specialStatus; }
     public void setSpecialStatus(SpecialStatus specialStatus) { this.specialStatus.add(specialStatus); }
+    public void addEvent(Event event) {
+        this.events.add(event);
+    }
+    public void removeEvent(Event event) {
+        this.events.remove(event);
+    }
+    public List<Event> getEvents() {
+        return events;
+    }
+    public String toString() {
+        String result = "";
+        for(int i = 0; i < events.toArray().length; i++) {
+            result += events.get(i).getTitle() + " ";
+        }
+        return result;
+    }
 }

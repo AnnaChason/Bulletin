@@ -2,6 +2,8 @@ package com.csci335.bulletin.Events;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +12,23 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Main.UserLoadingScreen;
+import com.csci335.bulletin.Organizations.Organization;
 import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
+import com.csci335.bulletin.StudentClasses.Student;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -26,12 +38,15 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     private ArrayList<Event> events;
     private Context context;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth auth;
 
            /*
         updates collections
          */
 
-
+    protected void onCreate(Bundle savedInstanceState) {
+        auth = FirebaseAuth.getInstance();
+    }
     public EventRecyclerViewAdapter(Context context, ArrayList<Event> events){
         this.events = events;
         this.context = context;
@@ -73,13 +88,35 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 /*
                 need to figure out how to store which users are attending, and for the user which events they are attending.
                 */
-                if(holder.attendingBtn.isChecked())
-                    events.get(holder.getAdapterPosition()).updateAttendance(+1);
-                else
+                Event event = events.get(holder.getAdapterPosition());
+                if(holder.attendingBtn.isChecked()) {
+                    event.updateAttendance(+1);
+                } else {
                     events.get(holder.getAdapterPosition()).updateAttendance(-1);
+                }
 
                 db.collection("approvedEvents").document(events.get(holder.getAdapterPosition()).getTitle()).update("attendance",events.get(holder.getAdapterPosition()).getAttendance());
                 notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
+
+                DocumentReference docRef = db.collection("studentInfo").document(auth.getCurrentUser().getUid());
+                docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Student student = documentSnapshot.toObject(Student.class);
+                        if (holder.attendingBtn.isChecked()) {
+                            event.addStudent(student);
+                            student.addEvent(event);
+                            Log.d("Student's Events", student.toString());
+                            Log.d("Event's Students", event.studentsToString());
+                        } else {
+                            //setText("Something went wrong, check EventRecyclerViewAdapterClass");
+                            event.removeStudent(student);
+                            student.removeEvent(event);
+                            Log.d("Student's Events", student.toString());
+                            Log.d("Event's Students", event.studentsToString());
+                        }
+                    }
+                });
             }
         });
 

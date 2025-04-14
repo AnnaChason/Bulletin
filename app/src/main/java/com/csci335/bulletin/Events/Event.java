@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.csci335.bulletin.Organizations.Organization;
+import com.csci335.bulletin.StudentClasses.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /*
 class to hold data for each event post
@@ -37,6 +39,8 @@ public class Event implements Comparable<Event>{
     private String organizationName;
  //   private static StorageReference storage = FirebaseStorage.getInstance().getReference();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private List<Student> students;
 
     public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID) {
         this.location = location;
@@ -62,6 +66,8 @@ public class Event implements Comparable<Event>{
                 }
             });
         }
+
+        students = new ArrayList<Student>();
     }
     public Event(){
 
@@ -95,6 +101,19 @@ public class Event implements Comparable<Event>{
     public void setOrganizationID(String organizationID) {this.organizationID = organizationID;}
     public String getOrganizationName() {return organizationName;}
     public void setOrganizationName(String organizationName) {this.organizationName = organizationName;}
+    public void addStudent(Student student) {
+        this.students.add(student);
+    }
+    public void removeStudent(Student student) {
+        this.students.remove(student);
+    }
+    public String studentsToString() {
+        String result = "";
+        for(int i = 0; i < students.toArray().length; i++) {
+            result += students.get(i).getName() + " ";
+        }
+        return result;
+    }
 
     /*
             Returns event date as a number that can be compared to other dates. form YYMMDD
