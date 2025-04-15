@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.csci335.bulletin.Main.LoginScreen;
+import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,7 +48,7 @@ public class AdminInfoForm extends AppCompatActivity {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("adminInfo").document(newAdmin.getUid()).set(newAdmin);
 
-                    Intent toHome = new Intent(getApplicationContext(), AdminHomePage.class);
+                    Intent toHome = new Intent(getApplicationContext(), UserLoadingScreen.class);
                     startActivity(toHome);
                 }
                 else{
@@ -59,9 +60,6 @@ public class AdminInfoForm extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
                     startActivity(intent);
                     finish();
-                    //back to login page
-                    Intent toHome = new Intent(getApplicationContext(), LoginScreen.class);
-                    startActivity(toHome);
                 }
 
             }

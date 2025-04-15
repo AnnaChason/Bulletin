@@ -66,23 +66,19 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
             }
         });
 
-        holder.pendingBT.setOnClickListener(new View.OnClickListener() {
+       holder.rejectButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if(holder.pendingBT.isChecked()) {
                     Event event = pendingEvents.get(holder.getAdapterPosition());
                     //Deletes from ArrayList
                     pendingEvents.remove(holder.getAdapterPosition());
 
-                    //Delete from Collection 1  in Firebase
+                    //Delete from Collection 1 in Firebase
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("eventApplications").document(event.getTitle()).delete();
                     db.collection("approvedEvents").document(event.getTitle()).set(event);
                     notifyDataSetChanged();
-                } else {
-                   return;
-                }
             }
         });
 
@@ -97,8 +93,7 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
         //grabbing views and assigning variables
         TextView eventNameVT, dateVT, locationVT,descriptionVT;
         ImageView poster;
-        TextView status, PendingStatus;
-        CheckBox pendingBT;
+        TextView status;
         Button approveButton, rejectButton, zoomButton;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
