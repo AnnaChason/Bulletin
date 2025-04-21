@@ -15,4 +15,6 @@
     <string name="click_to_register">click_to_register</string>
     <string name="logout">Logout</string>
     <string name="adminhomepage">AdminHomePage</string>
+    <string name="archive"><u>View Archive</u></string>
+    <string name="to_current"><u>Return to Current</u></string>
 </resources>

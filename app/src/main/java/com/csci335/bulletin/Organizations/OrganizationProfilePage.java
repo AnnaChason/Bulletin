@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -44,7 +45,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();;
 
     //events to be displayed on screen
-    private ArrayList<Event> events;
+    private ArrayList<Event> events,archive,pending;
     private ArrayList<Event> approved = new ArrayList<>();;
     private EventRecyclerViewAdapter rvAdapter;
 
@@ -70,13 +71,40 @@ public class OrganizationProfilePage extends AppCompatActivity {
         /*
         setting up screen based on user type
          */
+        boolean userIsOrg = false;
         Button mpBtn = findViewById(R.id.multiPurposeBtn);
+        TextView archiveBtn = findViewById(R.id.archiveBtn);
+        TabLayout typeTabs = findViewById(R.id.eventTabs);
+
         if(getIntent().hasExtra("OrgId")) {
             orgId = getIntent().getExtras().getString("OrgId");
+            mpBtn.setOnClickListener(followListener(mpBtn));
+            mpBtn.setVisibility(View.VISIBLE);
+            typeTabs.setVisibility(View.GONE);
+            archiveBtn.setVisibility(View.VISIBLE);
+            archiveBtn.setOnClickListener(new View.OnClickListener() {
+                boolean isClicked = false;
+                @Override
+                public void onClick(View v) {
+                    if(!isClicked) {
+                        archiveEvents();
+                        archiveBtn.setText(R.string.to_current);
+                    }
+                    else {
+                        currentEvents();
+                        archiveBtn.setText(R.string.archive);
+                    }
+                    isClicked = !isClicked;
+                }
+            });
         }
         if(orgId == null){//current user is the organization trying to view their own page
             orgId = FirebaseAuth.getInstance().getUid();
             mpBtn.setText("View pending events");
+            mpBtn.setVisibility(View.GONE);
+            archiveBtn.setVisibility(View.GONE);
+            typeTabs.setVisibility(View.VISIBLE);
+            userIsOrg = true;
         }
         TextView orgNameTV = findViewById(R.id.orgNameTV);
         TextView orgDescTV = findViewById(R.id.orgDescTV);
@@ -97,28 +125,39 @@ public class OrganizationProfilePage extends AppCompatActivity {
                     orgNameTV.setText(orgId);
                     orgDescTV.setText("This organization does not exist");
                 }
-
             }
-
         });
-        boolean editVisible;
-        if(UserLoadingScreen.getCurrentUserType() == 2){
-            mpBtn.setOnClickListener(orgListener(mpBtn));
-            editVisible = true;
-        }
-        else{
-            mpBtn.setOnClickListener(followListener(mpBtn));
-            editVisible = false;
-        }
+
         /*
          Setting up recyclerview
          */
         RecyclerView orgEventsRV = findViewById(R.id.orgProfileRV);
         events = new ArrayList<>();
-        rvAdapter = new EventRecyclerViewAdapter(this, events, editVisible);
+        rvAdapter = new EventRecyclerViewAdapter(this, events, userIsOrg);
         orgEventsRV.setAdapter(rvAdapter);
         orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
 
+        typeTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // Called when a tab is selected
+                switch (tab.getPosition()) {
+                    case 0:
+                        currentEvents();
+                        break;
+                    case 1:
+                        pendingEvents();
+                        break;
+                    case 2:
+                        archiveEvents();
+                        break;
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
 
         /*
         set up events
@@ -134,51 +173,6 @@ public class OrganizationProfilePage extends AppCompatActivity {
             }
         });
     }
-
-    /*
-    makes the button switch between approved events and pending events
-     */
-    private View.OnClickListener orgListener(Button mpBtn) {
-        return new View.OnClickListener() {
-            boolean clicked = false;
-            ArrayList<Event> pending;
-
-            @Override
-            public void onClick(View v) {
-                events.clear();
-                rvAdapter.notifyDataSetChanged();
-                if (clicked) {//going back to approved events
-                    mpBtn.setText("View pending events");
-                    for (Event e : approved) {
-                        events.add(e);
-                    }
-                    rvAdapter.notifyDataSetChanged();
-                } else {//going to pending events
-                    mpBtn.setText("View approved events");
-                    if (pending == null) {//haven't loaded pending events yet
-                        pending = new ArrayList<>();
-                        db.collection("eventApplications").whereEqualTo("organizationID", orgId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    pending.add(document.toObject(Event.class));
-                                    events.add(document.toObject(Event.class));
-                                }
-                                rvAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    } else {
-                        for (Event e : pending) {
-                            events.add(e);
-                        }
-                        rvAdapter.notifyDataSetChanged();
-                    }
-                }
-                clicked = !clicked;
-            }
-        };
-    }
-
 
     /*
     makes button handle following/unfollowing organizations
@@ -198,4 +192,67 @@ public class OrganizationProfilePage extends AppCompatActivity {
             }
         };
     }
+
+    /*
+    switches to pending events
+    */
+    private void pendingEvents() {
+        events.clear();
+        if (pending == null) {//haven't loaded pending events yet
+            pending = new ArrayList<>();
+            db.collection("eventApplications").whereEqualTo("organizationID", orgId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        pending.add(document.toObject(Event.class));
+                        events.add(document.toObject(Event.class));
+                    }
+                    rvAdapter.notifyDataSetChanged();
+                }
+            });
+        } else {
+            for (Event e : pending) {
+                events.add(e);
+            }
+            rvAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /*
+      switches to archived events
+     */
+    private void archiveEvents (){
+        events.clear();
+        if(archive == null){
+            archive = new ArrayList<>();
+            db.collection("eventArchive").whereEqualTo("organizationID", orgId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        archive.add(document.toObject(Event.class));
+                        events.add(document.toObject(Event.class));
+                    }
+                    rvAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+        else{
+            for(Event e: archive){
+                events.add(e);
+            }
+            rvAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /*
+    switches to current events
+     */
+    private void currentEvents (){
+        events.clear();
+        for(Event e: approved){
+            events.add(e);
+        }
+        rvAdapter.notifyDataSetChanged();
+    }
+
 }
