@@ -50,7 +50,7 @@ public class HomePage extends AppCompatActivity {
         ArrayList<Event> events = new ArrayList<Event>();//all events to be displayed on feed
         RecyclerView eventFeedRV = findViewById(R.id.eventFeedRV);
         events = Event.setUpEvents(eventFeedRV);//retreives events from database
-        EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events,false);
+        EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events);
         eventFeedRV.setAdapter(rvAdapter);
         eventFeedRV.setLayoutManager(new LinearLayoutManager(this));
 
