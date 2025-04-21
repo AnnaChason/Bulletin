@@ -127,10 +127,6 @@ public class EventApplicationForm extends AppCompatActivity {
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id);
                     db.collection("eventApplications").document(title).set(newEventApp);
-
-                    // Redirect to profile page
-                    Intent home = new Intent(getApplicationContext(), OrganizationProfilePage.class);
-                    startActivity(home);
                 });
             }).addOnFailureListener(e -> {
                 Log.e("GlideDebug", "Failed to upload image: ", e);
@@ -142,11 +138,10 @@ public class EventApplicationForm extends AppCompatActivity {
              //put the object in the database
             Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id);
             db.collection("eventApplications").document(title).set(newEventApp);
-
-            // redirect to home page
-            Intent home = new Intent(getApplicationContext(), HomePage.class);
-            startActivity(home);
         }
+        // redirect to home page
+        Intent home = new Intent(getApplicationContext(), OrganizationProfilePage.class);
+        startActivity(home);
     }
     private final ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

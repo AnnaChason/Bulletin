@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -115,35 +116,6 @@ public class Event implements Comparable<Event>{
         return result;
     }
 
-    /*
-            Returns event date as a number that can be compared to other dates. form YYMMDD
-             */
-    public int dateToNum(){
-        int dateNums = 0;
-        try{
-            int idx = date.indexOf("/");
-            dateNums = Integer.parseInt(date.substring(0, idx)) * 100;
-            dateNums += Integer.parseInt(date.substring(idx+1, date.indexOf("/",idx+1)));
-            idx = date.indexOf("/",idx+1);
-            String year = date.substring(idx+1);
-            if(year.length() > 2)
-                year = year.substring(year.length() - 2);
-            dateNums += Integer.parseInt(year) * 10000;
-    } catch (Exception e) {//date invalid
-            dateNums = -999;
-        }
-        return dateNums;
-    }
-
-    /*
-    comparing events by date earlier to later
-        (could come up with other ways to sort it later like number of attendees)
-    0 means equal, - number means this event is earlier, positive number means this event is later
-     */
-    @Override
-    public int compareTo(Event e) {
-        return Integer.compare(this.dateToNum(), e.dateToNum());
-    }
 
     /*
    gets events from the database
@@ -172,7 +144,7 @@ public class Event implements Comparable<Event>{
     }
 
     /*
-   removes past events
+   moves past events to archive
     */
     public static void filterEvents(ArrayList<Event> events){
         StorageReference storage = FirebaseStorage.getInstance().getReference();
@@ -188,14 +160,16 @@ public class Event implements Comparable<Event>{
             Event event = iterator.next();
             if (event.dateToNum() < todayDateNum) {
                 iterator.remove();  // Remove event if it's before today's date
-                // also delete event from the database and its poster
+                // move event to archive
                 if(event.getTitle() != null){
+                    db.collection("eventArchive").document(event.getTitle()).set(event);
                     db.collection("approvedEvents").document(event.getTitle()).delete();
-                    storage.child(event.getPosterImg()).delete();
+                    db.collection("eventApplications").document(event.getTitle()).delete();
                 }
             }
         }
     }
+
 
     /*
     returns int array where index 0 has the month, 1 has the day, and 0 has the last 2 digits of the year
@@ -214,5 +188,58 @@ public class Event implements Comparable<Event>{
         }
         return dateNums;
     }
+    /*
+    Returns event date as a number that can be compared to other dates. form YYMMDD
+     */
+    public int dateToNum(){
+        int dateNums = 0;
+        try{
+            int idx = date.indexOf("/");
+            dateNums = Integer.parseInt(date.substring(0, idx)) * 100;
+            dateNums += Integer.parseInt(date.substring(idx+1, date.indexOf("/",idx+1)));
+            idx = date.indexOf("/",idx+1);
+            String year = date.substring(idx+1);
+            if(year.length() > 2)
+                year = year.substring(year.length() - 2);
+            dateNums += Integer.parseInt(year) * 10000;
+        } catch (Exception e) {//date invalid
+            dateNums = -999;
+        }
+        return dateNums;
+    }
 
+    /*
+    comparing events by date earlier to later
+    0 means equal, - number means this event is earlier, positive number means this event is later
+    */
+    @Override
+    public int compareTo(Event e) {
+        return Integer.compare(this.dateToNum(), e.dateToNum());
+    }
+
+    /*
+    compares events by number of people attending
+     */
+    private static class PopularityFilter implements Comparator<Event> {
+        @Override
+        public int compare(Event e1, Event e2) {
+            return Integer.compare(e2.getAttendance(), e1.getAttendance());
+        }
+    }
+    /*
+    Compares events by their date
+     */
+    private static class DateFilter implements Comparator<Event>{
+        @Override
+        public int compare(Event e1, Event e2) {
+            return Integer.compare(e1.dateToNum(), e2.dateToNum());
+        }
+    }
+    public static String[] sortTypes(){
+        return new String[] {"Date", "Popularity"};
+    }
+    public static Comparator<Event> sortMethods(int i){
+        Comparator[] methods = {new DateFilter(),new PopularityFilter()};
+        return methods[i];
+    }
 }

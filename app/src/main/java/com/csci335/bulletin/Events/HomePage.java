@@ -1,6 +1,10 @@
 package com.csci335.bulletin.Events;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +23,9 @@ import java.util.ArrayList;
 
 
 public class HomePage extends AppCompatActivity {
+
+    ArrayList<Event> events = new ArrayList<Event>();//all events to be displayed on feed
+    EventRecyclerViewAdapter rvAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +54,28 @@ public class HomePage extends AppCompatActivity {
         /*
         Event display manager
          */
-        ArrayList<Event> events = new ArrayList<Event>();//all events to be displayed on feed
         RecyclerView eventFeedRV = findViewById(R.id.eventFeedRV);
         events = Event.setUpEvents(eventFeedRV);//retreives events from database
-        EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events);
+        rvAdapter = new EventRecyclerViewAdapter(this, events,false);
         eventFeedRV.setAdapter(rvAdapter);
         eventFeedRV.setLayoutManager(new LinearLayoutManager(this));
+
+        /*
+        Sort drop down menu
+        Need to fix attendance not changing with event
+         */
+        // Handling category drop down menu
+        Spinner sortSpinner = findViewById(R.id.sortSpinner);
+        sortSpinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, Event.sortTypes()));
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                events.sort(Event.sortMethods(position));
+                rvAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
     }
 
