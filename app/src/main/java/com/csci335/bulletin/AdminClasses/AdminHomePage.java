@@ -80,7 +80,7 @@ public class AdminHomePage extends AppCompatActivity {
                            Collections.sort(events);
                            adapter.notifyDataSetChanged();
                         } else {
-                            System.out.println("ERROR RETREIVING EVENT FEED"); //fix later
+                            System.out.println("ERROR RETRIEVING EVENT FEED"); // fix later
                         }
                     }
                 });

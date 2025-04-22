@@ -168,8 +168,6 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             orgNameBtn = itemView.findViewById(R.id.orgNameBtn);
             zoomButton = itemView.findViewById(R.id.zoomButton);
             attendingBtn = itemView.findViewById(R.id.attendingBtn);
-
-            Log.d("CHECKBOX", "MyViewHolder: Checkbox print " + attendingBtn);
         }
     }
 
