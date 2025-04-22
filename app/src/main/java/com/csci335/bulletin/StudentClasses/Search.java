@@ -77,16 +77,18 @@ public class Search extends AppCompatActivity {
                 else { checkedCats.remove(Event.categoryOptions()[pos]); }
 
                 // either way, update the recycler view
-                db.collection("approvedEvents").whereIn("category", checkedCats).get().addOnCompleteListener(
-                        new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    events.add(document.toObject(Event.class));
+                if (!checkedCats.isEmpty()) {
+                    db.collection("approvedEvents").whereIn("category", checkedCats).get().addOnCompleteListener(
+                            new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        events.add(document.toObject(Event.class));
+                                    }
+                                    rvAdapter.notifyDataSetChanged();
                                 }
-                                rvAdapter.notifyDataSetChanged();
-                         }
-                });
+                            });
+                }
             }
         };
 
