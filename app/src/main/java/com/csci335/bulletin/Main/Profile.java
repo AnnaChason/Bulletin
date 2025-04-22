@@ -15,7 +15,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Organizations.Organization;
+import com.csci335.bulletin.Organizations.OrganizationInfo;
 import com.csci335.bulletin.R;
+import com.csci335.bulletin.StudentClasses.StudentInfoForm;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -82,6 +84,7 @@ public class Profile extends AppCompatActivity {
         if(userType == 1){//admin
             nameTv.setText(user.getEmail());
             descriptionTv.setVisibility(View.INVISIBLE);
+            editBtn.setVisibility((View.GONE));
         }
         else if(userType == 2){//organizaton
             db.collection("organizationInfo").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -97,6 +100,8 @@ public class Profile extends AppCompatActivity {
             nameTv.setText(user.getEmail());
             descriptionTv.setVisibility(View.INVISIBLE);
         }
+
+
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,6 +155,21 @@ public class Profile extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(userType == 2){
+                    Intent intent = new Intent(getApplicationContext(), OrganizationInfo.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else if (userType == 3){
+                    Intent intent = new Intent(getApplicationContext(), StudentInfoForm.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 
