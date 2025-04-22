@@ -63,33 +63,6 @@ public class Search extends AppCompatActivity {
         searchRV.setAdapter(rvAdapter);
         searchRV.setLayoutManager(new LinearLayoutManager(this));
 
-        /*View.OnClickListener checkBoxListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CheckBox cb = (CheckBox) v;
-                int pos = cbToPos(cb, boxes);
-                // add to the list of categories if checked
-                if (cb.isChecked()) {
-                    checkedCats.add(Event.categoryOptions()[pos]);
-                }
-                // remove from list if unchecked
-                else { checkedCats.remove(Event.categoryOptions()[pos]); }
-
-                // either way, update the recycler view
-                if (!checkedCats.isEmpty()) {
-                    db.collection("approvedEvents").whereIn("category", checkedCats).get().addOnCompleteListener(
-                            new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        events.add(document.toObject(Event.class));
-                                    }
-                                    rvAdapter.notifyDataSetChanged();
-                                }
-                            });
-                }
-            }
-        };*/
 
         for (int i = 0; i < boxes.length; i++) {
             CheckBox box = boxes[i];
@@ -112,7 +85,7 @@ public class Search extends AppCompatActivity {
         private RecyclerView rv;
         private EventRecyclerViewAdapter rvAdapter;
         private ArrayList<Event> events;
-        private ArrayList<String> checkedCats = new ArrayList<String>();
+        private static ArrayList<String> checkedCats = new ArrayList<String>();
 
         public CheckBoxListener(String category, RecyclerView rv, EventRecyclerViewAdapter rvAdapter, ArrayList<Event> events) {
             this.category = category;
@@ -146,7 +119,6 @@ public class Search extends AppCompatActivity {
                         });
             }
             else {
-                events = Event.setUpEvents(rv);
                 rvAdapter.notifyDataSetChanged();
             }
         }

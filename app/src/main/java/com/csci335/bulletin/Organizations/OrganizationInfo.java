@@ -58,6 +58,8 @@ public class OrganizationInfo extends AppCompatActivity {
                     orgDescTV.setText(org.getDescription());
                     orgRegisterBtn.setText("Save");
                     cancelBtn.setVisibility(View.VISIBLE);
+                    TextView tv = findViewById(R.id.textView2);
+                    tv.setText("Editing Account");
                 }
                 else{
                     created = false;
