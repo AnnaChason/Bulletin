@@ -124,6 +124,7 @@ public class Search extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             CheckBox cb = (CheckBox) v;
+            events.clear();
             // add to the list of categories if checked
             if (cb.isChecked()) {
                 checkedCats.add(category);
