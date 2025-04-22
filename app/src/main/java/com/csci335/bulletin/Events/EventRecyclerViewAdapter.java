@@ -164,11 +164,12 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             descriptionVT = itemView.findViewById(R.id.descriptionVT);
             numAttendingVT = itemView.findViewById(R.id.numAttendingVT);
             poster = itemView.findViewById(R.id.eventPosterView);
-            attendingBtn = itemView.findViewById(R.id.attendingBtn);
             categoryVT = itemView.findViewById(R.id.categoryTV);
             orgNameBtn = itemView.findViewById(R.id.orgNameBtn);
             zoomButton = itemView.findViewById(R.id.zoomButton);
+            attendingBtn = itemView.findViewById(R.id.attendingBtn);
 
+            Log.d("CHECKBOX", "MyViewHolder: Checkbox print " + attendingBtn);
         }
     }
 
