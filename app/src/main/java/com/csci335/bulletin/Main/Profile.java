@@ -17,6 +17,7 @@ import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Organizations.Organization;
 import com.csci335.bulletin.Organizations.OrganizationInfo;
 import com.csci335.bulletin.R;
+import com.csci335.bulletin.StudentClasses.Student;
 import com.csci335.bulletin.StudentClasses.StudentInfoForm;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -97,8 +98,15 @@ public class Profile extends AppCompatActivity {
             });
         }
         else{//student
-            nameTv.setText(user.getEmail());
-            descriptionTv.setVisibility(View.INVISIBLE);
+            db.collection("studentInfo").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    Student stu = task.getResult().toObject(Student.class);
+                    nameTv.setText(stu.getName());
+                    descriptionTv.setText("Email: " + user.getEmail() + "\nGender: "+ stu.getGender()+ "\nAge: " + stu.getAge() + "\nYear: " + stu.getYear());
+                }
+            });
+
         }
 
 

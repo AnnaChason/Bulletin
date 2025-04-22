@@ -38,5 +38,6 @@ public class Student {
     public Gender getGender() { return gender; }
     public void setGender(Gender gender) { this.gender = gender; }
     public List<SpecialStatus> getSpecialStatus() { return specialStatus; }
-    public void setSpecialStatus(SpecialStatus specialStatus) { this.specialStatus.add(specialStatus); }
+    public void addSpecialStatus(SpecialStatus specialStatus) { this.specialStatus.add(specialStatus); }
+    public void setSpecialStatus(List<SpecialStatus> specialStatus) { this.specialStatus = specialStatus; }
 }
