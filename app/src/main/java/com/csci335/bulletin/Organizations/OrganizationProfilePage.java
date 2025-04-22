@@ -133,7 +133,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
          */
         RecyclerView orgEventsRV = findViewById(R.id.orgProfileRV);
         events = new ArrayList<>();
-        rvAdapter = new EventRecyclerViewAdapter(this, events);
+        rvAdapter = new EventRecyclerViewAdapter(this, events, false);
         orgEventsRV.setAdapter(rvAdapter);
         orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
 

@@ -2,33 +2,22 @@ package com.csci335.bulletin.Events;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Main.UserLoadingScreen;
-import com.csci335.bulletin.Organizations.Organization;
 import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
-import com.csci335.bulletin.StudentClasses.Student;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -37,19 +26,13 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
     private ArrayList<Event> events;
     private Context context;
+    private EventRecyclerViewAdapter.MyViewHolder holder;
+    private boolean editBtnVisible;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth auth;
-
-           /*
-        updates collections
-         */
-
-    protected void onCreate(Bundle savedInstanceState) {
-        auth = FirebaseAuth.getInstance();
-    }
-    public EventRecyclerViewAdapter(Context context, ArrayList<Event> events){
+    public EventRecyclerViewAdapter(Context context, ArrayList<Event> events, boolean editBtnVisible){
         this.events = events;
         this.context = context;
+        this.editBtnVisible = editBtnVisible;
     }
 
     @NonNull
@@ -58,7 +41,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     public EventRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflator = LayoutInflater.from(context);
         View view = inflator.inflate(R.layout.event_recyclerview_row, parent,false);
-        return new EventRecyclerViewAdapter.MyViewHolder(view);
+        holder = new EventRecyclerViewAdapter.MyViewHolder(view);
+        return holder;
     }
 
     @Override
@@ -75,9 +59,6 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         Glide.with(context)
                 .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
-        if(UserLoadingScreen.getCurrentUserType() != 1){
-            holder.attendingBtn.setVisibility(View.GONE); //organizations and admin don't attend events
-        }
 
         /*
         updates attendance
@@ -88,35 +69,13 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 /*
                 need to figure out how to store which users are attending, and for the user which events they are attending.
                 */
-                Event event = events.get(holder.getAdapterPosition());
-                if(holder.attendingBtn.isChecked()) {
-                    event.updateAttendance(+1);
-                } else {
+                if(holder.attendingBtn.isChecked())
+                    events.get(holder.getAdapterPosition()).updateAttendance(+1);
+                else
                     events.get(holder.getAdapterPosition()).updateAttendance(-1);
-                }
 
                 db.collection("approvedEvents").document(events.get(holder.getAdapterPosition()).getTitle()).update("attendance",events.get(holder.getAdapterPosition()).getAttendance());
                 notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
-
-                DocumentReference docRef = db.collection("studentInfo").document(auth.getCurrentUser().getUid());
-                docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Student student = documentSnapshot.toObject(Student.class);
-                        if (holder.attendingBtn.isChecked()) {
-                            event.addStudent(student);
-                            student.addEvent(event);
-                            Log.d("Student's Events", student.toString());
-                            Log.d("Event's Students", event.studentsToString());
-                        } else {
-                            //setText("Something went wrong, check EventRecyclerViewAdapterClass");
-                            event.removeStudent(student);
-                            student.removeEvent(event);
-                            Log.d("Student's Events", student.toString());
-                            Log.d("Event's Students", event.studentsToString());
-                        }
-                    }
-                });
             }
         });
 
@@ -140,6 +99,20 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 context.startActivity(toOrgProfile);
             }
         });
+        if(editBtnVisible) {
+            holder.editBtn.setVisibility(View.VISIBLE);
+            holder.editBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent toEdit = new Intent(context, eventEdit.class);
+                    toEdit.putExtra("event", events.get(holder.getAdapterPosition()).getTitle());
+                    context.startActivity(toEdit);
+                }
+            });
+        }
+        else{
+            holder.editBtn.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -155,6 +128,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         ImageView poster;
         CheckBox attendingBtn;
         Button orgNameBtn, zoomButton;
+        ImageButton editBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -164,12 +138,13 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             descriptionVT = itemView.findViewById(R.id.descriptionVT);
             numAttendingVT = itemView.findViewById(R.id.numAttendingVT);
             poster = itemView.findViewById(R.id.eventPosterView);
+            attendingBtn = itemView.findViewById(R.id.attendingBtn);
             categoryVT = itemView.findViewById(R.id.categoryTV);
             orgNameBtn = itemView.findViewById(R.id.orgNameBtn);
             zoomButton = itemView.findViewById(R.id.zoomButton);
-            attendingBtn = itemView.findViewById(R.id.attendingBtn);
+            editBtn = itemView.findViewById(R.id.editBtn);
+
         }
     }
 
 }
-
