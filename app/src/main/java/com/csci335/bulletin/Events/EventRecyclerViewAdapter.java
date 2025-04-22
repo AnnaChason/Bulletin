@@ -59,9 +59,6 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         Glide.with(context)
                 .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
-        if(UserLoadingScreen.getCurrentUserType() != 3){
-            holder.attendingBtn.setVisibility(View.GONE); //organizations and admin don't attend events
-        }
 
         /*
         updates attendance

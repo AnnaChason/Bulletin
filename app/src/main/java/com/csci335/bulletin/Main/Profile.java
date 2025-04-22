@@ -210,12 +210,14 @@ public class Profile extends AppCompatActivity {
                         public void onComplete(@NonNull Task<List<Task<?>>> task) {
                             mAuth.signOut();
                             user.delete();
+                            Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
+                            startActivity(intent);
+                            finish();
                         }
                     });
                 }
             });
         }
-        Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
-        startActivity(intent);
+
     }
 }
