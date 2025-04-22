@@ -28,7 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 public class Search extends AppCompatActivity {
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,6 @@ public class Search extends AppCompatActivity {
         CheckBox[] boxes = {sportCheckBox, performanceCheckBox, ministryServiceCheckBox,
                 speakerCheckBox, faithCheckBox, movieGamesCheckBox, informationalCheckBox,
                 artCheckBox, foodCheckBox, academicsCheckBox};
-        ArrayList<String> checkedCats = new ArrayList<String>();
 
         // recycler view
         RecyclerView searchRV = findViewById(R.id.recyclerView);
@@ -64,7 +63,7 @@ public class Search extends AppCompatActivity {
         searchRV.setAdapter(rvAdapter);
         searchRV.setLayoutManager(new LinearLayoutManager(this));
 
-        View.OnClickListener checkBoxListener = new View.OnClickListener() {
+        /*View.OnClickListener checkBoxListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CheckBox cb = (CheckBox) v;
@@ -90,10 +89,13 @@ public class Search extends AppCompatActivity {
                             });
                 }
             }
-        };
+        };*/
 
-        for (CheckBox box : boxes) {
-            box.setOnClickListener(checkBoxListener);
+        for (int i = 0; i < boxes.length; i++) {
+            CheckBox box = boxes[i];
+            box.setOnClickListener(
+                    new CheckBoxListener(Event.categoryOptions()[i], searchRV, rvAdapter, events)
+            );
         }
          /*
         Bottom Navigation Bar Manager
@@ -104,17 +106,48 @@ public class Search extends AppCompatActivity {
 
     }
 
-    /**
-     * cbToPos takes a given checkbox object and finds its integer position in a given array of boxes
-     * @param box the checkbox to search for
-     * @param boxes list of checkboxes that it is in
-     * @return integer representing the cb's position
-     */
-    public static int cbToPos(CheckBox box, CheckBox[] boxes) {
-        int counter = 0;
-        while (!(box.equals(boxes[counter]))) {
-            counter++;
+    private static class CheckBoxListener implements View.OnClickListener {
+
+        private String category;
+        private RecyclerView rv;
+        private EventRecyclerViewAdapter rvAdapter;
+        private ArrayList<Event> events;
+        private ArrayList<String> checkedCats = new ArrayList<String>();
+
+        public CheckBoxListener(String category, RecyclerView rv, EventRecyclerViewAdapter rvAdapter, ArrayList<Event> events) {
+            this.category = category;
+            this.rv = rv;
+            this.rvAdapter = rvAdapter;
+            this.events = events;
         }
-        return counter;
+
+        @Override
+        public void onClick(View v) {
+            CheckBox cb = (CheckBox) v;
+            // add to the list of categories if checked
+            if (cb.isChecked()) {
+                checkedCats.add(category);
+            }
+            // remove from list if unchecked
+            else { checkedCats.remove(category); }
+
+            // either way, update the recycler view
+            if (!checkedCats.isEmpty()) {
+                db.collection("approvedEvents").whereIn("category", checkedCats).get().addOnCompleteListener(
+                        new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    events.add(document.toObject(Event.class));
+                                }
+                                rvAdapter.notifyDataSetChanged();
+                            }
+                        });
+            }
+            else {
+                events = Event.setUpEvents(rv);
+                rvAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }
