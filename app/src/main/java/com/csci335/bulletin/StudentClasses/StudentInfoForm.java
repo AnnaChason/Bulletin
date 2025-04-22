@@ -16,12 +16,16 @@ import android.widget.RadioGroup;
 import android.widget.CheckBox;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,13 +35,11 @@ public class StudentInfoForm extends AppCompatActivity {
     EditText ageEditText;
     RadioGroup maleFemaleRadioGroup;
     RadioGroup yearRadioGroup;
-    CheckBox internationalCB;
-    CheckBox missionaryCB;
-    CheckBox thirdCultureCB;
-    CheckBox pastorKidCB;
-
-
+    CheckBox internationalCB,pastorKidCB,missionaryCB,thirdCultureCB;
     private Student student;
+    private boolean created;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     @Override
@@ -45,9 +47,26 @@ public class StudentInfoForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_student_info_form);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        db.collection("studentInfo").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.getResult().exists()){
+                    student = task.getResult().toObject(Student.class);
+                    created = true;
+                }
+                else {
+                    student = new Student(auth.getCurrentUser().getUid(), new ArrayList<SpecialStatus>());
+                    created = false;
+                }
+            }
+        });
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        student = new Student(auth.getCurrentUser().getUid(), new ArrayList<SpecialStatus>());
+
         // Components (text + radio buttons + check boxes)
         nameEditText = findViewById(R.id.nameET);
         ageEditText = findViewById(R.id.ageET);
@@ -94,12 +113,6 @@ public class StudentInfoForm extends AppCompatActivity {
             }
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         Button confirmationButton = findViewById(R.id.ConfirmationButton);
         confirmationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +140,6 @@ public class StudentInfoForm extends AppCompatActivity {
                     student.setSpecialStatus(SpecialStatus.PK);
                 }
 
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 CollectionReference studentInfo = db.collection("studentInfo");
                 db.collection("studentInfo").document(student.getID()).set(student);
 

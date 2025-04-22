@@ -5,17 +5,30 @@ import android.view.View;
 import android.widget.CheckBox;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.csci335.bulletin.Events.Event;
+import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
 import com.csci335.bulletin.Main.NavigationManager;
 import com.csci335.bulletin.Main.Profile;
 import com.csci335.bulletin.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 public class Search extends AppCompatActivity {
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,28 +56,99 @@ public class Search extends AppCompatActivity {
                 speakerCheckBox, faithCheckBox, movieGamesCheckBox, informationalCheckBox,
                 artCheckBox, foodCheckBox, academicsCheckBox};
 
-        View.OnClickListener checkBoxListener = new View.OnClickListener() {
+        // recycler view
+        RecyclerView searchRV = findViewById(R.id.recyclerView);
+        ArrayList<Event> events = Event.setUpEvents(searchRV);
+        EventRecyclerViewAdapter rvAdapter = new EventRecyclerViewAdapter(this, events, false);
+        searchRV.setAdapter(rvAdapter);
+        searchRV.setLayoutManager(new LinearLayoutManager(this));
+
+        /*View.OnClickListener checkBoxListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CheckBox cb = (CheckBox) v;
+                int pos = cbToPos(cb, boxes);
                 // add to the list of categories if checked
-
+                if (cb.isChecked()) {
+                    checkedCats.add(Event.categoryOptions()[pos]);
+                }
                 // remove from list if unchecked
+                else { checkedCats.remove(Event.categoryOptions()[pos]); }
 
                 // either way, update the recycler view
-                // adapter.notifyDatasetChanged();
+                if (!checkedCats.isEmpty()) {
+                    db.collection("approvedEvents").whereIn("category", checkedCats).get().addOnCompleteListener(
+                            new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        events.add(document.toObject(Event.class));
+                                    }
+                                    rvAdapter.notifyDataSetChanged();
+                                }
+                            });
+                }
             }
-        };
+        };*/
 
-        for (CheckBox box : boxes) {
-            box.setOnClickListener(checkBoxListener);
+        for (int i = 0; i < boxes.length; i++) {
+            CheckBox box = boxes[i];
+            box.setOnClickListener(
+                    new CheckBoxListener(Event.categoryOptions()[i], searchRV, rvAdapter, events)
+            );
         }
          /*
         Bottom Navigation Bar Manager
-         */
+        */
         NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBarS);
         btmNavBarMain.setSelectedItemId(R.id.other);
         new NavigationManager(btmNavBarMain, Search.this);
 
+    }
+
+    private static class CheckBoxListener implements View.OnClickListener {
+
+        private String category;
+        private RecyclerView rv;
+        private EventRecyclerViewAdapter rvAdapter;
+        private ArrayList<Event> events;
+        private ArrayList<String> checkedCats = new ArrayList<String>();
+
+        public CheckBoxListener(String category, RecyclerView rv, EventRecyclerViewAdapter rvAdapter, ArrayList<Event> events) {
+            this.category = category;
+            this.rv = rv;
+            this.rvAdapter = rvAdapter;
+            this.events = events;
+        }
+
+        @Override
+        public void onClick(View v) {
+            CheckBox cb = (CheckBox) v;
+            events.clear();
+            // add to the list of categories if checked
+            if (cb.isChecked()) {
+                checkedCats.add(category);
+            }
+            // remove from list if unchecked
+            else { checkedCats.remove(category); }
+
+            // either way, update the recycler view
+            if (!checkedCats.isEmpty()) {
+                db.collection("approvedEvents").whereIn("category", checkedCats).get().addOnCompleteListener(
+                        new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    events.add(document.toObject(Event.class));
+                                }
+                                rvAdapter.notifyDataSetChanged();
+                            }
+                        });
+            }
+            else {
+                events = Event.setUpEvents(rv);
+                rvAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }
