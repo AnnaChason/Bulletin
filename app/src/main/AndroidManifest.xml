@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Bulletin"
         tools:targetApi="34">
         <activity
-            android:name=".Events.eventEdit"
+            android:name=".Events.EventEdit"
             android:exported="false" />
         <activity
             android:name=".Events.Zoom"

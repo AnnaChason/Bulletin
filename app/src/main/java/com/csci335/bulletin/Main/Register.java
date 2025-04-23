@@ -35,18 +35,6 @@ public class Register extends AppCompatActivity {
     ProgressBar progressBar;
     TextView textView;
 
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), HomePage.class);
-            startActivity(intent);
-            finish();
-        }
-    }*/
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
