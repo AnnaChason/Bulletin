@@ -28,12 +28,12 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/nameET"
+                android:id="@+id/searchET"
                 android:layout_width="222dp"
                 android:layout_height="49dp"
                 android:ems="10"
+                android:hint="Search..."
                 android:inputType="text"
-                android:text="Search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.185"
@@ -42,7 +42,7 @@
                 app:layout_constraintVertical_bias="0.551" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/searchBtn"
                 android:layout_width="59dp"
                 android:layout_height="50dp"
                 android:backgroundTint="@color/navy_blue"

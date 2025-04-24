@@ -69,6 +69,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         Glide.with(context)
                 .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
+        if(UserLoadingScreen.getCurrentUserType() != 3){
+            holder.attendingBtn.setVisibility(View.GONE); //organizations and admin don't attend events
+        }
 
         /*
         updates attendance
@@ -113,9 +116,10 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.zoomButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Context context = v.getContext();
-                Intent intent = new Intent(context, Zoom.class);
-                intent.putExtra("imageUrl", events.get(holder.getAdapterPosition()).getPosterImg());
-                context.startActivity(intent);
+                    Intent intent = new Intent(context, Zoom.class);
+                    intent.putExtra("imageUrl", events.get(holder.getAdapterPosition()).getPosterImg());
+                    context.startActivity(intent);
+
             }
         });
 
@@ -135,8 +139,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             holder.editBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent toEdit = new Intent(context, eventEdit.class);
-                    toEdit.putExtra("event", events.get(holder.getAdapterPosition()).getTitle());
+                    Intent toEdit = new Intent(context, EventEdit.class);
+                   toEdit.putExtra("event", events.get(holder.getAdapterPosition()).getTitle());
                     context.startActivity(toEdit);
                 }
             });

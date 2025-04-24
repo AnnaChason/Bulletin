@@ -5,7 +5,7 @@ import java.util.*;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.csci335.bulletin.Events.HomePage;
+import com.csci335.bulletin.Main.Profile;
 import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.R;
 import android.view.View;
@@ -36,6 +36,7 @@ public class StudentInfoForm extends AppCompatActivity {
     RadioGroup maleFemaleRadioGroup;
     RadioGroup yearRadioGroup;
     CheckBox internationalCB,pastorKidCB,missionaryCB,thirdCultureCB;
+    Button cancelbtn;
     private Student student;
     private boolean created;
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -52,6 +53,18 @@ public class StudentInfoForm extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // Components (text + radio buttons + check boxes)
+        nameEditText = findViewById(R.id.searchET);
+        ageEditText = findViewById(R.id.ageET);
+        maleFemaleRadioGroup = findViewById(R.id.maleFemaleRG);
+        yearRadioGroup = findViewById(R.id.yearRG);
+        cancelbtn = findViewById(R.id.cancelBtn);
+
+        internationalCB = findViewById(R.id.InternationalCB);
+        missionaryCB = findViewById(R.id.missionaryKidCB);
+        thirdCultureCB = findViewById(R.id.thirdCultureCB);
+        pastorKidCB = findViewById(R.id.pastorKidCB);
+
         /*
         check if student is editing already created account or is a new user
          */
@@ -61,6 +74,34 @@ public class StudentInfoForm extends AppCompatActivity {
                 if(task.getResult().exists()){
                     student = task.getResult().toObject(Student.class);
                     created = true;
+                    cancelbtn.setVisibility(View.VISIBLE);
+                    nameEditText.setText(student.getName());
+                    ageEditText.setText(""+student.getAge());
+
+                    if(student.getGender().equals(Gender.Male))
+                        maleFemaleRadioGroup.check(R.id.maleRB);
+                    else
+                        maleFemaleRadioGroup.check(R.id.femaleRB);
+
+                    if(student.getYear().equals(Year.Freshmen))
+                        yearRadioGroup.check(R.id.freshmenRB);
+                    else if(student.getYear().equals(Year.Sophomore))
+                        yearRadioGroup.check(R.id.sophomoreRB);
+                    else if(student.getYear().equals(Year.Junior))
+                        yearRadioGroup.check(R.id.juniorRB);
+                    else if(student.getYear().equals(Year.Senior))
+                        yearRadioGroup.check(R.id.seniorRB);
+                    else if(student.getYear().equals(Year.Grad))
+                        yearRadioGroup.check(R.id.gradRB);
+
+                    if(student.getSpecialStatus().contains(SpecialStatus.International))
+                        internationalCB.setChecked(true);
+                    if(student.getSpecialStatus().contains(SpecialStatus.MK))
+                        missionaryCB.setChecked(true);
+                    if(student.getSpecialStatus().contains(SpecialStatus.ThirdCulture))
+                        thirdCultureCB.setChecked(true);
+                    if(student.getSpecialStatus().contains(SpecialStatus.PK))
+                        pastorKidCB.setChecked(true);
                 }
                 else {
                     student = new Student(auth.getCurrentUser().getUid(), new ArrayList<SpecialStatus>());
@@ -69,11 +110,6 @@ public class StudentInfoForm extends AppCompatActivity {
             }
         });
 
-
-        // Components (text + radio buttons + check boxes)
-        nameEditText = findViewById(R.id.nameET);
-        ageEditText = findViewById(R.id.ageET);
-        maleFemaleRadioGroup = findViewById(R.id.maleFemaleRG);
 
         maleFemaleRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -88,7 +124,7 @@ public class StudentInfoForm extends AppCompatActivity {
             }
         });
 
-        yearRadioGroup = findViewById(R.id.yearRG);
+
 
         yearRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -120,34 +156,49 @@ public class StudentInfoForm extends AppCompatActivity {
         confirmationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(created){
+                    db.collection("studentInfo").document(student.getID()).delete();
+                }
                 // Put inputted info into student object and enter into database
                 student.setName(String.valueOf(nameEditText.getText()));
                 student.setAge(Integer.parseInt(String.valueOf(ageEditText.getText())));
 
-                internationalCB = findViewById(R.id.InternationalCB);
-                missionaryCB = findViewById(R.id.missionaryKidCB);
-                thirdCultureCB = findViewById(R.id.thirdCultureCB);
-                pastorKidCB = findViewById(R.id.pastorKidCB);
 
+                ArrayList<SpecialStatus> ss = new ArrayList<>();
                 if (internationalCB.isChecked()) {
-                    student.setSpecialStatus(SpecialStatus.International);
+                    ss.add(SpecialStatus.International);
                 }
                 if (missionaryCB.isChecked()) {
-                    student.setSpecialStatus(SpecialStatus.MK);
+                    ss.add(SpecialStatus.MK);
                 }
                 if (thirdCultureCB.isChecked()) {
-                    student.setSpecialStatus(SpecialStatus.ThirdCulture);
+                    ss.add(SpecialStatus.ThirdCulture);
                 }
                 if (pastorKidCB.isChecked()) {
-                    student.setSpecialStatus(SpecialStatus.PK);
+                    ss.add(SpecialStatus.PK);
                 }
+                student.setSpecialStatus(ss);
 
                 CollectionReference studentInfo = db.collection("studentInfo");
                 db.collection("studentInfo").document(student.getID()).set(student);
 
-                Intent next = new Intent(getApplicationContext(), UserLoadingScreen.class);
+                Intent next;
+                if(!created) {
+                    next = new Intent(getApplicationContext(), UserLoadingScreen.class);
+                }
+                else {
+                    next = new Intent(getApplicationContext(), Profile.class);
+                }
                 startActivity(next);
+            }
+        });
+
+        cancelbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toProfile = new Intent(getApplicationContext(), Profile.class);
+                startActivity(toProfile);
+                finish();
             }
         });
     }

@@ -219,6 +219,7 @@ public class Event implements Comparable<Event>{
         return Integer.compare(this.dateToNum(), e.dateToNum());
     }
 
+
     /*
     compares events by number of people attending
      */
