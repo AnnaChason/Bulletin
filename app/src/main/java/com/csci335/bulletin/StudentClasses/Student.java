@@ -1,5 +1,7 @@
 package com.csci335.bulletin.StudentClasses;
 
+import androidx.annotation.NonNull;
+
 import com.csci335.bulletin.Events.Event;
 
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ public class Student {
     public List<Event> getEvents() {
         return events;
     }
+    @NonNull
     public String toString() {
         String result = "";
         for(int i = 0; i < events.toArray().length; i++) {

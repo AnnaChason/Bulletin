@@ -108,13 +108,15 @@ public class Event implements Comparable<Event>{
     public void removeStudent(Student student) {
         this.students.remove(student);
     }
+
+    /*
     public String studentsToString() {
         String result = "";
         for(int i = 0; i < students.toArray().length; i++) {
             result += students.get(i).getName() + " ";
         }
         return result;
-    }
+    }*/
 
 
     /*

@@ -2,6 +2,7 @@ package com.csci335.bulletin.Events;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,23 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.csci335.bulletin.StudentClasses.Student;
+import java.util.ArrayList;
 
 import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Main.UserLoadingScreen;
+import com.csci335.bulletin.Organizations.Organization;
 import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecyclerViewAdapter.MyViewHolder>{
 
@@ -66,16 +76,37 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.attendingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                need to figure out how to store which users are attending, and for the user which events they are attending.
-                */
-                if(holder.attendingBtn.isChecked())
-                    events.get(holder.getAdapterPosition()).updateAttendance(+1);
-                else
-                    events.get(holder.getAdapterPosition()).updateAttendance(-1);
 
-                db.collection("approvedEvents").document(events.get(holder.getAdapterPosition()).getTitle()).update("attendance",events.get(holder.getAdapterPosition()).getAttendance());
-                notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
+                Event event = events.get(holder.getAdapterPosition());
+                FirebaseAuth fauth = FirebaseAuth.getInstance();
+                String currentUID = fauth.getCurrentUser().getUid();
+
+                db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                        if (task.getResult().exists()) {
+                            //Log.d("ATTENDANCE", "results exist");
+                            Student student = task.getResult().toObject(Student.class);
+                            //Log.d("ATTENDANCE", student.toString());
+                            //if (student == null) Log.d("ATTENDANCE", "ERROR, student is null");
+                            //Log.d("ATTENDANCE", "student != null");
+                            if(holder.attendingBtn.isChecked()) {
+                                event.updateAttendance(+1);
+                                event.addStudent(student);
+                                student.addEvent(event);
+                            } else {
+                                event.updateAttendance(-1);
+                                event.removeStudent(student);
+                                student.removeEvent(event);
+                            }
+                            db.collection("approvedEvents").document(event.getTitle()).update("attendance",event.getAttendance());
+                            db.collection("approvedEvents").document(event.getTitle()).set(event);
+                            db.collection("studentInfo").document(currentUID).set(student);
+                            notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
+                        }
+                    }
+                });
             }
         });
 
