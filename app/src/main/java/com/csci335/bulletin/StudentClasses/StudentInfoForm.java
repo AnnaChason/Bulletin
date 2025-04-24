@@ -5,7 +5,6 @@ import java.util.*;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.csci335.bulletin.Events.HomePage;
 import com.csci335.bulletin.Main.Profile;
 import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.R;
@@ -55,7 +54,7 @@ public class StudentInfoForm extends AppCompatActivity {
             return insets;
         });
         // Components (text + radio buttons + check boxes)
-        nameEditText = findViewById(R.id.nameET);
+        nameEditText = findViewById(R.id.searchET);
         ageEditText = findViewById(R.id.ageET);
         maleFemaleRadioGroup = findViewById(R.id.maleFemaleRG);
         yearRadioGroup = findViewById(R.id.yearRG);
