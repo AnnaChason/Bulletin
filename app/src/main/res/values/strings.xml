@@ -17,4 +17,5 @@
     <string name="adminhomepage">AdminHomePage</string>
     <string name="archive"><u>View Archive</u></string>
     <string name="to_current"><u>Return to Current</u></string>
+    <string name="read"><u>Mark as read</u></string>
 </resources>

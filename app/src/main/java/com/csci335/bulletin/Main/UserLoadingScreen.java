@@ -14,12 +14,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.csci335.bulletin.AdminClasses.AdminHomePage;
 import com.csci335.bulletin.Events.HomePage;
 import com.csci335.bulletin.Organizations.EventApplicationForm;
+import com.csci335.bulletin.Organizations.Organization;
 import com.csci335.bulletin.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 /*
 this event will just be a loading page
@@ -87,6 +90,14 @@ public class UserLoadingScreen extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()) {
                     currentUserType = 2;
+                    Organization org = documentSnapshot.toObject(Organization.class);
+
+                    if(org.getNotifications() == null) {
+                        ArrayList<Notif> notifs = new ArrayList<>();
+                        notifs.add(new Notif("Welcome to Bulletin", "so glad you decided to log in today!"));
+                        firestore.collection("organizationInfo").document(currentUID).update("notifications", notifs);
+                    }
+
                     Intent toHome = new Intent(getApplicationContext(), EventApplicationForm.class);
                     startActivity(toHome);
                     finish();
