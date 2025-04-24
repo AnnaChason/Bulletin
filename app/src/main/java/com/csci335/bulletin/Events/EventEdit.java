@@ -1,5 +1,6 @@
 package com.csci335.bulletin.Events;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -14,7 +15,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
+import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -24,29 +28,34 @@ public class EventEdit extends AppCompatActivity {
 
     private EditText titleInput, dateInput, descInput, locationInput;
     private Spinner categorySpinner;
-    private ImageView imageView;
+    private ImageView image;
     private Button saveBtn, cancelBtn, deleteBtn;
-    private String docId;
-    Event event;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    String docId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_edit);
-        docId = getIntent().getStringExtra("event");
+        String imageUrl = getIntent().getStringExtra("imageUrl");
+        docId = getIntent().getStringExtra("docId");
         // Initialize views
         titleInput = findViewById(R.id.editTextTitle2);
         dateInput = findViewById(R.id.editTextDate2);
         descInput = findViewById(R.id.editTextDesc2);
         locationInput = findViewById(R.id.editTextLocation2);
         categorySpinner = findViewById(R.id.categorySpinner2);
-        imageView = findViewById(R.id.imageView);
+        image = findViewById(R.id.imageView);
         saveBtn = findViewById(R.id.saveBtn);
         cancelBtn = findViewById(R.id.cancelBtn);
         deleteBtn = findViewById(R.id.deleteBtn);
 
-        Log.d("EventEdit", "docId: " + docId);
+        //load Image
+        if (imageUrl != null) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .into(image);
+        }
+
         loadData();
         EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -60,48 +69,54 @@ public class EventEdit extends AppCompatActivity {
             String date = dateInput.getText().toString().trim();
             String desc = descInput.getText().toString().trim();
             String loc = locationInput.getText().toString().trim();
-            String category = categorySpinner.getSelectedItem().toString();
-            String orgId = "placeholder"; // replace with actual org ID if available
-            String imageUrl = "noImage.jpg"; // or update with real image logic
-            int approvalStatus = 0;
-            saveChanges(docId, newTitle, date, loc, desc, imageUrl, approvalStatus, category, orgId);
+            saveChanges(docId, newTitle, date, loc, desc);
+        });
+        cancelBtn.setOnClickListener(v -> {
+            finish();
+        });
+
+        deleteBtn.setOnClickListener(v -> {
+            //Delete in Firebase
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("approvedEvents").document(docId).delete();
+            Intent homeIntent = new Intent(this, OrganizationProfilePage.class);
+            startActivity(homeIntent);
+            finish();
         });
     }
 
     private void loadData() {
-        db.collection("events").document(docId).get().addOnSuccessListener(doc -> {
-            if (doc.exists()) {
-                titleInput.setText(doc.getString("title"));
-                dateInput.setText(doc.getString("date"));
-                descInput.setText(doc.getString("description"));
-                locationInput.setText(doc.getString("location"));
-                // Load spinner and imageView data as needed
-            }
-        });
+        String docId = getIntent().getStringExtra("docId"); // event = document ID
+        db.collection("approvedEvents").document(docId).get()
+                .addOnSuccessListener(document -> {
+                        titleInput.setText(document.getString("title"));
+                        dateInput.setText(document.getString("date"));
+                        descInput.setText(document.getString("description"));
+                        locationInput.setText(document.getString("location"));
+
+                });
     }
 
-    private void saveChanges(String oldTitle, String newTitle, String date, String loc, String desc,
-                             String imageUrl, int approvalStatus, String category, String orgId) {
-
-
+    private void saveChanges(String docId, String newTitle, String date, String loc, String desc) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("title", newTitle);
         updates.put("date", date);
         updates.put("description", desc);
         updates.put("location", loc);
-        updates.put("category", category);
-        updates.put("imageUrl", imageUrl);
-        updates.put("approvalStatus", approvalStatus);
 
-        db.collection("eventApplications").document(docId).update(updates)
+        db.collection("approvedEvents").document(docId).update(updates)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Event updated", Toast.LENGTH_SHORT).show();
+                    Intent homeIntent = new Intent(this, OrganizationProfilePage.class);
+                    startActivity(homeIntent);
                     finish(); // Return to previous screen (or redirect to homepage)
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show();
                     Log.e("EventEdit", "Update error", e);
                 });
+
+
     }
     }
 
