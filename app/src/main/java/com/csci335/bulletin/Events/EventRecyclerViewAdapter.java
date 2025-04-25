@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.csci335.bulletin.StudentClasses.Student;
+import com.csci335.bulletin.Events.EventEdit;
 import java.util.ArrayList;
 
 import com.bumptech.glide.Glide;
@@ -80,23 +81,25 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             @Override
             public void onClick(View v) {
 
-                Event event = events.get(holder.getAdapterPosition());
+
                 FirebaseAuth fauth = FirebaseAuth.getInstance();
                 String currentUID = fauth.getCurrentUser().getUid();
 
                 db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
                         if (task.getResult().exists()) {
                             //Log.d("ATTENDANCE", "results exist");
                             Student student = task.getResult().toObject(Student.class);
-                            //Log.d("ATTENDANCE", student.toString());
-                            //if (student == null) Log.d("ATTENDANCE", "ERROR, student is null");
-                            //Log.d("ATTENDANCE", "student != null");
+                            Event event = events.get(holder.getAdapterPosition());
+                            if(event == null) {
+                                Log.d("ATTENDANCE", "event is null");
+                            }
                             if(holder.attendingBtn.isChecked()) {
                                 event.updateAttendance(+1);
+                                Log.d("ATTENDANCE", "Statement Before");
                                 event.addStudent(student);
+                                Log.d("ATTENDANCE", "Statement After");
                                 student.addEvent(event);
                             } else {
                                 event.updateAttendance(-1);

@@ -21,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import com.csci335.bulletin.StudentClasses.Student;
+import java.util.ArrayList;
 
 import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Events.Event;
@@ -125,7 +127,7 @@ public class EventApplicationForm extends AppCompatActivity {
                     String downloadUrl = uri.toString();  // This is the URL you can use in Glide
                     // get the organization info
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id);
+                    Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id, new ArrayList<Student>());
                     db.collection("eventApplications").document(title).set(newEventApp);
                 });
             }).addOnFailureListener(e -> {
@@ -136,7 +138,7 @@ public class EventApplicationForm extends AppCompatActivity {
             // get the organization info
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
              //put the object in the database
-            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id);
+            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id, new ArrayList<Student>());
             db.collection("eventApplications").document(title).set(newEventApp);
         }
         // redirect to home page

@@ -43,7 +43,7 @@ public class Event implements Comparable<Event>{
 
     private List<Student> students;
 
-    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID) {
+    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, List<Student> students) {
         this.location = location;
         this.title = title;
         this.date = date;
@@ -52,6 +52,7 @@ public class Event implements Comparable<Event>{
         this.attendance = attendance;
         this.category = category;
         this.organizationID = organizationID;
+        this.students = students;
         if(organizationID != null && !organizationID.equals("")) {
             DocumentReference docRef = db.collection("organizationInfo").document(organizationID);
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -102,6 +103,8 @@ public class Event implements Comparable<Event>{
     public void setOrganizationID(String organizationID) {this.organizationID = organizationID;}
     public String getOrganizationName() {return organizationName;}
     public void setOrganizationName(String organizationName) {this.organizationName = organizationName;}
+    public List<Student> getStudents() { return this.students; }
+    public void setStudents(List<Student> students) { this.students = students; }
     public void addStudent(Student student) {
         this.students.add(student);
     }
