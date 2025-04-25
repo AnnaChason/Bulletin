@@ -93,11 +93,18 @@ public class Register extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(Register.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
                                 }
+                                // If sign in fails, display a message to the user.
+                                // if email is not in the correct format
+                                else if (!email.contains("@gmail.com")) Toast.makeText(Register.this, "Invalid email address",
+                                        Toast.LENGTH_SHORT).show();
+
+                                    // or if password is too short
+                                else if (password.length() < 6) Toast.makeText(Register.this, "Password must be at least 6 characters",
+                                        Toast.LENGTH_SHORT).show();
+                                    // other issues
+                                else Toast.makeText(Register.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -136,11 +143,18 @@ public class Register extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(Register.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
                                 }
+                                // If sign in fails, display a message to the user.
+                                // if email is not in the correct format
+                                else if (!email.contains("@gmail.com")) Toast.makeText(Register.this, "Invalid email address",
+                                        Toast.LENGTH_SHORT).show();
+
+                                    // or if password is too short
+                                else if (password.length() < 6) Toast.makeText(Register.this, "Password must be at least 6 characters",
+                                        Toast.LENGTH_SHORT).show();
+                                    // other issues
+                                else Toast.makeText(Register.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -179,11 +193,19 @@ public class Register extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(Register.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
                                 }
+                                // If sign in fails, display a message to the user.
+                                // if email is not in the correct format
+                                else if (!email.contains("@gmail.com")) Toast.makeText(Register.this, "Invalid email address",
+                                            Toast.LENGTH_SHORT).show();
+
+                                // or if password is too short
+                                else if (password.length() < 6) Toast.makeText(Register.this, "Password must be at least 6 characters",
+                                            Toast.LENGTH_SHORT).show();
+                                // other issues
+                                else Toast.makeText(Register.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+
                             }
                         });
             }
