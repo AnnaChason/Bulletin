@@ -16,11 +16,13 @@ import com.csci335.bulletin.Main.LoginScreen;
 import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AdminInfoForm extends AppCompatActivity {
 
     FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,10 @@ public class AdminInfoForm extends AppCompatActivity {
                     /*
                     To Do: delete account if unsucessful
                      */
-                    //quick fix, logout
-                    FirebaseAuth.getInstance().signOut();
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    FirebaseUser user = auth.getCurrentUser();
+                    auth.signOut();
+                    user.delete();
                     Intent intent = new Intent(getApplicationContext(), LoginScreen.class);
                     startActivity(intent);
                     finish();

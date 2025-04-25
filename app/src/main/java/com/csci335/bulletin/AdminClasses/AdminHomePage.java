@@ -28,6 +28,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/*
+where admin can approve and deny events
+ */
 public class AdminHomePage extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {

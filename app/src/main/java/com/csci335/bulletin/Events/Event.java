@@ -38,6 +38,7 @@ public class Event implements Comparable<Event>{
     private String category;
     private String organizationID;
     private String organizationName;
+    private String docId;
  //   private static StorageReference storage = FirebaseStorage.getInstance().getReference();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -81,6 +82,12 @@ public class Event implements Comparable<Event>{
     /*
     Getters and Setters
      */
+    public String getDocId() {
+        return docId;
+    }
+    public void setDocId(String docId) {
+        this.docId = docId;
+    }
     public String getTitle() {
         return title;
     }
