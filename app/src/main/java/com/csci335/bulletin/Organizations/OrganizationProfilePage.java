@@ -166,8 +166,10 @@ public class OrganizationProfilePage extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    approved.add(document.toObject(Event.class));
-                    events.add(document.toObject(Event.class));
+                    Event event = document.toObject(Event.class);
+                    event.setDocId(document.getId()); // ✅ Set docId once
+                    approved.add(event); // ✅ Use the same event with docId
+                    events.add(event);   // ✅ Use the same event with docId
                 }
                 rvAdapter.notifyDataSetChanged();
             }

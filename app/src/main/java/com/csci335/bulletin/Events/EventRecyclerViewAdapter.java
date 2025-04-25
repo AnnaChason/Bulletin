@@ -59,9 +59,6 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         Glide.with(context)
                 .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
-        if(UserLoadingScreen.getCurrentUserType() != 3){
-            holder.attendingBtn.setVisibility(View.GONE); //organizations and admin don't attend events
-        }
 
         /*
         updates attendance
@@ -109,7 +106,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 @Override
                 public void onClick(View v) {
                     Intent toEdit = new Intent(context, EventEdit.class);
-                   toEdit.putExtra("event", events.get(holder.getAdapterPosition()).getTitle());
+                    toEdit.putExtra("imageUrl", events.get(holder.getAdapterPosition()).getPosterImg());
+                    toEdit.putExtra("docId", events.get(holder.getAdapterPosition()).getDocId());
                     context.startActivity(toEdit);
                 }
             });

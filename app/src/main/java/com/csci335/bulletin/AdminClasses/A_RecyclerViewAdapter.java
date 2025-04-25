@@ -14,8 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Events.Event;
+import com.csci335.bulletin.Main.Notif;
+import com.csci335.bulletin.Organizations.Organization;
 import com.csci335.bulletin.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -50,7 +56,7 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
 
 
         /*
-        updates collections
+        updates collections upon approval/denial
          */
         holder.approveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -58,11 +64,26 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
                 //Deletes from ArrayList
                 pendingEvents.remove(holder.getAdapterPosition());
 
-                //Delete from Collection 1  in Firebase
+                //Move to approved collection
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 db.collection("eventApplications").document(event.getTitle()).delete();
                 db.collection("approvedEvents").document(event.getTitle()).set(event);
                 notifyDataSetChanged();
+
+                /*
+                notifies organization
+                 */
+                db.collection("organizationInfo").document(event.getOrganizationID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.getResult().exists()){
+                            Organization org = task.getResult().toObject(Organization.class);
+                            Notif approval = new Notif("Event Approved", "Congradulations! Your event " + event.getTitle() + " has been approved.");
+                            org.addNotification(approval);
+                            db.collection("organizationInfo").document(org.getId()).update("notifications", org.getNotifications());
+                        }
+                    }
+                });
             }
         });
 
@@ -79,6 +100,21 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
                     db.collection("eventApplications").document(event.getTitle()).delete();
                     db.collection("approvedEvents").document(event.getTitle()).set(event);
                     notifyDataSetChanged();
+
+                    /*
+                notifies organization
+                 */
+                db.collection("organizationInfo").document(event.getOrganizationID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.getResult().exists()){
+                            Organization org = task.getResult().toObject(Organization.class);
+                            Notif approval = new Notif("Event post rejected", "Unfortunately, an admin has denied your post request for your event " + event.getTitle()+".");
+                            org.addNotification(approval);
+                            db.collection("organizationInfo").document(org.getId()).update("notifications", org.getNotifications());
+                        }
+                    }
+                });
             }
         });
 
