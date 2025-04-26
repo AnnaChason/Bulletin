@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
 import com.csci335.bulletin.Main.NavigationManager;
+import com.csci335.bulletin.Main.Notifications;
 import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.R;
 import com.csci335.bulletin.Events.HomePage;
@@ -43,11 +45,11 @@ import java.util.Iterator;
 public class OrganizationProfilePage extends AppCompatActivity {
     private String orgId;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();;
-
     //events to be displayed on screen
     private ArrayList<Event> events,archive,pending;
     private ArrayList<Event> approved = new ArrayList<>();;
     private EventRecyclerViewAdapter rvAdapter;
+    boolean userIsOrg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +73,11 @@ public class OrganizationProfilePage extends AppCompatActivity {
         /*
         setting up screen based on user type
          */
-        boolean userIsOrg = false;
+        userIsOrg = false;
         Button mpBtn = findViewById(R.id.multiPurposeBtn);
         TextView archiveBtn = findViewById(R.id.archiveBtn);
         TabLayout typeTabs = findViewById(R.id.eventTabs);
+        ImageButton bellBtn = findViewById(R.id.bellBtn);
 
         if(getIntent().hasExtra("OrgId")) {
             orgId = getIntent().getExtras().getString("OrgId");
@@ -82,6 +85,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
             mpBtn.setVisibility(View.VISIBLE);
             typeTabs.setVisibility(View.GONE);
             archiveBtn.setVisibility(View.VISIBLE);
+            bellBtn.setVisibility(View.GONE);
             archiveBtn.setOnClickListener(new View.OnClickListener() {
                 boolean isClicked = false;
                 @Override
@@ -104,6 +108,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
             mpBtn.setVisibility(View.GONE);
             archiveBtn.setVisibility(View.GONE);
             typeTabs.setVisibility(View.VISIBLE);
+            bellBtn.setVisibility(View.VISIBLE);
             userIsOrg = true;
         }
         TextView orgNameTV = findViewById(R.id.orgNameTV);
@@ -172,6 +177,19 @@ public class OrganizationProfilePage extends AppCompatActivity {
                     events.add(event);   // ✅ Use the same event with docId
                 }
                 rvAdapter.notifyDataSetChanged();
+            }
+        });
+
+        /*
+        to notification page button
+         */
+        bellBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toNotifs = new Intent(getApplicationContext(), Notifications.class);
+                if(userIsOrg)
+                    toNotifs.putExtra("OrgId",orgId);
+                startActivity(toNotifs);
             }
         });
     }

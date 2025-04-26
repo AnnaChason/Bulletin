@@ -1,9 +1,12 @@
 package com.csci335.bulletin.Events;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
@@ -15,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.csci335.bulletin.Main.NavigationManager;
+import com.csci335.bulletin.Main.Notifications;
 import com.csci335.bulletin.Main.UserLoadingScreen;
+import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -41,12 +46,17 @@ public class HomePage extends AppCompatActivity {
         /*
         Bottom Navigation Bar Manager
          */
+        ImageButton bellBtn = findViewById(R.id.bellBtn);
         NavigationBarView btmNavBarMain = findViewById(R.id.btmNavBar);
         //highlight correct item
-        if(UserLoadingScreen.getCurrentUserType() == 1)
+        if(UserLoadingScreen.getCurrentUserType() == 1) {
             btmNavBarMain.setSelectedItemId(R.id.other);
-        else
+            bellBtn.setVisibility(View.GONE);
+        }
+        else {
             btmNavBarMain.setSelectedItemId(R.id.home);
+            bellBtn.setVisibility(View.VISIBLE);
+        }
         //set up on click listener
         new NavigationManager(btmNavBarMain, HomePage.this);
 
@@ -75,6 +85,17 @@ public class HomePage extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        /*
+        to notification page button
+         */
+        bellBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toNotifs = new Intent(getApplicationContext(), Notifications.class);
+                startActivity(toNotifs);
+            }
         });
 
     }
