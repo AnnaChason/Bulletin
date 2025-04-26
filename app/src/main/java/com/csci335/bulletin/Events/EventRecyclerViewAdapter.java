@@ -24,6 +24,7 @@ import com.csci335.bulletin.Organizations.Organization;
 import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -85,8 +86,10 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.getResult().exists()) {
-                            //Log.d("ATTENDANCE", "results exist");
+
+                        if (task.isSuccessful() && task.getResult() != null) {
+
+                            Log.d("ATTENDANCE", task.getResult().getString("name"));
                             Student student = task.getResult().toObject(Student.class);
                             Event event = events.get(holder.getAdapterPosition());
                             if(event == null) {
@@ -96,8 +99,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                                 event.updateAttendance(+1);
                                 Log.d("ATTENDANCE", "Statement Before");
                                 event.addStudent(student);
-                                Log.d("ATTENDANCE", "Statement After");
+                                Log.d("ATTENDANCE", "After event, before student");
                                 student.addEvent(event);
+                                Log.d("ATTENDANCE", "After student");
                             } else {
                                 event.updateAttendance(-1);
                                 event.removeStudent(student);
@@ -107,6 +111,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                             db.collection("approvedEvents").document(event.getTitle()).set(event);
                             db.collection("studentInfo").document(currentUID).set(student);
                             notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
+
+                        } else {
+                            Log.e("Firestore", "Document not found or error retrieving document");
                         }
                     }
                 });

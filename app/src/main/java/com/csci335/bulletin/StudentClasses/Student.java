@@ -1,6 +1,7 @@
 package com.csci335.bulletin.StudentClasses;
 
 import com.csci335.bulletin.Main.Notif;
+import com.csci335.bulletin.Events.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Student {
     private Gender gender;
     private List<SpecialStatus> specialStatus;
     private List<Notif> notifications;
+    private List<Event> events;
 
     // unneeded?
     public Student(String ID, ArrayList<SpecialStatus> status){
@@ -53,4 +55,14 @@ public class Student {
     public List<Notif> getNotifications() {return notifications;}
     public void setNotifications(List<Notif> notifications) {this.notifications = notifications;}
     public void addNotification(Notif n){notifications.add(n);}
+
+    public List<Event> getEvents() { return this.events; }
+    public void setEvents(List<Event> events) { this.events = events; }
+    public void addEvent(Event event) {
+        if (event == null) {
+            events = new ArrayList<Event>();
+        }
+        events.add(event);
+    }
+    public void removeEvent(Event event) { events.remove(event); }
 }

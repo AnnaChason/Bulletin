@@ -113,6 +113,9 @@ public class Event implements Comparable<Event>{
     public List<Student> getStudents() { return this.students; }
     public void setStudents(List<Student> students) { this.students = students; }
     public void addStudent(Student student) {
+        if(students == null) {
+            students = new ArrayList<Student>();
+        }
         this.students.add(student);
     }
     public void removeStudent(Student student) {
