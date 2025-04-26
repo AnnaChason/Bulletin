@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Events.EventRecyclerViewAdapter;
 import com.csci335.bulletin.Events.HomePage;
+import com.csci335.bulletin.Organizations.EventApplicationForm;
 import com.csci335.bulletin.Organizations.Organization;
 import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
@@ -92,10 +93,14 @@ public class Notifications extends AppCompatActivity {
             public void onClick(View v) {
                 Intent back;
                 if(UserLoadingScreen.getCurrentUserType() == 2) {
-                    back = new Intent(getApplicationContext(), OrganizationProfilePage.class);
                     if (getIntent().hasExtra("OrgId")) {
+                        back = new Intent(getApplicationContext(), OrganizationProfilePage.class);
                         back.putExtra("OrgId", getIntent().getExtras().getString("orgId"));
                     }
+                    else{
+                        back = new Intent(getApplicationContext(), EventApplicationForm.class);
+                    }
+
                 }
                 else{
                     back = new Intent(getApplicationContext(), HomePage.class);

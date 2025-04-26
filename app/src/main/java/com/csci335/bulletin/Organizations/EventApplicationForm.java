@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -26,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Events.HomePage;
 import com.csci335.bulletin.Main.NavigationManager;
+import com.csci335.bulletin.Main.Notifications;
 import com.csci335.bulletin.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationBarView;
@@ -97,6 +99,18 @@ public class EventApplicationForm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 uploadEvent(image);
+            }
+        });
+
+        /*
+        to notification page button
+         */
+        ImageButton bellBtn = findViewById(R.id.notifBtn);
+        bellBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toNotifs = new Intent(getApplicationContext(), Notifications.class);
+                startActivity(toNotifs);
             }
         });
 

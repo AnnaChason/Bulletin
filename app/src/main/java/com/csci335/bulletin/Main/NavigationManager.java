@@ -66,7 +66,7 @@ public class NavigationManager {
      */
     private void setClasses(){
         Menu menu = navBar.getMenu();
-        MenuItem item = menu.findItem(R.id.other);
+        MenuItem oItem = menu.findItem(R.id.other);
 
         //assumes user loading has been run sucessfully
         int userType = UserLoadingScreen.getCurrentUserType();
@@ -75,19 +75,23 @@ public class NavigationManager {
                 home = AdminHomePage.class;
                 profile = Profile.class;
                 other = HomePage.class;
-                item.setIcon(R.drawable.event_feed_vector);
+                oItem.setIcon(R.drawable.event_feed_vector);
+                oItem.setTitle("Event Feed");
                 break;
             case 2://organization
                 home = EventApplicationForm.class;
                 menu.findItem(R.id.home).setIcon(R.drawable.baseline_add_box_24);
+                menu.findItem(R.id.home).setTitle("New Event");
                 profile = OrganizationProfilePage.class;
                 other = Profile.class;
-                item.setIcon(R.drawable.baseline_settings_24);
+                oItem.setIcon(R.drawable.baseline_settings_24);
+                oItem.setTitle("Account Settings");
                 break;
             case 3://student
                 home = HomePage.class;
                 profile = Profile.class;
                 other = Search.class;
+                oItem.setTitle("Search");
                 break;
             default:
                 home = HomePage.class;
