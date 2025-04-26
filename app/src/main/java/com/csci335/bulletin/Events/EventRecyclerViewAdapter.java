@@ -41,6 +41,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     private EventRecyclerViewAdapter.MyViewHolder holder;
     private boolean editBtnVisible;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Student student;
     public EventRecyclerViewAdapter(Context context, ArrayList<Event> events, boolean editBtnVisible){
         this.events = events;
         this.context = context;
@@ -72,48 +73,92 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
 
+        //set check boxes
+        setAttendanceBoxes(position, holder.attendingBtn);
         /*
-        updates attendance
+        updates attendance when button pressed
          */
         holder.attendingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth fauth = FirebaseAuth.getInstance();
-                String currentUID = fauth.getCurrentUser().getUid();
+                if(student == null){
+                    FirebaseAuth fauth = FirebaseAuth.getInstance();
+                    String currentUID = fauth.getCurrentUser().getUid();
+                    db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.getResult().exists())
+                                student = task.getResult().toObject(Student.class);
 
-                db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                        if (task.isSuccessful() && task.getResult() != null) {
-
-                            Log.d("ATTENDANCE", task.getResult().getString("name"));
                             Student student = task.getResult().toObject(Student.class);
                             String studentID = task.getResult().getId();
                             Event event = events.get(holder.getAdapterPosition());
                             String eventTitle = event.getTitle();
                             if(holder.attendingBtn.isChecked()) {
                                 event.updateAttendance(+1);
-                                Log.d("ATTENDANCE", "Statement Before");
                                 event.addStudent(studentID);
-                                Log.d("ATTENDANCE", "After event, before student");
                                 student.addEvent(eventTitle);
-                                Log.d("ATTENDANCE", "After student");
                             } else {
                                 event.updateAttendance(-1);
                                 event.removeStudent(studentID);
                                 student.removeEvent(eventTitle);
                             }
                             db.collection("approvedEvents").document(event.getTitle()).update("attendance",event.getAttendance());
-                            db.collection("approvedEvents").document(event.getTitle()).set(event);
-                            db.collection("studentInfo").document(currentUID).set(student);
+                            db.collection("approvedEvents").document(event.getTitle()).update("students", event.getStudents());
+                            db.collection("studentInfo").document(currentUID).update("events", student.getEvents());
+                            notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
+
+                        }
+                    });
+                }
+                else{
+                    String studentID = student.getID();
+                    Event event = events.get(holder.getAdapterPosition());
+                    String eventTitle = event.getTitle();
+                    if(holder.attendingBtn.isChecked()) {
+                        event.updateAttendance(+1);
+                        event.addStudent(studentID);
+                        student.addEvent(eventTitle);
+                    } else {
+                        event.updateAttendance(-1);
+                        event.removeStudent(studentID);
+                        student.removeEvent(eventTitle);
+                    }
+                    db.collection("approvedEvents").document(event.getTitle()).update("attendance",event.getAttendance());
+                    db.collection("approvedEvents").document(event.getTitle()).update("students", event.getStudents());
+                    db.collection("studentInfo").document(student.getID()).update("events", student.getEvents());
+                    notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
+
+                }
+                /*db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                        if (task.isSuccessful() && task.getResult() != null) {
+
+                            Student student = task.getResult().toObject(Student.class);
+                            String studentID = task.getResult().getId();
+                            Event event = events.get(holder.getAdapterPosition());
+                            String eventTitle = event.getTitle();
+                            if(holder.attendingBtn.isChecked()) {
+                                event.updateAttendance(+1);
+                                event.addStudent(studentID);
+                                student.addEvent(eventTitle);
+                            } else {
+                                event.updateAttendance(-1);
+                                event.removeStudent(studentID);
+                                student.removeEvent(eventTitle);
+                            }
+                            db.collection("approvedEvents").document(event.getTitle()).update("attendance",event.getAttendance());
+                            db.collection("approvedEvents").document(event.getTitle()).update("students", event.getStudents());
+                            db.collection("studentInfo").document(currentUID).update("events", student.getEvents());
                             notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
 
                         } else {
                             Log.e("Firestore", "Document not found or error retrieving document");
                         }
                     }
-                });
+                });*/
             }
         });
 
@@ -160,6 +205,38 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     //num items to be displayed
     public int getItemCount() {
         return events.size();
+    }
+
+    /*
+    make sure attendance checkBoxes are correctly checked
+     */
+    private void setAttendanceBoxes(int position, CheckBox attendingBtn) {
+        FirebaseAuth fauth = FirebaseAuth.getInstance();
+        String currentUID = fauth.getCurrentUser().getUid();
+
+        if(student == null){
+            db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.getResult().exists())
+                        student = task.getResult().toObject(Student.class);
+                    setAttendBoxHelper(position, attendingBtn);
+                }
+            });
+        }
+        else{
+            setAttendBoxHelper(position, attendingBtn);
+        }
+    }
+    /*
+    actually updates check boxes
+     */
+    private void setAttendBoxHelper(int position, CheckBox attendingBtn){
+        if(events.get(position).getStudents() != null && events.get(position).getStudents().contains(student.getID())) {
+            attendingBtn.setChecked(true);
+        }
+        else
+            attendingBtn.setChecked(false);
     }
 
     //gets all views from row layout and assigns them to variables

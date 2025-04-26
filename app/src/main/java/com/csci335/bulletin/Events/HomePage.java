@@ -72,9 +72,7 @@ public class HomePage extends AppCompatActivity {
 
         /*
         Sort drop down menu
-        Need to fix attendance not changing with event
          */
-        // Handling category drop down menu
         Spinner sortSpinner = findViewById(R.id.sortSpinner);
         sortSpinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, Event.sortTypes()));
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
