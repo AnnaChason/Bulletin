@@ -25,15 +25,19 @@ public class Student {
         this.ID = ID;
         this.specialStatus = status;
         notifications = new ArrayList<Notif>();
+        events = new ArrayList<Event>();
     }
     public Student(String ID, ArrayList<SpecialStatus> status, List<Notif> notifications){
         this.ID = ID;
         this.specialStatus = status;
         this.notifications = notifications;
+        events = new ArrayList<Event>();
     }
 
     public Student() {
         specialStatus = new ArrayList<SpecialStatus>();
+        notifications = new ArrayList<Notif>();
+        events = new ArrayList<Event>();
     }
 
     public String getID() { return ID; }
