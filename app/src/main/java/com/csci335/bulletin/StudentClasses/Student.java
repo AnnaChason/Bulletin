@@ -18,7 +18,9 @@ public class Student {
     private Gender gender;
     private List<SpecialStatus> specialStatus;
     private List<Notif> notifications;
+    // Events the student has marked as attending
     private List<String> events;
+    private List<String> followedOrgs;
 
     // unneeded?
     public Student(String ID, ArrayList<SpecialStatus> status){
@@ -26,18 +28,21 @@ public class Student {
         this.specialStatus = status;
         notifications = new ArrayList<Notif>();
         events = new ArrayList<String>();
+        followedOrgs = new ArrayList<String>();
     }
     public Student(String ID, ArrayList<SpecialStatus> status, List<Notif> notifications){
         this.ID = ID;
         this.specialStatus = status;
         this.notifications = notifications;
         events = new ArrayList<String>();
+        followedOrgs = new ArrayList<String>();
     }
 
     public Student() {
         specialStatus = new ArrayList<SpecialStatus>();
         notifications = new ArrayList<Notif>();
         events = new ArrayList<String>();
+        followedOrgs = new ArrayList<String>();
     }
 
     public String getID() { return ID; }
@@ -69,4 +74,9 @@ public class Student {
         events.add(event);
     }
     public void removeEvent(String event) { events.remove(event); }
+    public List<String> getFollowedOrgs() { return this.followedOrgs; }
+    public void setFollowedOrgs(List<String> followedOrgs) { this.followedOrgs = followedOrgs; }
+    public void addFollowedOrg(String followedOrg) { followedOrgs.add(followedOrg); }
+    public void removeFollowedOrg(String followedOrg) { followedOrgs.remove(followedOrg); }
+
 }

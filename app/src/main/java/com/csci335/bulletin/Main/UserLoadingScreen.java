@@ -110,6 +110,10 @@ public class UserLoadingScreen extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()) {
+                    // Update Students as they log in to include the new field of followedOrgs
+                    if(!documentSnapshot.contains("followedOrgs")) {
+                        stuRef.update("followedOrgs", new ArrayList<String>());
+                    }
                     currentUserType = 3;
                     Intent toHome = new Intent(getApplicationContext(), HomePage.class);
                     startActivity(toHome);

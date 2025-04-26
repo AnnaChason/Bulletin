@@ -41,7 +41,7 @@ public class Event implements Comparable<Event>{
     private String docId;
  //   private static StorageReference storage = FirebaseStorage.getInstance().getReference();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    // Students who have marked themselves as attending this event
     private List<String> students;
 
     public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, List<String> students) {
