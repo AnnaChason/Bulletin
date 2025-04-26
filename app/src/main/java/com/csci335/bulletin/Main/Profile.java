@@ -181,14 +181,6 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        Button notifBtn = findViewById(R.id.notifbutton);
-        notifBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toNotif = new Intent(getApplicationContext(),Notifications.class);
-                startActivity(toNotif);
-            }
-        });
 
         /*
         Bottom Navigation Bar Manager

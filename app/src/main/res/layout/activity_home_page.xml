@@ -12,34 +12,21 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".75"
+        android:layout_weight="1"
         android:background="@color/light_orange">
 
         <Spinner
             android:id="@+id/sortSpinner"
             android:layout_width="144dp"
             android:layout_height="53dp"
+            android:textColor="@color/navy_blue"
             android:spinnerMode="dropdown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.428" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="162dp"
-            android:layout_height="36dp"
-            android:text="Event Feed"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/sortSpinner"
-            app:layout_constraintHorizontal_bias="0.149"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintVertical_bias="0.529" />
 
         <TextView
             android:id="@+id/textView10"
@@ -47,12 +34,40 @@
             android:layout_height="24dp"
             android:text="Sort By:"
             android:textAlignment="textEnd"
+            android:textColor="@color/navy_blue"
             app:layout_constraintBottom_toBottomOf="@+id/sortSpinner"
             app:layout_constraintEnd_toStartOf="@+id/sortSpinner"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView9"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            app:layout_constraintVertical_bias="0.746" />
+
+        <ImageButton
+            android:id="@+id/bellBtn"
+            android:layout_width="59dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/light_orange"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView10"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/notification_bell" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="153dp"
+            android:layout_height="39dp"
+            android:text="Event Feed"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/navy_blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView10"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,30 +75,30 @@
         android:layout_height="0dp"
         android:layout_weight="9.25">
 
-    <FrameLayout
-        android:id="@+id/mainFrame"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btmNavBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <FrameLayout
+            android:id="@+id/mainFrame"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/btmNavBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/eventFeedRV"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/eventFeedRV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/btmNavBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/btmNavBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/nav_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/nav_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_nav_menu" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

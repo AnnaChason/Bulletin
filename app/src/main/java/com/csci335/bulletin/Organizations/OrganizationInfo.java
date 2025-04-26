@@ -67,7 +67,9 @@ public class OrganizationInfo extends AppCompatActivity {
             }
         });
 
-
+        /*
+        register/update user
+         */
         orgRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
