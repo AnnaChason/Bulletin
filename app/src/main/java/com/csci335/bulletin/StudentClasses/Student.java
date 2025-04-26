@@ -18,26 +18,26 @@ public class Student {
     private Gender gender;
     private List<SpecialStatus> specialStatus;
     private List<Notif> notifications;
-    private List<Event> events;
+    private List<String> events;
 
     // unneeded?
     public Student(String ID, ArrayList<SpecialStatus> status){
         this.ID = ID;
         this.specialStatus = status;
         notifications = new ArrayList<Notif>();
-        events = new ArrayList<Event>();
+        events = new ArrayList<String>();
     }
     public Student(String ID, ArrayList<SpecialStatus> status, List<Notif> notifications){
         this.ID = ID;
         this.specialStatus = status;
         this.notifications = notifications;
-        events = new ArrayList<Event>();
+        events = new ArrayList<String>();
     }
 
     public Student() {
         specialStatus = new ArrayList<SpecialStatus>();
         notifications = new ArrayList<Notif>();
-        events = new ArrayList<Event>();
+        events = new ArrayList<String>();
     }
 
     public String getID() { return ID; }
@@ -60,13 +60,13 @@ public class Student {
     public void setNotifications(List<Notif> notifications) {this.notifications = notifications;}
     public void addNotification(Notif n){notifications.add(n);}
 
-    public List<Event> getEvents() { return this.events; }
-    public void setEvents(List<Event> events) { this.events = events; }
-    public void addEvent(Event event) {
+    public List<String> getEvents() { return this.events; }
+    public void setEvents(List<String> events) { this.events = events; }
+    public void addEvent(String event) {
         if (event == null) {
-            events = new ArrayList<Event>();
+            events = new ArrayList<String>();
         }
         events.add(event);
     }
-    public void removeEvent(Event event) { events.remove(event); }
+    public void removeEvent(String event) { events.remove(event); }
 }

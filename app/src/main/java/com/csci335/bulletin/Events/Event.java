@@ -42,9 +42,9 @@ public class Event implements Comparable<Event>{
  //   private static StorageReference storage = FirebaseStorage.getInstance().getReference();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private List<Student> students;
+    private List<String> students;
 
-    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, List<Student> students) {
+    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, List<String> students) {
         this.location = location;
         this.title = title;
         this.date = date;
@@ -69,8 +69,6 @@ public class Event implements Comparable<Event>{
                 }
             });
         }
-
-        students = new ArrayList<Student>();
     }
     public Event(){
 
@@ -110,15 +108,15 @@ public class Event implements Comparable<Event>{
     public void setOrganizationID(String organizationID) {this.organizationID = organizationID;}
     public String getOrganizationName() {return organizationName;}
     public void setOrganizationName(String organizationName) {this.organizationName = organizationName;}
-    public List<Student> getStudents() { return this.students; }
-    public void setStudents(List<Student> students) { this.students = students; }
-    public void addStudent(Student student) {
+    public List<String> getStudents() { return this.students; }
+    public void setStudents(List<String> students) { this.students = students; }
+    public void addStudent(String student) {
         if(students == null) {
-            students = new ArrayList<Student>();
+            students = new ArrayList<String>();
         }
         this.students.add(student);
     }
-    public void removeStudent(Student student) {
+    public void removeStudent(String student) {
         this.students.remove(student);
     }
 

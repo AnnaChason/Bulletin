@@ -78,8 +78,6 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.attendingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 FirebaseAuth fauth = FirebaseAuth.getInstance();
                 String currentUID = fauth.getCurrentUser().getUid();
 
@@ -91,21 +89,20 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
                             Log.d("ATTENDANCE", task.getResult().getString("name"));
                             Student student = task.getResult().toObject(Student.class);
+                            String studentID = task.getResult().getId();
                             Event event = events.get(holder.getAdapterPosition());
-                            if(event == null) {
-                                Log.d("ATTENDANCE", "event is null");
-                            }
+                            String eventTitle = event.getTitle();
                             if(holder.attendingBtn.isChecked()) {
                                 event.updateAttendance(+1);
                                 Log.d("ATTENDANCE", "Statement Before");
-                                event.addStudent(student);
+                                event.addStudent(studentID);
                                 Log.d("ATTENDANCE", "After event, before student");
-                                student.addEvent(event);
+                                student.addEvent(eventTitle);
                                 Log.d("ATTENDANCE", "After student");
                             } else {
                                 event.updateAttendance(-1);
-                                event.removeStudent(student);
-                                student.removeEvent(event);
+                                event.removeStudent(studentID);
+                                student.removeEvent(eventTitle);
                             }
                             db.collection("approvedEvents").document(event.getTitle()).update("attendance",event.getAttendance());
                             db.collection("approvedEvents").document(event.getTitle()).set(event);
