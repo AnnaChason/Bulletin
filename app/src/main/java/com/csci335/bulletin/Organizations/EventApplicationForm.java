@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -28,6 +29,7 @@ import com.csci335.bulletin.Events.Event;
 import com.csci335.bulletin.Events.HomePage;
 import com.csci335.bulletin.Main.NavigationManager;
 import com.csci335.bulletin.Main.Notifications;
+import com.csci335.bulletin.Main.Register;
 import com.csci335.bulletin.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationBarView;
@@ -141,6 +143,7 @@ public class EventApplicationForm extends AppCompatActivity {
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id);
                     db.collection("eventApplications").document(title).set(newEventApp);
+                    Toast.makeText(this, "Event submitted for approval", Toast.LENGTH_SHORT).show();
                 });
             }).addOnFailureListener(e -> {
                 Log.e("GlideDebug", "Failed to upload image: ", e);
@@ -152,6 +155,7 @@ public class EventApplicationForm extends AppCompatActivity {
              //put the object in the database
             Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id);
             db.collection("eventApplications").document(title).set(newEventApp);
+            Toast.makeText(this, "Event submitted for approval", Toast.LENGTH_SHORT).show();
         }
         // redirect to home page
         Intent home = new Intent(getApplicationContext(), OrganizationProfilePage.class);
