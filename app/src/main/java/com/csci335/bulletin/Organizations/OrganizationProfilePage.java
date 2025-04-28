@@ -209,17 +209,27 @@ public class OrganizationProfilePage extends AppCompatActivity {
                         if (task.isSuccessful() && task.getResult() != null) {
 
                             Student student = task.getResult().toObject(Student.class);
+                            Organization organization;
+                            db.collection("organizationInfo").document(orgId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    Organization organization = task.getResult().toObject(Organization.class);
+                                    if(clicked){
+                                        mpBtn.setText("Follow");
+                                        student.removeFollowedOrg(orgId);
+                                        organization.removeFollower(currentUID);
+                                    }
+                                    else{
+                                        mpBtn.setText("Unfollow");
+                                        student.addFollowedOrg(orgId);
+                                        organization.addFollower(currentUID);
+                                    }
+                                    clicked = !clicked;
+                                }
+                            });
 
-                            if(clicked){
-                                mpBtn.setText("Follow");
-                                student.removeFollowedOrg(orgId);
-                            }
-                            else{
-                                mpBtn.setText("Unfollow");
-                                student.addFollowedOrg(orgId);
-                            }
-                            clicked = !clicked;
                             db.collection("studentInfo").document(currentUID).update("followedOrgs", student.getFollowedOrgs());
+                            db.collection("organizationInfo").document(orgId).update("followers", organization.getFollowers());
                             //notifyDataSetChanged(); //not best practice but doesn't work when you only update the individual item
 
                         } else {
