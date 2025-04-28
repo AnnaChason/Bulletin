@@ -229,7 +229,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
                             });
 
                             db.collection("studentInfo").document(currentUID).update("followedOrgs", student.getFollowedOrgs());
-                            db.collection("organizationInfo").document(orgId).update("followers", organization.getFollowers());
+                            //db.collection("organizationInfo").document(orgId).update("followers", organization.getFollowers());
                             //notifyDataSetChanged(); //not best practice but doesn't work when you only update the individual item
 
                         } else {
