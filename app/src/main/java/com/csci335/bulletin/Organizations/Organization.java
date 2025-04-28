@@ -14,6 +14,7 @@ public class Organization {
     private String description;
     private String ID;
     private ArrayList<Notif> notifications;
+    private List<String> followers;
 
     public Organization(){}
     public Organization(String name, String description, String ID){
@@ -43,4 +44,16 @@ public class Organization {
     public ArrayList<Notif> getNotifications() {return notifications;}
     public void setNotifications(ArrayList<Notif> notifications) {this.notifications = notifications;}
     public void addNotification(Notif n){notifications.add(n);}
+
+    public List<String> getFollowers() { return this.followers; }
+    public void setFollowers(List<String> followers) { this.followers = followers; }
+    public void addFollower(String follower) {
+        if(followers == null) {
+            followers = new ArrayList<String>();
+        }
+        this.followers.add(follower);
+    }
+    public void removeFollower(String follower) {
+        this.followers.remove(follower);
+    }
 }
