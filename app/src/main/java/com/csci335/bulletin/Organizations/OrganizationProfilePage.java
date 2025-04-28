@@ -23,7 +23,7 @@ import com.csci335.bulletin.Main.NavigationManager;
 import com.csci335.bulletin.Main.Notifications;
 import com.csci335.bulletin.Main.UserLoadingScreen;
 import com.csci335.bulletin.R;
-import com.csci335.bulletin.Events.HomePage;
+import com.csci335.bulletin.StudentClasses.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -33,14 +33,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class OrganizationProfilePage extends AppCompatActivity {
     private String orgId;
@@ -74,7 +70,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
         setting up screen based on user type
          */
         userIsOrg = false;
-        Button mpBtn = findViewById(R.id.multiPurposeBtn);
+        Button mpBtn = findViewById(R.id.followBtn);
         TextView archiveBtn = findViewById(R.id.archiveBtn);
         TabLayout typeTabs = findViewById(R.id.eventTabs);
         ImageButton bellBtn = findViewById(R.id.bellBtn);
@@ -202,13 +198,37 @@ public class OrganizationProfilePage extends AppCompatActivity {
             boolean clicked = false; //fix this to see if user is following the organization!
             @Override
             public void onClick(View v) {
-                if(clicked){
-                    mpBtn.setText("Follow");
-                }
-                else{
-                    mpBtn.setText("Unfollow");
-                }
-                clicked = !clicked;
+
+                FirebaseAuth fauth = FirebaseAuth.getInstance();
+                String currentUID = fauth.getCurrentUser().getUid();
+
+                db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                        if (task.isSuccessful() && task.getResult() != null) {
+
+                            Student student = task.getResult().toObject(Student.class);
+
+                            if(clicked){
+                                mpBtn.setText("Follow");
+                                student.removeFollowedOrg(orgId);
+                            }
+                            else{
+                                mpBtn.setText("Unfollow");
+                                student.addFollowedOrg(orgId);
+                            }
+                            clicked = !clicked;
+                            db.collection("studentInfo").document(currentUID).update("followedOrgs", student.getFollowedOrgs());
+                            //notifyDataSetChanged(); //not best practice but doesn't work when you only update the individual item
+
+                        } else {
+                            Log.e("Firestore", "Document not found or error retrieving document");
+                        }
+                    }
+                });
+
+
             }
         };
     }

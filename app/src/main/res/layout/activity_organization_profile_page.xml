@@ -50,7 +50,7 @@
                 app:layout_constraintVertical_bias="0.166" />
 
             <Button
-                android:id="@+id/multiPurposeBtn"
+                android:id="@+id/followBtn"
                 android:layout_width="210dp"
                 android:layout_height="51dp"
                 android:backgroundTint="@color/orange"
@@ -116,7 +116,7 @@
                 android:textAlignment="textEnd"
                 android:textSize="18sp"
                 android:textColor="@color/navy_blue"
-                app:layout_constraintBottom_toBottomOf="@+id/multiPurposeBtn"
+                app:layout_constraintBottom_toBottomOf="@+id/followBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
