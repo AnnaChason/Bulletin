@@ -8,6 +8,7 @@ import com.csci335.bulletin.StudentClasses.Student;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -96,7 +97,7 @@ public class Event implements Comparable<Event>{
     public void setLocation(String location){this.location = location;}
     public String getDescription() {return description;}
     public void setDescription(String description){this.description = description;}
-    public int getAttendance() {return attendance;}
+    public int getAttendance() {if(students != null) return students.size(); else return 0;}
     public void setAttendance(int attendance){this.attendance = attendance;}
     //adds num to number of attendance (just use negative number to take away attendees)
     public void updateAttendance(int num){attendance += num;}
@@ -249,11 +250,36 @@ public class Event implements Comparable<Event>{
             return Integer.compare(e1.dateToNum(), e2.dateToNum());
         }
     }
+    private static class AttendFilter implements Comparator<Event>{
+        @Override
+        public int compare(Event o1, Event o2) {
+            FirebaseAuth fauth = FirebaseAuth.getInstance();
+            boolean attend1 = o1.getStudents().contains(fauth.getCurrentUser().getUid());
+            boolean attend2 = o2.getStudents().contains(fauth.getCurrentUser().getUid());
+            if(attend1 && !attend2){
+                return -1;
+            }
+            if(attend1 && attend2){//if attending both sort by date
+                DateFilter df = new DateFilter();
+                return df.compare(o1,o2);
+            }
+            if(attend2){
+                return 1;
+            }
+            return 0;
+        }
+    }
+    private static class FollowFilter implements Comparator<Event>{
+        @Override
+        public int compare(Event o1, Event o2) {
+            return 0;
+        }
+    }
     public static String[] sortTypes(){
-        return new String[] {"Date", "Popularity"};
+        return new String[] {"Date", "Popularity", "Attending","Followed Organizations"};
     }
     public static Comparator<Event> sortMethods(int i){
-        Comparator[] methods = {new DateFilter(),new PopularityFilter()};
+        Comparator[] methods = {new DateFilter(),new PopularityFilter(), new AttendFilter(), new FollowFilter()};
         return methods[i];
     }
 }

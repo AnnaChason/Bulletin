@@ -218,9 +218,10 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.getResult().exists())
+                    if(task.getResult().exists()) {
                         student = task.getResult().toObject(Student.class);
-                    setAttendBoxHelper(position, attendingBtn);
+                        setAttendBoxHelper(position, attendingBtn);
+                    }
                 }
             });
         }
