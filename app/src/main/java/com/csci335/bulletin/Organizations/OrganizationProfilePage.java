@@ -106,6 +106,16 @@ public class OrganizationProfilePage extends AppCompatActivity {
             typeTabs.setVisibility(View.VISIBLE);
             bellBtn.setVisibility(View.VISIBLE);
             userIsOrg = true;
+        } else {//current user is a student viewing organization's page
+            String studentId = FirebaseAuth.getInstance().getUid();
+            db.collection("studentInfo").document(studentId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    task.getResult().toObject(Student.class);
+                    // next: look through student's followedOrgs field to see whether they are following this organization.
+                    // If so, set the follow button in a state of being followed, if not, leave follow btn in first state
+                }
+            });
         }
         TextView orgNameTV = findViewById(R.id.orgNameTV);
         TextView orgDescTV = findViewById(R.id.orgDescTV);
@@ -209,7 +219,6 @@ public class OrganizationProfilePage extends AppCompatActivity {
                         if (task.isSuccessful() && task.getResult() != null) {
 
                             Student student = task.getResult().toObject(Student.class);
-                            Organization organization;
                             db.collection("organizationInfo").document(orgId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -225,11 +234,12 @@ public class OrganizationProfilePage extends AppCompatActivity {
                                         organization.addFollower(currentUID);
                                     }
                                     clicked = !clicked;
+
+                                    db.collection("studentInfo").document(currentUID).update("followedOrgs", student.getFollowedOrgs());
+                                    db.collection("organizationInfo").document(orgId).update("followers", organization.getFollowers());
                                 }
                             });
 
-                            db.collection("studentInfo").document(currentUID).update("followedOrgs", student.getFollowedOrgs());
-                            //db.collection("organizationInfo").document(orgId).update("followers", organization.getFollowers());
                             //notifyDataSetChanged(); //not best practice but doesn't work when you only update the individual item
 
                         } else {

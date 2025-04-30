@@ -89,6 +89,12 @@ public class UserLoadingScreen extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()) {
+
+                    // Update Organizations as they log in to include the new field of followers
+                    if(!documentSnapshot.contains("followers")) {
+                        orgRef.update("followers", new ArrayList<String>());
+                    }
+
                     currentUserType = 2;
                     Organization org = documentSnapshot.toObject(Organization.class);
 
