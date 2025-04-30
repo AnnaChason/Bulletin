@@ -40,12 +40,17 @@ public class Event implements Comparable<Event>{
     private String organizationID;
     private String organizationName;
     private String docId;
+
+    // time data
+    private int hour;
+    private int minute;
+
  //   private static StorageReference storage = FirebaseStorage.getInstance().getReference();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     // Students who have marked themselves as attending this event
     private List<String> students;
 
-    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, List<String> students) {
+    public Event(String title, String date, String location, String description, String posterImg, int attendance, String category, String organizationID, List<String> students, int hour, int minute) {
         this.location = location;
         this.title = title;
         this.date = date;
@@ -55,6 +60,9 @@ public class Event implements Comparable<Event>{
         this.category = category;
         this.organizationID = organizationID;
         this.students = students;
+        this.hour = hour;
+        this.minute = minute;
+
         if(organizationID != null && !organizationID.equals("")) {
             DocumentReference docRef = db.collection("organizationInfo").document(organizationID);
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -111,6 +119,11 @@ public class Event implements Comparable<Event>{
     public void setOrganizationName(String organizationName) {this.organizationName = organizationName;}
     public List<String> getStudents() { return this.students; }
     public void setStudents(List<String> students) { this.students = students; }
+    public int getHour() {return hour;}
+    public void setHour(int hour) {this.hour = hour;}
+    public int getMinute() {return minute;}
+    public void setMinute(int minute) {this.minute = minute;}
+
     public void addStudent(String student) {
         if(students == null) {
             students = new ArrayList<String>();
@@ -228,7 +241,14 @@ public class Event implements Comparable<Event>{
     */
     @Override
     public int compareTo(Event e) {
-        return Integer.compare(this.dateToNum(), e.dateToNum());
+        // compare the dates first and if they are equal compare the hours then minutes
+        if (Integer.compare(this.dateToNum(), e.dateToNum()) == 0){
+            if (Integer.compare(this.getHour(), e.getHour()) == 0) {
+                return Integer.compare(this.getMinute(), e.getMinute());
+            }
+            else return Integer.compare(this.getHour(), e.getHour());
+        }
+        else return Integer.compare(this.dateToNum(), e.dateToNum());
     }
 
 
@@ -247,7 +267,7 @@ public class Event implements Comparable<Event>{
     private static class DateFilter implements Comparator<Event>{
         @Override
         public int compare(Event e1, Event e2) {
-            return Integer.compare(e1.dateToNum(), e2.dateToNum());
+            return e1.compareTo(e2);
         }
     }
     private static class AttendFilter implements Comparator<Event>{

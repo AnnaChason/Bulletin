@@ -63,6 +63,16 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     public void onBindViewHolder(@NonNull EventRecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.eventNameVT.setText(events.get(position).getTitle());
         holder.dateVT.setText(events.get(position).getDate());
+
+        // time assignment
+        String time = "";
+        if (events.get(position).getHour() > 12) time += String.valueOf(events.get(position).getHour() - 12);
+        else time += String.valueOf(events.get(position).getHour());
+        time += ":" + String.valueOf(events.get(position).getMinute());
+        if (events.get(position).getHour() > 12) time += " p.m.";
+        else time += " a.m.";
+        holder.timeView.setText(time);
+
         holder.locationVT.setText(events.get(position).getLocation());
         holder.descriptionVT.setText(events.get(position).getDescription());
         holder.numAttendingVT.setText(""+ events.get(position).getAttendance() + " people attending");
@@ -253,7 +263,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
     //gets all views from row layout and assigns them to variables
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView eventNameVT, dateVT, locationVT,descriptionVT, numAttendingVT, categoryVT;
+        TextView eventNameVT, dateVT, timeView, locationVT,descriptionVT, numAttendingVT, categoryVT;
         ImageView poster;
         CheckBox attendingBtn;
         Button orgNameBtn, zoomButton;
@@ -263,6 +273,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             super(itemView);
             eventNameVT = itemView.findViewById(R.id.eventNameVT);
             dateVT = itemView.findViewById(R.id.dateVT);
+            timeView = itemView.findViewById(R.id.timeView);
             locationVT = itemView.findViewById(R.id.locationVT);
             descriptionVT = itemView.findViewById(R.id.descriptionVT);
             numAttendingVT = itemView.findViewById(R.id.numAttendingVT);
