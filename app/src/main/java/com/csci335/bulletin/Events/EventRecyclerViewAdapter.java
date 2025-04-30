@@ -75,6 +75,16 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
         //set check boxes
         setAttendanceBoxes(position, holder.attendingBtn);
+
+        /*
+        only students need to be able to mark events as attending
+         */
+        if(UserLoadingScreen.getCurrentUserType() == 3){
+            holder.attendingBtn.setVisibility(View.VISIBLE);
+        }
+        else
+            holder.attendingBtn.setVisibility(View.GONE);
+
         /*
         updates attendance when button pressed
          */
@@ -211,22 +221,23 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     make sure attendance checkBoxes are correctly checked
      */
     private void setAttendanceBoxes(int position, CheckBox attendingBtn) {
-        FirebaseAuth fauth = FirebaseAuth.getInstance();
-        String currentUID = fauth.getCurrentUser().getUid();
+        if(UserLoadingScreen.getCurrentUserType() == 3) {
+            FirebaseAuth fauth = FirebaseAuth.getInstance();
+            String currentUID = fauth.getCurrentUser().getUid();
 
-        if(student == null){
-            db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.getResult().exists()) {
-                        student = task.getResult().toObject(Student.class);
-                        setAttendBoxHelper(position, attendingBtn);
+            if (student == null) {
+                db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.getResult().exists()) {
+                            student = task.getResult().toObject(Student.class);
+                            setAttendBoxHelper(position, attendingBtn);
+                        }
                     }
-                }
-            });
-        }
-        else{
-            setAttendBoxHelper(position, attendingBtn);
+                });
+            } else {
+                setAttendBoxHelper(position, attendingBtn);
+            }
         }
     }
     /*
