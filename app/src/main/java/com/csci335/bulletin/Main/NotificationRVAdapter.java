@@ -77,7 +77,7 @@ public class NotificationRVAdapter extends RecyclerView.Adapter<NotificationRVAd
 
     public SpannableString setReadMsg(int position){
         SpannableString readMsg;
-        if(!notifs.get(position).getRead())
+        if(notifs.get(position).getRead())
             readMsg = new SpannableString(context.getString(R.string.unread));
 
         else

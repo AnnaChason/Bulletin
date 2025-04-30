@@ -158,7 +158,7 @@ public class Notifications extends AppCompatActivity {
     private void getUnread(){
         displayedNots.clear();
         for(int i = 0; i < allNots.size(); i++){
-            if(allNots.get(i).getRead()){
+            if(!allNots.get(i).getRead()){
                 displayedNots.add(allNots.get(i));
             }
         }
@@ -171,7 +171,7 @@ public class Notifications extends AppCompatActivity {
     private void getRead(){
         displayedNots.clear();
         for(int i = 0; i < allNots.size(); i++){
-            if(!allNots.get(i).getRead()){
+            if(allNots.get(i).getRead()){
                 displayedNots.add(allNots.get(i));
             }
         }
