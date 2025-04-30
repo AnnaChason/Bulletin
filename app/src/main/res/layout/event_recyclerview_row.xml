@@ -65,30 +65,31 @@
                 app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/img" />
 
+
             <TextView
                 android:id="@+id/locationVT"
                 android:layout_width="92dp"
                 android:layout_height="22dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="6dp"
                 android:text="Location"
                 app:layout_constraintBottom_toTopOf="@+id/descriptionVT"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/orgNameBtn"
-                app:layout_constraintVertical_bias="0.509" />
-
+                app:layout_constraintHorizontal_bias="0.716"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orgNameBtn" />
 
             <TextView
                 android:id="@+id/dateVT"
-                android:layout_width="60dp"
-                android:layout_height="19dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="42dp"
+                android:layout_width="83dp"
+                android:layout_height="17dp"
+                android:layout_marginTop="13dp"
                 android:text="Date"
-                app:layout_constraintBottom_toBottomOf="@+id/locationVT"
-                app:layout_constraintEnd_toStartOf="@+id/locationVT"
-                app:layout_constraintHorizontal_bias="0.23"
-                app:layout_constraintStart_toEndOf="@+id/eventPosterView"
-                app:layout_constraintTop_toTopOf="@+id/locationVT"
+                app:layout_constraintBottom_toTopOf="@+id/locationVT"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.694"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orgNameBtn"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
@@ -109,11 +110,11 @@
                 android:id="@+id/descriptionVT"
                 android:layout_width="166dp"
                 android:layout_height="55dp"
-                android:layout_marginTop="92dp"
+                android:layout_marginTop="104dp"
                 android:text="Description"
                 android:textAlignment="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.488"
+                app:layout_constraintHorizontal_bias="0.466"
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
 
@@ -180,6 +181,20 @@
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toBottomOf="@+id/descriptionVT"
                 app:layout_constraintVertical_bias="0.783" />
+
+            <TextView
+                android:id="@+id/timeView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="28dp"
+                android:text="Time"
+                app:layout_constraintBottom_toTopOf="@+id/descriptionVT"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.804"
+                app:layout_constraintStart_toEndOf="@+id/dateVT"
+                app:layout_constraintTop_toBottomOf="@+id/orgNameBtn"
+                app:layout_constraintVertical_bias="0.0" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

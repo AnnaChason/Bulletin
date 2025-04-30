@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -130,11 +131,14 @@ public class EventApplicationForm extends AppCompatActivity {
         EditText dateEntry = findViewById(R.id.editTextDate);
         EditText descEntry = findViewById(R.id.editTextDesc);
         EditText locEntry = findViewById(R.id.editTextLocation);
+        TimePicker timeEntry = findViewById(R.id.timePicker);
         // get values to build the event application object
         String title = titleEntry.getEditableText().toString();
         String date = dateEntry.getEditableText().toString();
         String desc = descEntry.getEditableText().toString();
         String loc = locEntry.getEditableText().toString();
+        int hour = timeEntry.getHour();
+        int min = timeEntry.getMinute();
 
         imgRef = storageReference.child("images/" + UUID.randomUUID().toString());
         if(file!= null){
@@ -143,7 +147,7 @@ public class EventApplicationForm extends AppCompatActivity {
                     String downloadUrl = uri.toString();  // This is the URL you can use in Glide
                     // get the organization info
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id, new ArrayList<String>());
+                    Event newEventApp = new Event(title, date, loc,desc, downloadUrl, 0, category, id, new ArrayList<String>(), hour, min);
                     db.collection("eventApplications").document(title).set(newEventApp);
                     Toast.makeText(this, "Event submitted for approval", Toast.LENGTH_SHORT).show();
                 });
@@ -155,7 +159,7 @@ public class EventApplicationForm extends AppCompatActivity {
             // get the organization info
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
              //put the object in the database
-            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id, new ArrayList<String>());
+            Event newEventApp = new Event(title, date, loc, desc, "noImage.jpg", 0, category, id, new ArrayList<String>(), hour, min);
             db.collection("eventApplications").document(title).set(newEventApp);
             Toast.makeText(this, "Event submitted for approval", Toast.LENGTH_SHORT).show();
         }
