@@ -46,6 +46,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
     private ArrayList<Event> approved = new ArrayList<>();;
     private EventRecyclerViewAdapter rvAdapter;
     boolean userIsOrg;
+    boolean followBtnClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +112,15 @@ public class OrganizationProfilePage extends AppCompatActivity {
             db.collection("studentInfo").document(studentId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    task.getResult().toObject(Student.class);
-                    // next: look through student's followedOrgs field to see whether they are following this organization.
-                    // If so, set the follow button in a state of being followed, if not, leave follow btn in first state
+                    Student student = task.getResult().toObject(Student.class);
+                    Button followBtn = findViewById(R.id.followBtn);
+                    if (student.getFollowedOrgs().contains(orgId)) {
+                        followBtnClicked = true;
+                        followBtn.setText("Unfollow");
+                    } else {
+                        followBtnClicked = false;
+                        followBtn.setText("Follow");
+                    }
                 }
             });
         }
@@ -203,9 +210,8 @@ public class OrganizationProfilePage extends AppCompatActivity {
     /*
     makes button handle following/unfollowing organizations
      */
-    private View.OnClickListener followListener (Button mpBtn){
+    private View.OnClickListener followListener (Button followBtn){
         return new View.OnClickListener() {
-            boolean clicked = false; //fix this to see if user is following the organization!
             @Override
             public void onClick(View v) {
 
@@ -223,17 +229,17 @@ public class OrganizationProfilePage extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     Organization organization = task.getResult().toObject(Organization.class);
-                                    if(clicked){
-                                        mpBtn.setText("Follow");
+                                    if(followBtnClicked){
+                                        followBtn.setText("Follow");
                                         student.removeFollowedOrg(orgId);
                                         organization.removeFollower(currentUID);
                                     }
                                     else{
-                                        mpBtn.setText("Unfollow");
+                                        followBtn.setText("Unfollow");
                                         student.addFollowedOrg(orgId);
                                         organization.addFollower(currentUID);
                                     }
-                                    clicked = !clicked;
+                                    followBtnClicked = !followBtnClicked;
 
                                     db.collection("studentInfo").document(currentUID).update("followedOrgs", student.getFollowedOrgs());
                                     db.collection("organizationInfo").document(orgId).update("followers", organization.getFollowers());
