@@ -45,7 +45,7 @@ public class Organization {
     public void setNotifications(ArrayList<Notif> notifications) {this.notifications = notifications;}
     public void addNotification(Notif n){notifications.add(n);}
 
-    public List<String> getFollowers() { return this.followers; }
+    public List<String> getFollowers() { return followers; }
     public void setFollowers(List<String> followers) { this.followers = followers; }
     public void addFollower(String follower) {
         if(followers == null) {
@@ -54,6 +54,7 @@ public class Organization {
         this.followers.add(follower);
     }
     public void removeFollower(String follower) {
-        this.followers.remove(follower);
+        followers.remove(follower);
     }
+    public boolean containsFollower(String follower) { return followers.contains(follower); }
 }

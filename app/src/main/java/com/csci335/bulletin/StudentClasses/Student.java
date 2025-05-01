@@ -74,9 +74,10 @@ public class Student {
         events.add(event);
     }
     public void removeEvent(String event) { events.remove(event); }
-    public List<String> getFollowedOrgs() { return this.followedOrgs; }
+    public List<String> getFollowedOrgs() { return followedOrgs; }
     public void setFollowedOrgs(List<String> followedOrgs) { this.followedOrgs = followedOrgs; }
     public void addFollowedOrg(String followedOrg) { followedOrgs.add(followedOrg); }
     public void removeFollowedOrg(String followedOrg) { followedOrgs.remove(followedOrg); }
+    public boolean containsFollowedOrg(String followedOrg) { return followedOrgs.contains(followedOrg); }
 
 }

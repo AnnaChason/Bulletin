@@ -2,6 +2,7 @@ package com.csci335.bulletin.Main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -10,19 +11,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import com.csci335.bulletin.Main.Utility;
 
+import androidx.annotation.NonNull;
 import com.csci335.bulletin.AdminClasses.AdminHomePage;
 import com.csci335.bulletin.Events.HomePage;
 import com.csci335.bulletin.Organizations.EventApplicationForm;
 import com.csci335.bulletin.Organizations.Organization;
 import com.csci335.bulletin.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.csci335.bulletin.StudentClasses.Student;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 this event will just be a loading page
@@ -36,6 +46,8 @@ public class UserLoadingScreen extends AppCompatActivity {
    3 is student
     */
     private static int currentUserType;
+    // Runs code from the utility class if set to true
+    private final boolean runUtility = false;
 
 
     @Override
@@ -59,6 +71,10 @@ public class UserLoadingScreen extends AppCompatActivity {
                 finish();
             }
         });
+
+        if(runUtility) {
+            Utility.AllStudentFollow();
+        }
     }
     @Override
     public void onResume(){
