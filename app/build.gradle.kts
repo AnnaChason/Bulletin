@@ -42,6 +42,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -103,5 +104,7 @@ dependencies {
 
     // FirebaseUI Storage only
     implementation ("com.firebaseui:firebase-ui-storage:9.0.0")
+
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 }

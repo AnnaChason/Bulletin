@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -26,24 +27,24 @@ import java.util.Map;
 
 public class EventEdit extends AppCompatActivity {
 
-    private EditText titleInput, dateInput, descInput, locationInput;
+    private EditText dateInput, descInput, locationInput;
+    private TextView titleInput;
     private Spinner categorySpinner;
     private ImageView image;
     private Button saveBtn, cancelBtn, deleteBtn;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String docId;
+    String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_edit);
         String imageUrl = getIntent().getStringExtra("imageUrl");
-        docId = getIntent().getStringExtra("docId");
+        title = getIntent().getStringExtra("title");
         // Initialize views
         titleInput = findViewById(R.id.editTextTitle2);
         dateInput = findViewById(R.id.editTextDate2);
         descInput = findViewById(R.id.editTextDesc2);
         locationInput = findViewById(R.id.editTextLocation2);
-        categorySpinner = findViewById(R.id.categorySpinner2);
         image = findViewById(R.id.imageView);
         saveBtn = findViewById(R.id.saveBtn);
         cancelBtn = findViewById(R.id.cancelBtn);
@@ -69,7 +70,7 @@ public class EventEdit extends AppCompatActivity {
             String date = dateInput.getText().toString().trim();
             String desc = descInput.getText().toString().trim();
             String loc = locationInput.getText().toString().trim();
-            saveChanges(docId, newTitle, date, loc, desc);
+            saveChanges(title, newTitle, date, loc, desc);
         });
         cancelBtn.setOnClickListener(v -> {
             finish();
@@ -78,7 +79,7 @@ public class EventEdit extends AppCompatActivity {
         deleteBtn.setOnClickListener(v -> {
             //Delete in Firebase
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("approvedEvents").document(docId).delete();
+            db.collection("approvedEvents").document(title).delete();
             Intent homeIntent = new Intent(this, OrganizationProfilePage.class);
             startActivity(homeIntent);
             finish();
@@ -97,14 +98,14 @@ public class EventEdit extends AppCompatActivity {
                 });
     }
 
-    private void saveChanges(String docId, String newTitle, String date, String loc, String desc) {
+    private void saveChanges(String title, String newTitle, String date, String loc, String desc) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("title", newTitle);
         updates.put("date", date);
         updates.put("description", desc);
         updates.put("location", loc);
 
-        db.collection("approvedEvents").document(docId).update(updates)
+        db.collection("approvedEvents").document(title).update(updates)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Event updated", Toast.LENGTH_SHORT).show();
                     Intent homeIntent = new Intent(this, OrganizationProfilePage.class);

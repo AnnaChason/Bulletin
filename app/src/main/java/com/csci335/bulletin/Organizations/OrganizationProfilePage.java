@@ -76,6 +76,13 @@ public class OrganizationProfilePage extends AppCompatActivity {
         TabLayout typeTabs = findViewById(R.id.eventTabs);
         ImageButton bellBtn = findViewById(R.id.bellBtn);
 
+        Button analyticsButton = findViewById(R.id.analyticsButton);
+
+        analyticsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(OrganizationProfilePage.this, AnalyticsPage.class);
+            startActivity(intent);
+        });
+
         if(getIntent().hasExtra("OrgId")) {
             orgId = getIntent().getExtras().getString("OrgId");
             mpBtn.setOnClickListener(followListener(mpBtn));
@@ -106,6 +113,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
             archiveBtn.setVisibility(View.GONE);
             typeTabs.setVisibility(View.VISIBLE);
             bellBtn.setVisibility(View.VISIBLE);
+
             userIsOrg = true;
         } else {//current user is a student viewing organization's page
             String studentId = FirebaseAuth.getInstance().getUid();
@@ -151,7 +159,11 @@ public class OrganizationProfilePage extends AppCompatActivity {
          */
         RecyclerView orgEventsRV = findViewById(R.id.orgProfileRV);
         events = new ArrayList<>();
-        rvAdapter = new EventRecyclerViewAdapter(this, events, false);
+        if(userIsOrg) {
+            rvAdapter = new EventRecyclerViewAdapter(this, events, true);
+        } else {
+            rvAdapter = new EventRecyclerViewAdapter(this, events, false);
+        }
         orgEventsRV.setAdapter(rvAdapter);
         orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
 

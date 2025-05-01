@@ -8,12 +8,17 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.csci335.bulletin.AdminClasses.AdminHomePage;
+import com.csci335.bulletin.Main.UserLoadingScreen;
+import com.csci335.bulletin.Organizations.OrganizationProfilePage;
 import com.csci335.bulletin.R;
 
 public class Zoom extends AppCompatActivity {
 
     ImageView image;
     Button returnButton;
+
+   int num = UserLoadingScreen.getCurrentUserType();
 /*This code displays an image in a new activity using Glide.
 The image URL must be sent via intent from another activity. */
 
@@ -33,8 +38,16 @@ The image URL must be sent via intent from another activity. */
 
         returnButton = findViewById(R.id.returnButton);
         returnButton.setOnClickListener(v -> {
-            Intent intent = new Intent(Zoom.this, HomePage.class);
-            startActivity(intent);
+            if(num == 1) {
+                Intent intent = new Intent(Zoom.this, AdminHomePage.class);
+                startActivity(intent);
+            } else if (num == 2){
+                Intent intent = new Intent(Zoom.this, OrganizationProfilePage.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(Zoom.this, HomePage.class);
+                startActivity(intent);
+            }
         });
 
     }
