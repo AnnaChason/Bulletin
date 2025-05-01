@@ -48,61 +48,18 @@
         android:layout_weight="3"
         android:background="@color/tan">
 
-        <Button
-            android:id="@+id/selectImgBtn2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/navy_blue"
-            android:text="Edit Poster Image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.8"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.737" />
-
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:layout_width="172dp"
+            android:layout_height="195dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.155"
+            app:layout_constraintHorizontal_bias="0.451"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.799"
+            app:layout_constraintVertical_bias="0.715"
             tools:srcCompat="@tools:sample/avatars" />
-
-        <Spinner
-            android:id="@+id/categorySpinner2"
-            android:layout_width="184dp"
-            android:layout_height="51dp"
-            android:layout_marginTop="12dp"
-            android:spinnerMode="dropdown"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.643"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.569" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="77dp"
-            android:layout_height="39dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="256dp"
-            android:text="Category:"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.182"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextLocation"
-            app:layout_constraintVertical_bias="1.0" />
 
         <EditText
             android:id="@+id/editTextLocation2"
@@ -147,13 +104,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.196" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextTitle2"
             android:layout_width="223dp"
             android:layout_height="49dp"
             android:ems="10"
             android:hint="Event Title"
             android:inputType="text"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.478"
@@ -165,12 +123,12 @@
             android:id="@+id/deleteBtn"
             android:layout_width="106dp"
             android:layout_height="68dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="48dp"
             android:backgroundTint="@color/muted_red"
             android:text="Delete Event"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.889"
+            app:layout_constraintHorizontal_bias="0.836"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

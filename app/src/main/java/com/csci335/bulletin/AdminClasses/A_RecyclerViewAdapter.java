@@ -20,6 +20,7 @@ import com.csci335.bulletin.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -81,6 +82,13 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
                             Notif approval = new Notif("Event Approved", "Congradulations! Your event " + event.getTitle() + " has been approved.");
                             org.addNotification(approval);
                             db.collection("organizationInfo").document(org.getId()).update("notifications", org.getNotifications());
+
+                            if(org.getFollowers() != null) {
+                                for (String student : org.getFollowers()) {
+                                    Notif msg = new Notif("New Event " + event.getTitle(), "" + org.getName() + " just posted the event " + event.getTitle() + " you should check it out!");
+                                    db.collection("studentInfo").document(student).update("notifications", FieldValue.arrayUnion(msg));
+                                }
+                            }
                         }
                     }
                 });
@@ -98,7 +106,6 @@ class A_RecyclerViewAdapter extends RecyclerView.Adapter<A_RecyclerViewAdapter.M
                     //Delete from Collection 1 in Firebase
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("eventApplications").document(event.getTitle()).delete();
-                    db.collection("approvedEvents").document(event.getTitle()).set(event);
                     notifyDataSetChanged();
 
                     /*

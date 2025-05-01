@@ -83,14 +83,15 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 .load(events.get(position).getPosterImg())  // event.getPosterImg() should be the download URL
                 .into(holder.poster);
 
-        //set check boxes
-        setAttendanceBoxes(position, holder.attendingBtn);
 
         /*
         only students need to be able to mark events as attending
          */
         if(UserLoadingScreen.getCurrentUserType() == 3){
             holder.attendingBtn.setVisibility(View.VISIBLE);
+            //set check boxes
+            setAttendanceBoxes(position, holder.attendingBtn);
+
         }
         else
             holder.attendingBtn.setVisibility(View.GONE);
@@ -150,35 +151,6 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                     notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
 
                 }
-                /*db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                        if (task.isSuccessful() && task.getResult() != null) {
-
-                            Student student = task.getResult().toObject(Student.class);
-                            String studentID = task.getResult().getId();
-                            Event event = events.get(holder.getAdapterPosition());
-                            String eventTitle = event.getTitle();
-                            if(holder.attendingBtn.isChecked()) {
-                                event.updateAttendance(+1);
-                                event.addStudent(studentID);
-                                student.addEvent(eventTitle);
-                            } else {
-                                event.updateAttendance(-1);
-                                event.removeStudent(studentID);
-                                student.removeEvent(eventTitle);
-                            }
-                            db.collection("approvedEvents").document(event.getTitle()).update("attendance",event.getAttendance());
-                            db.collection("approvedEvents").document(event.getTitle()).update("students", event.getStudents());
-                            db.collection("studentInfo").document(currentUID).update("events", student.getEvents());
-                            notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
-
-                        } else {
-                            Log.e("Firestore", "Document not found or error retrieving document");
-                        }
-                    }
-                });*/
             }
         });
 

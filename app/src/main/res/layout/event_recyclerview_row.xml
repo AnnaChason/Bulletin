@@ -155,19 +155,6 @@
                 app:layout_constraintStart_toEndOf="@+id/eventPosterView"
                 app:layout_constraintTop_toBottomOf="@+id/eventNameVT" />
 
-            <ImageButton
-                android:id="@+id/editBtn"
-                android:layout_width="54dp"
-                android:layout_height="50dp"
-                android:backgroundTint="@color/navy_blue"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/eventNameVT"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/baseline_edit_24" />
 
             <CheckBox
                 android:id="@+id/attendingBtn"
@@ -195,6 +182,22 @@
                 app:layout_constraintStart_toEndOf="@+id/dateVT"
                 app:layout_constraintTop_toBottomOf="@+id/orgNameBtn"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <ImageButton
+                android:id="@+id/editBtn"
+                android:layout_width="54dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/navy_blue"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/eventNameVT"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/baseline_edit_24" />
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

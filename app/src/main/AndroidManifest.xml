@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Bulletin"
         tools:targetApi="34">
         <activity
+            android:name=".Organizations.AnalyticsPage"
+            android:exported="false" />
+        <activity
             android:name=".Main.Notifications"
             android:exported="false" />
         <activity
