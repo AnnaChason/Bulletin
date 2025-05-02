@@ -79,7 +79,6 @@ public class EventEdit extends AppCompatActivity {
         cancelBtn.setOnClickListener(v -> {
             finish();
         });
-
         deleteBtn.setOnClickListener(v -> {
             //Delete in Firebase
             FirebaseFirestore db = FirebaseFirestore.getInstance();

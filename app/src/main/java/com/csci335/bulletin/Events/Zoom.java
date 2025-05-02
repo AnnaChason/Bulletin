@@ -39,14 +39,11 @@ The image URL must be sent via intent from another activity. */
         returnButton = findViewById(R.id.returnButton);
         returnButton.setOnClickListener(v -> {
             if(num == 1) {
-                Intent intent = new Intent(Zoom.this, AdminHomePage.class);
-                startActivity(intent);
+                finish();
             } else if (num == 2){
-                Intent intent = new Intent(Zoom.this, OrganizationProfilePage.class);
-                startActivity(intent);
+                finish();
             } else {
-                Intent intent = new Intent(Zoom.this, HomePage.class);
-                startActivity(intent);
+                finish();
             }
         });
 
