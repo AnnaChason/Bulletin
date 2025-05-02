@@ -126,7 +126,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                             }
                             db.collection("approvedEvents").document(event.getTitle()).update("attendance",event.getAttendance());
                             db.collection("approvedEvents").document(event.getTitle()).update("students", event.getStudents());
-                            db.collection("studentInfo").document(currentUID).update("events", student.getEvents());
+
                             notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
 
                         }
