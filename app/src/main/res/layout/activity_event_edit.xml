@@ -70,10 +70,10 @@
             android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.463"
+            app:layout_constraintHorizontal_bias="0.458"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.435" />
+            app:layout_constraintVertical_bias="0.451" />
 
         <EditText
             android:id="@+id/editTextDesc2"
@@ -85,10 +85,10 @@
             android:inputType="textMultiLine"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.437"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.307" />
+            app:layout_constraintVertical_bias="0.361" />
 
         <EditText
             android:id="@+id/editTextDate2"
@@ -99,10 +99,10 @@
             android:inputType="date"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.461"
+            app:layout_constraintHorizontal_bias="0.466"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.196" />
+            app:layout_constraintVertical_bias="0.184" />
 
         <TextView
             android:id="@+id/editTextTitle2"
@@ -118,6 +118,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.099" />
+
+        <TimePicker
+            android:id="@+id/timePicker2"
+            android:layout_width="231dp"
+            android:layout_height="88dp"
+            android:padding="5dp"
+            android:timePickerMode="spinner"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.355"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.266" />
 
         <Button
             android:id="@+id/deleteBtn"

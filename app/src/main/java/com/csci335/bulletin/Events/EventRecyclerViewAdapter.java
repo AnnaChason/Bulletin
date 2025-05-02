@@ -182,7 +182,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                 public void onClick(View v) {
                     Intent toEdit = new Intent(context, EventEdit.class);
                     toEdit.putExtra("imageUrl", events.get(holder.getAdapterPosition()).getPosterImg());
-                    toEdit.putExtra("docId", events.get(holder.getAdapterPosition()).getDocId());
+                    toEdit.putExtra("docId", events.get(holder.getAdapterPosition()).getTitle());
                     context.startActivity(toEdit);
                 }
             });
