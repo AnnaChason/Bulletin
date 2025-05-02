@@ -6,11 +6,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -52,7 +54,7 @@ public class AnalyticsPage extends AppCompatActivity {
         TextView followerText = findViewById(R.id.followerText);
         TextView followerCount = findViewById(R.id.followerCount);
         Spinner chartSelector = findViewById(R.id.chartSelector);
-        Button backBtn = findViewById(R.id.backBtn);
+        ImageButton backBtn = findViewById(R.id.backBtn);
 
         // Load follower count
         getNumFollowers(count -> {
@@ -67,8 +69,7 @@ public class AnalyticsPage extends AppCompatActivity {
 
         //drop down options
         String[] chartOptions = {"By Gender", "By Year"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, chartOptions);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, chartOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         chartSelector.setAdapter(adapter);
 
@@ -179,7 +180,7 @@ public class AnalyticsPage extends AppCompatActivity {
                                     } else if (year.equalsIgnoreCase("sophomore")) {
                                         sophomore++;
                                     } else if (year.equalsIgnoreCase("senior")){
-                                        sophomore++;
+                                        senior++;
                                     } else if (year.equalsIgnoreCase("junior")) {
                                         junior++;
                                     } else {
@@ -208,13 +209,15 @@ public class AnalyticsPage extends AppCompatActivity {
 
     private void updateChart(PieChart pieChart, List<PieEntry> entries, String label) {
        PieDataSet dataSet = new PieDataSet(entries, label);
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        //dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setColors(ContextCompat.getColor(getApplicationContext(), R.color.medium_blue),ContextCompat.getColor(getApplicationContext(), R.color.light_orange),ContextCompat.getColor(getApplicationContext(), R.color.light_green),ContextCompat.getColor(getApplicationContext(), R.color.navy_blue),ContextCompat.getColor(getApplicationContext(), R.color.orange),ContextCompat.getColor(getApplicationContext(), R.color.muted_red));
+        dataSet.setValueTextSize(0f);
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setDrawHoleEnabled(true);
-        pieChart.setEntryLabelTextSize(14f);
+        pieChart.setDrawHoleEnabled(false);
+        pieChart.setEntryLabelTextSize(18f);
         pieChart.invalidate(); // refresh
     }
 }

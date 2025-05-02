@@ -1,6 +1,7 @@
 package com.csci335.bulletin.Organizations;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -75,8 +76,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
         TextView archiveBtn = findViewById(R.id.archiveBtn);
         TabLayout typeTabs = findViewById(R.id.eventTabs);
         ImageButton bellBtn = findViewById(R.id.bellBtn);
-
-        Button analyticsButton = findViewById(R.id.analyticsButton);
+        ImageButton analyticsButton = findViewById(R.id.analyticsButton);
 
         analyticsButton.setOnClickListener(v -> {
             Intent intent = new Intent(OrganizationProfilePage.this, AnalyticsPage.class);
@@ -90,6 +90,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
             typeTabs.setVisibility(View.GONE);
             archiveBtn.setVisibility(View.VISIBLE);
             bellBtn.setVisibility(View.GONE);
+            analyticsButton.setVisibility(View.GONE);
             archiveBtn.setOnClickListener(new View.OnClickListener() {
                 boolean isClicked = false;
                 @Override
@@ -113,7 +114,7 @@ public class OrganizationProfilePage extends AppCompatActivity {
             archiveBtn.setVisibility(View.GONE);
             typeTabs.setVisibility(View.VISIBLE);
             bellBtn.setVisibility(View.VISIBLE);
-
+            analyticsButton.setVisibility(View.VISIBLE);
             userIsOrg = true;
         } else {//current user is a student viewing organization's page
             String studentId = FirebaseAuth.getInstance().getUid();
@@ -197,9 +198,8 @@ public class OrganizationProfilePage extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Event event = document.toObject(Event.class);
-                    event.setDocId(document.getId()); // ✅ Set docId once
-                    approved.add(event); // ✅ Use the same event with docId
-                    events.add(event);   // ✅ Use the same event with docId
+                    approved.add(event);
+                    events.add(event);
                 }
                 rvAdapter.notifyDataSetChanged();
             }
