@@ -68,7 +68,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         String time = "";
         if (events.get(position).getHour() > 12) time += String.valueOf(events.get(position).getHour() - 12);
         else time += String.valueOf(events.get(position).getHour());
-        time += ":" + String.valueOf(events.get(position).getMinute());
+        time += ":";
+        if (events.get(position).getMinute() < 10) time += "0";
+        String.valueOf(events.get(position).getMinute());
         if (events.get(position).getHour() > 12) time += " p.m.";
         else time += " a.m.";
         holder.timeView.setText(time);
