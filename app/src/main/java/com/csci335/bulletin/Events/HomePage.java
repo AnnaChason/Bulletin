@@ -32,6 +32,8 @@ public class HomePage extends AppCompatActivity {
     ArrayList<Event> events = new ArrayList<Event>();//all events to be displayed on feed
     EventRecyclerViewAdapter rvAdapter;
 
+    int num = UserLoadingScreen.getCurrentUserType();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,12 @@ public class HomePage extends AppCompatActivity {
          */
         RecyclerView eventFeedRV = findViewById(R.id.eventFeedRV);
         events = Event.setUpEvents(eventFeedRV);//retreives events from database
-        rvAdapter = new EventRecyclerViewAdapter(this, events, false);
+
+        if( num ==1 ) {
+            rvAdapter = new EventRecyclerViewAdapter(this, events, false, true);
+        } else {
+            rvAdapter = new EventRecyclerViewAdapter(this, events, false, false);
+        }
         eventFeedRV.setAdapter(rvAdapter);
         eventFeedRV.setLayoutManager(new LinearLayoutManager(this));
 

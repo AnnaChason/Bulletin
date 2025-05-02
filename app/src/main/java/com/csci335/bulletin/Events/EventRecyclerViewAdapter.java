@@ -1,5 +1,7 @@
 package com.csci335.bulletin.Events;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -40,12 +42,14 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
     private Context context;
     private EventRecyclerViewAdapter.MyViewHolder holder;
     private boolean editBtnVisible;
+    private boolean deleteBtnVisible;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Student student;
-    public EventRecyclerViewAdapter(Context context, ArrayList<Event> events, boolean editBtnVisible){
+    public EventRecyclerViewAdapter(Context context, ArrayList<Event> events, boolean editBtnVisible, boolean deleteBtnVisible){
         this.events = events;
         this.context = context;
         this.editBtnVisible = editBtnVisible;
+        this.deleteBtnVisible = deleteBtnVisible;
     }
 
     @NonNull
@@ -66,7 +70,8 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
         // time assignment
         String time = "";
-        if (events.get(position).getHour() > 12) time += String.valueOf(events.get(position).getHour() - 12);
+        if (events.get(position).getHour() > 12)
+            time += String.valueOf(events.get(position).getHour() - 12);
         else time += String.valueOf(events.get(position).getHour());
         time += ":" + String.valueOf(events.get(position).getMinute());
         if (events.get(position).getHour() > 12) time += " p.m.";
@@ -75,7 +80,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
 
         holder.locationVT.setText(events.get(position).getLocation());
         holder.descriptionVT.setText(events.get(position).getDescription());
-        holder.numAttendingVT.setText(""+ events.get(position).getAttendance() + " people attending");
+        holder.numAttendingVT.setText("" + events.get(position).getAttendance() + " people attending");
         holder.categoryVT.setText("#" + events.get(position).getCategory());
         holder.orgNameBtn.setText(events.get(position).getOrganizationName());
         //load the image
@@ -87,13 +92,12 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         /*
         only students need to be able to mark events as attending
          */
-        if(UserLoadingScreen.getCurrentUserType() == 3){
+        if (UserLoadingScreen.getCurrentUserType() == 3) {
             holder.attendingBtn.setVisibility(View.VISIBLE);
             //set check boxes
             setAttendanceBoxes(position, holder.attendingBtn);
 
-        }
-        else
+        } else
             holder.attendingBtn.setVisibility(View.GONE);
 
         /*
@@ -102,20 +106,20 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.attendingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(student == null){
+                if (student == null) {
                     FirebaseAuth fauth = FirebaseAuth.getInstance();
                     String currentUID = fauth.getCurrentUser().getUid();
                     db.collection("studentInfo").document(currentUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.getResult().exists())
+                            if (task.getResult().exists())
                                 student = task.getResult().toObject(Student.class);
 
                             Student student = task.getResult().toObject(Student.class);
                             String studentID = task.getResult().getId();
                             Event event = events.get(holder.getAdapterPosition());
                             String eventTitle = event.getTitle();
-                            if(holder.attendingBtn.isChecked()) {
+                            if (holder.attendingBtn.isChecked()) {
                                 event.updateAttendance(+1);
                                 event.addStudent(studentID);
                                 student.addEvent(eventTitle);
@@ -124,19 +128,18 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                                 event.removeStudent(studentID);
                                 student.removeEvent(eventTitle);
                             }
-                            db.collection("approvedEvents").document(event.getTitle()).update("attendance",event.getAttendance());
+                            db.collection("approvedEvents").document(event.getTitle()).update("attendance", event.getAttendance());
                             db.collection("approvedEvents").document(event.getTitle()).update("students", event.getStudents());
 
                             notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
 
                         }
                     });
-                }
-                else{
+                } else {
                     String studentID = student.getID();
                     Event event = events.get(holder.getAdapterPosition());
                     String eventTitle = event.getTitle();
-                    if(holder.attendingBtn.isChecked()) {
+                    if (holder.attendingBtn.isChecked()) {
                         event.updateAttendance(+1);
                         event.addStudent(studentID);
                         student.addEvent(eventTitle);
@@ -145,7 +148,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                         event.removeStudent(studentID);
                         student.removeEvent(eventTitle);
                     }
-                    db.collection("approvedEvents").document(event.getTitle()).update("attendance",event.getAttendance());
+                    db.collection("approvedEvents").document(event.getTitle()).update("attendance", event.getAttendance());
                     db.collection("approvedEvents").document(event.getTitle()).update("students", event.getStudents());
                     db.collection("studentInfo").document(student.getID()).update("events", student.getEvents());
                     notifyDataSetChanged();//not best practice but doesn't work when you only update the individual item
@@ -157,9 +160,9 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         holder.zoomButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Context context = v.getContext();
-                    Intent intent = new Intent(context, Zoom.class);
-                    intent.putExtra("imageUrl", events.get(holder.getAdapterPosition()).getPosterImg());
-                    context.startActivity(intent);
+                Intent intent = new Intent(context, Zoom.class);
+                intent.putExtra("imageUrl", events.get(holder.getAdapterPosition()).getPosterImg());
+                context.startActivity(intent);
 
             }
         });
@@ -171,11 +174,11 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             @Override
             public void onClick(View v) {
                 Intent toOrgProfile = new Intent(context, OrganizationProfilePage.class);
-                toOrgProfile.putExtra("OrgId",events.get(holder.getAdapterPosition()).getOrganizationID());
+                toOrgProfile.putExtra("OrgId", events.get(holder.getAdapterPosition()).getOrganizationID());
                 context.startActivity(toOrgProfile);
             }
         });
-        if(editBtnVisible) {
+        if (editBtnVisible) {
             holder.editBtn.setVisibility(View.VISIBLE);
             holder.editBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -186,9 +189,29 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
                     context.startActivity(toEdit);
                 }
             });
-        }
-        else{
+        } else {
             holder.editBtn.setVisibility(View.INVISIBLE);
+        }
+
+        if (deleteBtnVisible) {
+            holder.deleteBtn.setVisibility(View.VISIBLE);
+            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Event event = events.get(holder.getAdapterPosition());
+                    //Deletes from ArrayList
+                    events.remove(holder.getAdapterPosition());
+
+                    //Delete from Collection 1 in Firebase
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("approvedEvents").document(event.getTitle()).delete();
+                    notifyDataSetChanged();
+
+
+                }
+            });
+        } else {
+            holder.deleteBtn.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -240,6 +263,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
         CheckBox attendingBtn;
         Button orgNameBtn, zoomButton;
         ImageButton editBtn;
+        ImageButton deleteBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -255,6 +279,7 @@ public class EventRecyclerViewAdapter extends RecyclerView.Adapter<EventRecycler
             orgNameBtn = itemView.findViewById(R.id.orgNameBtn);
             zoomButton = itemView.findViewById(R.id.zoomButton);
             editBtn = itemView.findViewById(R.id.editBtn);
+            deleteBtn = itemView.findViewById(R.id.deleteBtn);
 
         }
     }

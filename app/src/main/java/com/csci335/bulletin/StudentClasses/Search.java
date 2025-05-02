@@ -73,7 +73,7 @@ public class Search extends AppCompatActivity {
         // recycler view
         searchRV = findViewById(R.id.recyclerView);
         ArrayList<Event> events = Event.setUpEvents(searchRV);
-        rvAdapter = new EventRecyclerViewAdapter(this, events, false);
+        rvAdapter = new EventRecyclerViewAdapter(this, events, false, false);
         searchRV.setAdapter(rvAdapter);
         searchRV.setLayoutManager(new LinearLayoutManager(this));
 

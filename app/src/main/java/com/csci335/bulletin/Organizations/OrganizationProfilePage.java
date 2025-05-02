@@ -161,9 +161,9 @@ public class OrganizationProfilePage extends AppCompatActivity {
         RecyclerView orgEventsRV = findViewById(R.id.orgProfileRV);
         events = new ArrayList<>();
         if(userIsOrg) {
-            rvAdapter = new EventRecyclerViewAdapter(this, events, true);
+            rvAdapter = new EventRecyclerViewAdapter(this, events, true, false);
         } else {
-            rvAdapter = new EventRecyclerViewAdapter(this, events, false);
+            rvAdapter = new EventRecyclerViewAdapter(this, events, false, false );
         }
         orgEventsRV.setAdapter(rvAdapter);
         orgEventsRV.setLayoutManager(new LinearLayoutManager(this));
